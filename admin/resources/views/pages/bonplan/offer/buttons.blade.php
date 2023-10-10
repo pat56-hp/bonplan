@@ -1,0 +1,2 @@
+<a href="{{ route('offer.create') }}" class="btn btn-primary btn-rounded"><i class="fas fa-plus-circle"></i> Ajouter</a>
+<a href="#" class="btn btn-dark btn-rounded"><i class="fas fa-search"></i> Rechercher</a>

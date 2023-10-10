@@ -1,0 +1,16 @@
+/* Your Custom CSS Goes here */
+
+.profile-setting{
+    font-size: 15px;
+    font-weight: 600 !important;
+    line-height: 3;
+}
+
+.red{
+    color: red;
+}
+
+.settings-security-two-factor{
+    padding: 15px;
+    margin: 0 auto;
+}
