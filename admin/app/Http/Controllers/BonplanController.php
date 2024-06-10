@@ -96,6 +96,9 @@ class BonplanController extends Controller
             'photo' => 'required',
             'description' => 'required',
             'commodite' => 'required',
+            'jour' => 'required',
+            'ouverture' => 'required',
+            'fermeture' => 'required',
             /*'specialite.*.libelle' => 'required',
             'specialite.*.prix' => 'required',
             'specialite.*.photo' => 'required',*/

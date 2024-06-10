@@ -197,16 +197,16 @@
                                     <label for="password" class="form-label">Description <span class="red">*</span></label>
                                     <textarea name="description" cols="4" rows="4" class="form-control @error('description') is-invalid @enderror" >{{ old('description') }}</textarea>
                                     @error('description')
-                                    <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
                             </div>
 
                             <hr>
 
-                            <h4 class="mb-3">HORAIRES</h4>
+                            <h4 class="mb-3">HORAIRES <span class="red">*</span></h4>
 
                             <div class="row m-t-lg mb-4">
                                 <div class="col-md-2"></div>
@@ -226,7 +226,7 @@
                                 <div class="col-md-2">
                                     <div class="checkbox col-sm-3">
                                         <label>
-                                            <input class="{{$jour->id}}" id="switch-{{$jour->id}}" value="{{$jour->id}}" type="checkbox" name="jour[]">
+                                            <input class="{{$jour->id}}" id="switch-{{$jour->id}}" value="{{$jour->id}}" type="checkbox" name="jour[]" value="{{ old('jour[]') }}">
                                         </label>
                                     </div>
                                 </div>
@@ -234,10 +234,10 @@
                                     <label for="">{{ ucfirst($jour->libelle) }}</label>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="time" class="form-control" name="ouverture[{{$jour->id}}]" value="">
+                                    <input type="time" class="form-control" name="ouverture[{{$jour->id}}]" value="{{ old('ouverture['.$jour->id.']') }}">
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="time" class="form-control" name="fermeture[{{$jour->id}}]" value="">
+                                    <input type="time" class="form-control" name="fermeture[{{$jour->id}}]" value="{{ old('fermeture['.$jour->id.']') }}">
                                 </div>
                             </div>
                             @endforeach
@@ -248,13 +248,13 @@
 
                             <div class="row m-t-lg mb-4">
                                 <div class="col-md-3">
-                                    <label for="">Libéllé <span class="red">*</span></label>
+                                    <label for="">Libéllé</label>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="">Prix <span class="red">*</span></label>
+                                    <label for="">Prix</label>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="">Image (.png, .jpeg, .jpg) <span class="red">*</span></label>
+                                    <label for="">Image (.png, .jpeg, .jpg) </label>
                                 </div>
                                 <div class="col-md-3"></div>
                             </div>
@@ -278,10 +278,10 @@
 
                             <hr>
 
-                            <h4 class="mb-3">COMMODITES</h4>
+                            <h4 class="mb-3">COMMODITES <span class="red">*</span></h4>
                             <div class="row m-t-lg">
                                 <div class="col-md-12">
-                                    <label for="commodite" class="form-label">Veuillez sélectionnez les commodités <span class="red">*</span></label>
+                                    <label for="commodite" class="form-label">Veuillez sélectionnez les commodités </label>
                                     <select class="js-states form-control @error('commodite') is-invalid @enderror" multiple id="categorie" tabindex="-1" style="display: none; width: 100%" name="commodite[]">
                                         @foreach($commodites as $commodite)
                                             <option value="{{ $commodite->id }}" {{ old('commodite') == $commodite->id ? 'selected' : ''}}>{{ ucfirst($commodite->libelle) }}</option>
