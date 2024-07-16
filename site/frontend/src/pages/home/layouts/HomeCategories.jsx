@@ -1,5 +1,6 @@
 import React from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { categorySlide } from '../../../helpers/helper';
 
 
 export default function HomeCategories() {
@@ -21,6 +22,7 @@ export default function HomeCategories() {
                     spaceBetween={20}
                     slidesPerView={8}
                     autoplay={true}
+                    breakpoints={categorySlide}
                     className='swiper-wrapper'
                     >
                         { slides }

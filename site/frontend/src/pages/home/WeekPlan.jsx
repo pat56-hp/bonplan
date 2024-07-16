@@ -1,5 +1,6 @@
 import React from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { weekPlanSlide } from '../../helpers/helper'
 
 export default function WeekPlan() {
   return (
@@ -20,6 +21,7 @@ export default function WeekPlan() {
                         slidesPerView={5}
                         autoplay={true}
                         pagination={true}
+                        breakpoints={weekPlanSlide}
                         className='swiper-wrapper'
                     >
                         <SwiperSlide className='swiper-slide'>

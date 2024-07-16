@@ -1,7 +1,8 @@
 import React from 'react'
 import { SwiperSlide, Swiper } from 'swiper/react'
+import { partnerSlide } from '../../../helpers/helper'
 
-export default function Patner() {
+export default function Partner() {
   return (
     <section className="brand-section">
         <img className="img-fluid item-4" src="assets/images/svg/item4.svg" alt="item-4" />
@@ -22,6 +23,7 @@ export default function Patner() {
                         slidesPerView={8}
                         autoplay={true}
                         pagination={true}
+                        breakpoints={partnerSlide}
                         className='swiper-wrapper'
                         >
                             <SwiperSlide className='swiper-slide'>

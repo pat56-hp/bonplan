@@ -304,9 +304,9 @@ function setDark() {
 /*====================
   09. Menu sidebar 
 ======================*/
-/* document
+document
   .getElementById("offcanvas-close")
   .addEventListener("click", function () {
     var offcanvasSide = document.getElementById("offcanvasNavbar");
     offcanvasSide.classList.remove("show");
-  }); */
+  });

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Cart from './Cart'
 import ProfileInfo from './ProfileInfo'
+import Menu from './Menu'
 
 export default function Header() {
     const [isConnected, setIsConnected] = useState(false)
@@ -206,27 +207,27 @@ export default function Header() {
                             <div className="swiper-wrapper">
                                 <div className="swiper-slide placeholder-glow">
                                     <div className="banner-part">
-                                        <a href="offer.html" className="placeholder"></a>
+                                        <a href="#" className="placeholder"></a>
                                     </div>
                                 </div>
                                 <div className="swiper-slide">
                                     <div className="banner-part">
-                                        <a href="offer.html" className="placeholder"></a>
+                                        <a href="#" className="placeholder"></a>
                                     </div>
                                 </div>
                                 <div className="swiper-slide">
                                     <div className="banner-part">
-                                        <a href="offer.html" className="placeholder"></a>
+                                        <a href="#" className="placeholder"></a>
                                     </div>
                                 </div>
                                 <div className="swiper-slide">
                                     <div className="banner-part">
-                                        <a href="offer.html" className="placeholder"></a>
+                                        <a href="#" className="placeholder"></a>
                                     </div>
                                 </div>
                                 <div className="swiper-slide">
                                     <div className="banner-part">
-                                        <a href="offer.html" className="placeholder"></a>
+                                        <a href="#" className="placeholder"></a>
                                     </div>
                                 </div>
                             </div>
@@ -235,60 +236,7 @@ export default function Header() {
                 </div>
             </section>
         </div>
-        <header>
-            <div className='container'>
-                <nav className='navbar navbar-expand-lg p-0'>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#offcanvasNavbar">
-                        <span className="navbar-toggler-icon">
-                            <i className="ri-menu-line"></i>
-                        </span>
-                    </button>
-                    <a href="#">
-                        <img className="img-fluid logo" src="/assets/images/svg/logo.svg" alt="logo" />
-                    </a>
-                
-                    <div className="nav-option order-md-2">
-                        {
-                            isConnected ?
-                            (
-                                <>
-                                    <Cart />
-                                    <ProfileInfo />
-                                </>
-                            ) :
-
-                            <a target="_blank" href="#!" data-bs-toggle="modal" data-bs-target="#location"
-                                className="btn btn-sm theme-btn location-btn mt-0 ms-3 d-flex align-content-center gap-1">
-                                <i className="ri-user-shared-2-line"></i> Se connecter
-                            </a>
-                        }
-                    </div>
-                    <div className="offcanvas offcanvas-end" tabIndex="-1" id="offcanvasNavbar">
-                        <div className="offcanvas-header">
-                            <h5 className="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-                            <button className="navbar-toggler btn-close" id="offcanvas-close"></button>
-                        </div>
-                        <div className="offcanvas-body">
-                            <ul className="navbar-nav justify-content-center flex-grow-1">
-                                <li className="nav-item mega-menu">
-                                    <a className="nav-link" href="#!" aria-expanded="false">Accueil</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="#!" id="event" aria-expanded="false">Explorer</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="#!" id="event" aria-expanded="false">Évènements</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="contact.html">Contact</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </header>
+        <Menu isConnected = {isConnected} />
     </>
   )
 }

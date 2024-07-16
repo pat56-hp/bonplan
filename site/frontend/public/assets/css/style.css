@@ -4636,11 +4636,11 @@ li {
 
 .page-head-section {
   position: relative;
-  padding: calc(80px + 50 * (100vw - 320px) / 1600) 0 calc(30px + 20 * (100vw - 320px) / 1600);
+  padding: calc(80px + 50 * (200vw - 320px) / 1600) 0 calc(30px + 20 * (200vw - 320px) / 1600);
 }
 .page-head-section::before {
   content: "";
-  background-image: url(../../../../../../themes.pixelstrap.com/zomo-app-landing/assets/images/background/home-bg.jpg);
+  background-image: url(../images/background/bg.jpg);
   background-position: top;
   background-repeat: no-repeat;
   background-size: cover;

@@ -3,9 +3,8 @@ import HomeCategories from './layouts/HomeCategories'
 import HomeHead from './layouts/HomeHead'
 import WeekPlan from './WeekPlan'
 import FavPlan from './layouts/FavPlan'
-import Patner from './layouts/Patner'
+import Partner from './layouts/Patner'
 import Popular from './layouts/Popular'
-import AppSection from './AppSection'
 import HomeEvent from './layouts/HomeEvent'
 
 export default function Home() {
@@ -16,7 +15,7 @@ export default function Home() {
         <WeekPlan />
         <HomeEvent />
         <FavPlan />
-        <Patner />
+        <Partner />
         <Popular />
     </>
   )

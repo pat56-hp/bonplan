@@ -1,23 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 export default function Footer() {
-    /* useEffect(() => {
-        const script = document.createElement('script');
-        const bundle = document.createElement('script');
-        script.src = '/assets/js/script.js';
-        script.async = true;
-        document.body.appendChild(script);
-
-        bundle.src = '/assets/js/swiper-bundle.min.js';
-        bundle.async = true;
-        document.body.appendChild(bundle);
     
-        return () => {
-          document.body.removeChild(script);
-          document.body.removeChild(bundle);
-        };
-      }, []); */
-
   return (
     <footer className="footer-section section-t-space">
         <div className="subscribe-section">
@@ -26,13 +10,12 @@ export default function Footer() {
                     <div className="col-lg-12">
                         <div className="subscribe-part">
                             <h5>
-                                Don't pass up our fantastic discounts. email offers from all
-                                of our best eateries
+                                Recevez par e-mail des offres de tous nos meilleurs plans
                             </h5>
                             <div className="position-relative w-100">
                                 <input type="email" className="form-control subscribe-form-control"
-                                    placeholder="Enter your Email" />
-                                <a href="#" className="btn theme-btn subscribe-btn mt-0">Subscribe Now</a>
+                                    placeholder="votreadresse@email.com" />
+                                <a href="#" className="btn theme-btn subscribe-btn mt-0">Je m'inscris</a>
                             </div>
                         </div>
                     </div>
