@@ -1,8 +1,11 @@
 import React from "react";
 import {Link, NavLink} from "react-router-dom";
 import SeachModal from "./SearchModal";
+import {useAuthStateProvider} from "../../contexts/AuthContextProvider";
+import UserLoged from "../UserLoged";
 
 const Header = () => {
+    const {token} = useAuthStateProvider()
     return (
         <>
             <div className="layer"></div>
@@ -14,8 +17,14 @@ const Header = () => {
                             <div className="col-6"><i className="icon-phone"></i><strong>0045 043204434</strong></div>
                             <div className="col-6">
                                 <ul id="top_links">
-                                    <li><a href="#sign-in-dialog" id="access_link">Se connecter</a></li>
-                                    <li><a href="#sign-in-dialog"><i className="icon-user-7"></i> S'inscrire</a></li>
+                                    {
+                                        !token && (
+                                            <>
+                                                <li><a href="#sign-in-dialog" id="access_link">Se connecter</a></li>
+                                                <li><a href="#sign-in-dialog"><i className="icon-user-7"></i> S'inscrire</a></li>
+                                            </>
+                                        )
+                                    }
                                 </ul>
                             </div>
                         </div>
@@ -58,33 +67,10 @@ const Header = () => {
                                 <li>
                                     <a href="#" className="search-overlay-menu-btn"><i className="icon_search"></i></a>
                                 </li>
-                                {/*<li>
-                                    <div className="dropdown dropdown-cart">
-                                        <a href="#0" data-bs-toggle="dropdown" className="cart_bt"><i className="icon_bag_alt"></i><strong>3</strong></a>
-                                        <ul className="dropdown-menu" id="cart_items">
-                                            <li>
-                                                <div className="image"><img src="img/thumb_cart_1.jpg" alt="image" /></div>
-                                                <strong><a href="#">Louvre museum</a>1x $36.00 </strong>
-                                                <a href="#" className="action"><i className="icon-trash"></i></a>
-                                            </li>
-                                            <li>
-                                                <div className="image"><img src="img/thumb_cart_2.jpg" alt="image"/></div>
-                                                <strong><a href="#">Versailles tour</a>2x $36.00 </strong>
-                                                <a href="#" className="action"><i className="icon-trash"></i></a>
-                                            </li>
-                                            <li>
-                                                <div className="image"><img src="img/thumb_cart_3.jpg" alt="image"/></div>
-                                                <strong><a href="#">Versailles tour</a>1x $36.00 </strong>
-                                                <a href="#" className="action"><i className="icon-trash"></i></a>
-                                            </li>
-                                            <li>
-                                                <div>Total: <span>$120.00</span></div>
-                                                <a href="cart.html" className="button_drop">Go to cart</a>
-                                                <a href="payment.html" className="button_drop outline">Check out</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>*/}
+
+                                {
+                                    token && <UserLoged />
+                                }
                             </ul>
                         </nav>
                     </div>
