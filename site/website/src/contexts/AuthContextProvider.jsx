@@ -11,7 +11,7 @@ const AuthStateContext = createContext({
 //Partage des informations avec les enfants du context
 export const AuthContextProvider = ({children}) => {
     const [user, setUser] = useState({})
-    const [token, _setToken] = useState('token')
+    const [token, _setToken] = useState(null)
 
     const setToken = (token) => {
         _setToken(token)

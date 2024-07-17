@@ -31,23 +31,9 @@ const Footer = () => {
                             </ul>
                         </div>
                         <div className="col-md-2">
-                            <h3>Settings</h3>
-                            <div className="styled-select">
-                                <select name="lang" id="lang" defaultValue={'English'}>
-                                    <option value="English">English</option>
-                                    <option value="French">French</option>
-                                    <option value="Spanish">Spanish</option>
-                                    <option value="Russian">Russian</option>
-                                </select>
-                            </div>
-                            <div className="styled-select" defaultValue={'USD'}>
-                                <select name="currency" id="currency">
-                                    <option value="USD">USD</option>
-                                    <option value="EUR">EUR</option>
-                                    <option value="GBP">GBP</option>
-                                    <option value="RUB">RUB</option>
-                                </select>
-                            </div>
+                            <h3>Newsletter</h3>
+                            <input placeholder={'monadresse@email.com'} defaultValue={''} className='form-control'/>
+                            <a className="btn_1 mt-2" href="#" role="button">Je m'inscris</a>
                         </div>
                     </div>
                     <div className="row">
@@ -62,7 +48,7 @@ const Footer = () => {
                                     <li><a href="#"><i className="icon-vimeo"></i></a></li>
                                     <li><a href="#"><i className="icon-youtube-play"></i></a></li>
                                 </ul>
-                                <p>© Citytours 2022</p>
+                                <p>© Les bons plans - Copyright 2024</p>
                             </div>
                         </div>
                     </div>

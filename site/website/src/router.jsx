@@ -5,6 +5,7 @@ import GuestLayout from "./layouts/GuestLayout";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
+import Explore from "./pages/Explore";
 
 const router = createBrowserRouter([
     {
@@ -13,6 +14,14 @@ const router = createBrowserRouter([
             {
                 path: '/',
                 element: <Home />
+            },
+            {
+                path: '/explorer',
+                element: <Explore />
+            },
+            {
+                path: '*',
+                element: <NotFound />
             }
         ],
     },
@@ -26,10 +35,7 @@ const router = createBrowserRouter([
 
         ]
     },
-    {
-        path: '*',
-        element: <NotFound />
-    }
+
 ])
 
 export default router

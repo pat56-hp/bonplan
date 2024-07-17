@@ -17,10 +17,11 @@ const Header = () => {
                             <div className="col-6"><i className="icon-phone"></i><strong>0045 043204434</strong></div>
                             <div className="col-6">
                                 <ul id="top_links">
+                                    <li><a href="#">Qui sommes-nous</a></li>
                                     {
                                         !token && (
                                             <>
-                                                <li><a href="#sign-in-dialog" id="access_link">Se connecter</a></li>
+                                                <li><Link to="/" id="access_link">Se connecter</Link></li>
                                                 <li><a href="#sign-in-dialog"><i className="icon-user-7"></i> S'inscrire</a></li>
                                             </>
                                         )
@@ -50,7 +51,7 @@ const Header = () => {
                                         <NavLink to={'/'} className="show-submenu">Accueil</NavLink>
                                     </li>
                                     <li className="submenu">
-                                        <NavLink to={'/'} className="show-submenu">Explorer</NavLink>
+                                        <NavLink to={'/explorer'} className="show-submenu">Explorer</NavLink>
                                     </li>
                                     <li className="submenu">
                                         <NavLink to={'/'} className="show-submenu">Evènements</NavLink>

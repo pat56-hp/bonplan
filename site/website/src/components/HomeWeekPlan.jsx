@@ -5,6 +5,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import {PlanItem} from "./PlanItem";
 
 const HomeWeekPlan = () => {
     return (
@@ -23,141 +24,13 @@ const HomeWeekPlan = () => {
                 autoplay={true}
                 breakpoints={weekPlanSlide}
             >
-                <SwiperSlide className='item'>
-                    <div className="tour_container">
-                        <div className="ribbon_3 popular"><span>Popular</span></div>
-                        <div className="img_container">
-                            <a href="single_tour.html">
-                                <img src="img/tour_box_1.jpg" width="800" height="533" className="img-fluid"
-                                     alt="image"/>
-                                <div className="short_info">
-                                    <i className="icon_set_1_icon-44"></i>Historic Buildings<span className="price"><sup>$</sup>39</span>
-                                </div>
-                            </a>
-                        </div>
-                        <div className="tour_title">
-                            <h3><strong>Arc Triomphe</strong> tour</h3>
-                            <div className="rating">
-                                <i className="icon-smile voted"></i><i className="icon-smile voted"></i><i
-                                className="icon-smile voted"></i><i className="icon-smile voted"></i><i
-                                className="icon-smile"></i><small>(75)</small>
-                            </div>
-                            <div className="wishlist">
-                                <a className="tooltip_flip tooltip-effect-1" href="#">+<span
-                                    className="tooltip-content-flip"><span
-                                    className="tooltip-back">Add to wishlist</span></span></a>
-                            </div>
-                        </div>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide className='item'>
-                    <div className="tour_container">
-                        <div className="ribbon_3 popular"><span>Popular</span></div>
-                        <div className="img_container">
-                            <a href="single_tour.html">
-                                <img src="img/tour_box_1.jpg" width="800" height="533" className="img-fluid"
-                                     alt="image"/>
-                                <div className="short_info">
-                                    <i className="icon_set_1_icon-44"></i>Historic Buildings<span className="price"><sup>$</sup>39</span>
-                                </div>
-                            </a>
-                        </div>
-                        <div className="tour_title">
-                            <h3><strong>Arc Triomphe</strong> tour</h3>
-                            <div className="rating">
-                                <i className="icon-smile voted"></i><i className="icon-smile voted"></i><i
-                                className="icon-smile voted"></i><i className="icon-smile voted"></i><i
-                                className="icon-smile"></i><small>(75)</small>
-                            </div>
-                            <div className="wishlist">
-                                <a className="tooltip_flip tooltip-effect-1" href="#">+<span
-                                    className="tooltip-content-flip"><span
-                                    className="tooltip-back">Add to wishlist</span></span></a>
-                            </div>
-                        </div>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide className='item'>
-                    <div className="tour_container">
-                        <div className="ribbon_3 popular"><span>Popular</span></div>
-                        <div className="img_container">
-                            <a href="single_tour.html">
-                                <img src="img/tour_box_1.jpg" width="800" height="533" className="img-fluid"
-                                     alt="image"/>
-                                <div className="short_info">
-                                    <i className="icon_set_1_icon-44"></i>Historic Buildings<span className="price"><sup>$</sup>39</span>
-                                </div>
-                            </a>
-                        </div>
-                        <div className="tour_title">
-                            <h3><strong>Arc Triomphe</strong> tour</h3>
-                            <div className="rating">
-                                <i className="icon-smile voted"></i><i className="icon-smile voted"></i><i
-                                className="icon-smile voted"></i><i className="icon-smile voted"></i><i
-                                className="icon-smile"></i><small>(75)</small>
-                            </div>
-                            <div className="wishlist">
-                                <a className="tooltip_flip tooltip-effect-1" href="#">+<span
-                                    className="tooltip-content-flip"><span
-                                    className="tooltip-back">Add to wishlist</span></span></a>
-                            </div>
-                        </div>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide className='item'>
-                    <div className="tour_container">
-                        <div className="ribbon_3 popular"><span>Popular</span></div>
-                        <div className="img_container">
-                            <a href="single_tour.html">
-                                <img src="img/tour_box_1.jpg" width="800" height="533" className="img-fluid"
-                                     alt="image"/>
-                                <div className="short_info">
-                                    <i className="icon_set_1_icon-44"></i>Historic Buildings<span className="price"><sup>$</sup>39</span>
-                                </div>
-                            </a>
-                        </div>
-                        <div className="tour_title">
-                            <h3><strong>Arc Triomphe</strong> tour</h3>
-                            <div className="rating">
-                                <i className="icon-smile voted"></i><i className="icon-smile voted"></i><i
-                                className="icon-smile voted"></i><i className="icon-smile voted"></i><i
-                                className="icon-smile"></i><small>(75)</small>
-                            </div>
-                            <div className="wishlist">
-                                <a className="tooltip_flip tooltip-effect-1" href="#">+<span
-                                    className="tooltip-content-flip"><span
-                                    className="tooltip-back">Add to wishlist</span></span></a>
-                            </div>
-                        </div>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide className='item'>
-                    <div className="tour_container">
-                        <div className="ribbon_3 popular"><span>Popular</span></div>
-                        <div className="img_container">
-                            <a href="single_tour.html">
-                                <img src="img/tour_box_1.jpg" width="800" height="533" className="img-fluid"
-                                     alt="image"/>
-                                <div className="short_info">
-                                    <i className="icon_set_1_icon-44"></i>Historic Buildings<span className="price"><sup>$</sup>39</span>
-                                </div>
-                            </a>
-                        </div>
-                        <div className="tour_title">
-                            <h3><strong>Arc Triomphe</strong> tour</h3>
-                            <div className="rating">
-                                <i className="icon-smile voted"></i><i className="icon-smile voted"></i><i
-                                className="icon-smile voted"></i><i className="icon-smile voted"></i><i
-                                className="icon-smile"></i><small>(75)</small>
-                            </div>
-                            <div className="wishlist">
-                                <a className="tooltip_flip tooltip-effect-1" href="#">+<span
-                                    className="tooltip-content-flip"><span
-                                    className="tooltip-back">Add to wishlist</span></span></a>
-                            </div>
-                        </div>
-                    </div>
-                </SwiperSlide>
+                {
+                    Array.from({length:5}, (_, i) => (
+                        <SwiperSlide className='item'>
+                            <PlanItem key={i}/>
+                        </SwiperSlide>
+                    ))
+                }
             </Swiper>
 
             <p className="text-center add_bottom_30">
