@@ -1,11 +1,16 @@
 import React from "react";
 import {Link, NavLink} from "react-router-dom";
-import SeachModal from "./SearchModal";
 import {useAuthStateProvider} from "../../contexts/AuthContextProvider";
 import UserLoged from "../UserLoged";
+import Input from "../form/Input";
 
 const Header = () => {
     const {token} = useAuthStateProvider()
+    const loginCss = {
+        background : '#e04f67',
+        padding : '3px 20px',
+        color: '#fff'
+    }
     return (
         <>
             <div className="layer"></div>
@@ -13,16 +18,22 @@ const Header = () => {
             <header id="plain" style={{borderBottom: '1px solid #ddd'}}>
                 <div id="top_line">
                     <div className="container">
-                        <div className="row">
-                            <div className="col-6"><i className="icon-phone"></i><strong>0045 043204434</strong></div>
-                            <div className="col-6">
+                        <div className="row align-items-center">
+                            <div className="col-4"><i className="icon-phone"></i><strong>0045 043204434</strong></div>
+                            <div className="col-4 seach-container">
+                                <i className="icon_search"></i>
+                                <Input
+                                    placeholder="Rechercher..."
+                                    otherClass="top-search"
+                                />
+                            </div>
+                            <div className="col-4">
                                 <ul id="top_links">
                                     <li><a href="#">Qui sommes-nous</a></li>
                                     {
                                         !token && (
                                             <>
-                                                <li><Link to="/" id="access_link">Se connecter</Link></li>
-                                                <li><a href="#sign-in-dialog"><i className="icon-user-7"></i> S'inscrire</a></li>
+                                                <li><Link to="/register"><i className="icon-user-7"></i> S'inscrire</Link></li>
                                             </>
                                         )
                                     }
@@ -65,9 +76,7 @@ const Header = () => {
                                 </ul>
                             </div>
                             <ul id="top_tools">
-                                <li>
-                                    <a href="#" className="search-overlay-menu-btn"><i className="icon_search"></i></a>
-                                </li>
+                                <li className='login-link' style={loginCss}><Link to="/login" id="access_link" className='text-white'>Se connecter</Link></li>
 
                                 {
                                     token && <UserLoged />
@@ -77,7 +86,6 @@ const Header = () => {
                     </div>
                 </div>
             </header>
-            <SeachModal />
         </>
     )
 }

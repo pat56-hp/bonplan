@@ -1,4 +1,5 @@
 import React from "react";
+import Input from "./form/Input";
 
 const Footer = () => {
     return (
@@ -7,32 +8,33 @@ const Footer = () => {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-4">
-                            <h3>Need help?</h3>
+                            <h3>Besoin d'aide ?</h3>
                             <a href="tel://004542344599" id="phone">+45 423 445 99</a>
-                            <a href="mailto:help@citytours.com" id="email_footer">help@citytours.com</a>
+                            <a href="mailto:help@citytours.com" id="email_footer">help@bonplan.com</a>
                         </div>
                         <div className="col-md-3">
-                            <h3>About</h3>
+                            <h3>A propos</h3>
                             <ul>
-                                <li><a href="#">About us</a></li>
                                 <li><a href="#">FAQ</a></li>
-                                <li><a href="#">Login</a></li>
-                                <li><a href="#">Register</a></li>
-                                <li><a href="#">Terms and condition</a></li>
+                                <li><a href="#">Qui sommes-nous</a></li>
+                                <li><a href="#">Termes et conditions</a></li>
+                                <li><a href="#">Plan du site</a></li>
                             </ul>
                         </div>
                         <div className="col-md-3">
-                            <h3>Discover</h3>
+                            <h3>Explorer</h3>
                             <ul>
-                                <li><a href="#">Community blog</a></li>
-                                <li><a href="#">Tour guide</a></li>
-                                <li><a href="#">Wishlist</a></li>
-                                <li><a href="#">Gallery</a></li>
+                                <li><a href="#">Les bons plans</a></li>
+                                <li><a href="#">Tourisme</a></li>
+                                <li><a href="#">Devenir prestataire</a></li>
+                                <li><a href="#">Nos partenaires</a></li>
                             </ul>
                         </div>
                         <div className="col-md-2">
                             <h3>Newsletter</h3>
-                            <input placeholder={'monadresse@email.com'} defaultValue={''} className='form-control'/>
+                            <Input
+                                placeholder={'monadresse@email.com'}
+                            />
                             <a className="btn_1 mt-2" href="#" role="button">Je m'inscris</a>
                         </div>
                     </div>
