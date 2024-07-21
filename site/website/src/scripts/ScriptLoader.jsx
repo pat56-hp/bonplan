@@ -18,6 +18,8 @@ const ScriptLoader = () => {
       loadScript('/js/common_scripts_min.js'),
       loadScript('/js/functions.js'),
       loadScript('/js/tabs.js'),
+      loadScript('/js/map_listing_hotels.js'),
+      loadScript('/js/infobox.js'),
     ])
     .then(() => {
       console.log('All scripts loaded successfully.');

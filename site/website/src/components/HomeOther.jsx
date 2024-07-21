@@ -1,5 +1,5 @@
 import React from "react";
-import {PlanItem} from "./PlanItem";
+import PlanItem from "./PlanItem";
 
 const HomeOther = () => {
     return (
@@ -13,8 +13,8 @@ const HomeOther = () => {
             <div className="row">
                 {
                     Array.from({length: 6}, (_, i) => (
-                        <div className="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.1s">
-                            <PlanItem key={i}/>
+                        <div className="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.1s" key={i}>
+                            <PlanItem />
                         </div>
                     ))
                 }

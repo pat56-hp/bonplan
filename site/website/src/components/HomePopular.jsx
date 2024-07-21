@@ -1,5 +1,5 @@
 import React from "react";
-import {PlanItem} from "./PlanItem";
+import PlanItem from "./PlanItem";
 
 const HomePopular = () => {
     return (
@@ -24,8 +24,8 @@ const HomePopular = () => {
                             <div className="row list_hotels_tabs">
                                 {
                                     Array.from({length:3}, (_, i) => (
-                                        <div className="col-lg-4 col-md-6">
-                                            <PlanItem key={i}/>
+                                        <div className="col-lg-4 col-md-6" key={i}>
+                                            <PlanItem />
                                         </div>
                                     ))
                                 }

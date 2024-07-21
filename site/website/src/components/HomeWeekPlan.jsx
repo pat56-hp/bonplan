@@ -5,7 +5,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import {PlanItem} from "./PlanItem";
+import PlanItem from "./PlanItem";
 
 const HomeWeekPlan = () => {
     return (
@@ -26,7 +26,7 @@ const HomeWeekPlan = () => {
             >
                 {
                     Array.from({length:5}, (_, i) => (
-                        <SwiperSlide className='item'>
+                        <SwiperSlide className='item' key={i}>
                             <PlanItem key={i}/>
                         </SwiperSlide>
                     ))

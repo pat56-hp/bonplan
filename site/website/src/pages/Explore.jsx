@@ -1,47 +1,46 @@
 import React from "react";
-import {PlanItem} from "../components/PlanItem";
+import Breadcrumbs from "../components/Breadcrumbs";
+import Paginate from "../components/Paginate";
+import PlanFilter from "../components/PlanFilter";
+import PlanItemRow from "../components/PlanItemRow";
+import PlanFilterSort from "../components/PlanFilterSort";
 
 export default function Explore (){
+    const breadcrumbs = [
+        {label: 'Accueil', link: '/'},
+        {label: 'Explorer'}
+    ]
+
+    const info = {
+        title: 'Explorer nos bons plans',
+        subtitle: 'Cursus neque cursus curae ante scelerisque vehicula.'
+    }
+
     return (
         <>
-            <div className="container-fluid full-height">
-                <div className="row row-height">
-                    <div className="col-lg-7 content-left">
-                        <div className="row">
-                            {
-                                Array.from({length: 10},(_, i) => (
-                                    <div className={'col-sm-6'}>
-                                        <PlanItem key={i} />
-                                    </div>
-                                ))
-                            }
-                        </div>
+            <Breadcrumbs
+                breadcrumbs = {breadcrumbs}
+                info = {info}
+            />
 
-                        <nav aria-label="Page navigation">
-                            <ul className="pagination justify-content-center">
-                                <li className="page-item">
-                                    <a className="page-link" href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                        <span className="sr-only">Previous</span>
-                                    </a>
-                                </li>
-                                <li className="page-item active"><span className="page-link">1<span
-                                    className="sr-only">(current)</span></span>
-                                </li>
-                                <li className="page-item"><a className="page-link" href="#">2</a></li>
-                                <li className="page-item"><a className="page-link" href="#">3</a></li>
-                                <li className="page-item">
-                                    <a className="page-link" href="#" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                        <span className="sr-only">Next</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
+            <div className="collapse" id="collapseMap">
+                <div id="map" className="map"></div>
+            </div>
 
-                    <div className="col-lg-5 map-right">
-                        <div className="map" id="map"></div>
+            <div className="container margin_60">
+
+                <div className="row">
+                    <PlanFilter />
+
+                    <div className="col-lg-9">
+
+                        <PlanFilterSort />
+
+                        {Array.from({length: 5}).map((_, i) => (
+                            <PlanItemRow />
+                        ))}
+
+                        <Paginate />
                     </div>
                 </div>
             </div>

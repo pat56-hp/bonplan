@@ -6,6 +6,9 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Explore from "./pages/Explore";
+import Contact from "./pages/Contact";
+import Event from "./pages/events/Event";
+import EventShow from "./pages/events/EventShow";
 
 const router = createBrowserRouter([
     {
@@ -18,6 +21,18 @@ const router = createBrowserRouter([
             {
                 path: '/explorer',
                 element: <Explore />
+            },
+            {
+                path: '/evenements',
+                element: <Event />
+            },
+            {
+                path: '/details-evenement',
+                element: <EventShow />,
+            },
+            {
+                path: '/contact',
+                element: <Contact />
             },
             {
                 path: '*',

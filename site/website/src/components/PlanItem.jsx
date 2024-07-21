@@ -5,7 +5,8 @@ import React from "react";
  * @returns {*}
  * @constructor
  */
-export function PlanItem(){
+
+export default function PlanItem(){
     return (
         <div className="hotel_container">
             <div className="ribbon_3"><span>Top rated</span></div>

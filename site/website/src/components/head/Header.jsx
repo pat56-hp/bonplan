@@ -10,7 +10,7 @@ const Header = () => {
         <>
             <div className="layer"></div>
 
-            <header>
+            <header id="plain" style={{borderBottom: '1px solid #ddd'}}>
                 <div id="top_line">
                     <div className="container">
                         <div className="row">
@@ -54,13 +54,13 @@ const Header = () => {
                                         <NavLink to={'/explorer'} className="show-submenu">Explorer</NavLink>
                                     </li>
                                     <li className="submenu">
-                                        <NavLink to={'/'} className="show-submenu">Evènements</NavLink>
+                                        <NavLink to={'/evenements'} className="show-submenu">Evènements</NavLink>
                                     </li>
                                     <li className="submenu">
                                         <NavLink to={'/'} className="show-submenu">Devenir prestataire</NavLink>
                                     </li>
                                     <li className="submenu">
-                                        <NavLink to={'/'} className="show-submenu">Contact</NavLink>
+                                        <NavLink to={'/contact'} className="show-submenu">Contact</NavLink>
                                     </li>
                                 </ul>
                             </div>
