@@ -8480,11 +8480,11 @@ a.box_news ul li:after {
 }
 
 .register .tab-content #client.show:before{
-    left: 10%;
+    left: 40px;
 }
 
 .register .tab-content #prestataire.show:before{
-    left: 40%;
+    left: 135px;
 }
 
 .form-control:focus{
