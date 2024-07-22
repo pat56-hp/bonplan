@@ -1,5 +1,9 @@
 import React, {useState} from "react";
 import Input from "../../components/form/Input";
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
+
+
 
 export default function Prestataire (){
     const [step, setStep] = useState(1)
@@ -93,11 +97,16 @@ function InfoPersonnelles ({onSetStep, display, onSetDisplay}){
                     placeholder="Votre prénom"
                 />
             </div>
+
             <div className="form-group">
                 <Input
                     label="Contact"
                     important="true"
                     placeholder="Votre contact"
+                />
+                <PhoneInput
+                    country={'us'}
+                    required={true}
                 />
             </div>
             <div className="form-group">
