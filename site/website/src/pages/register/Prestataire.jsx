@@ -2,17 +2,61 @@ import React, {useState} from "react";
 import Input from "../../components/form/Input";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
+import {useForm} from "react-hook-form";
+import InfoPersonnelles from "./InfoPersonnelles";
+import Etablissement from "./Etablissement";
 
 
-
+/**
+ * Register for Prestataire
+ * @returns {*}
+ * @constructor
+ */
 export default function Prestataire (){
     const [step, setStep] = useState(1)
+    const [phone, setPhone] = useState(null)
+    const [phoneEtabl, setPhoneEtabl] = useState(null)
+    const [buttonDisabled, setButtonDisabled] = useState(true)
+    const [formErrors, setFormErrors] = useState({})
+    const [isLoading, setIsLoading] = useState(false)
 
     const [display, setDisplay] = useState({
         info: 'd-block',
         etablissement: 'd-none'
     })
 
+    const {
+        handleSubmit,
+        watch,
+        register,
+        formState: {errors}
+    } = useForm()
+
+    /**
+     * Submit register
+     * @param {Object} data
+     */
+    const onSubmit = (data) => {
+        setIsLoading(true)
+        if (phoneEtabl === null || phoneEtabl === undefined || phoneEtabl === '') {
+            setFormErrors({...formErrors, phoneEtabl: {
+                message: 'Veuillez renseigner le contact de votre établissement'
+            }})
+
+            setIsLoading(false)
+            return
+        }
+
+        setFormErrors({...formErrors, phoneEtabl: null})
+        const formData = {...data, phone: phone, phoneEtabl:phoneEtabl}
+        console.log(formData)
+        setIsLoading(false)
+    }
+
+    /**
+     * Prevent step to register
+     * @param e
+     */
     const handleClick = (e) => {
         e.preventDefault()
 
@@ -24,7 +68,7 @@ export default function Prestataire (){
     }
 
     return (
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <div className="bs-wizard row">
 
                 <div className={`col-6 bs-wizard-step complete`}>
@@ -52,171 +96,26 @@ export default function Prestataire (){
                 onSetStep={setStep}
                 display={display}
                 onSetDisplay={setDisplay}
+                register = {register}
+                errors = {errors}
+                watch = {watch}
+                phone = {phone}
+                onSetPhone = {setPhone}
             />
             <Etablissement
                 onSetStep = {setStep}
                 display={display}
                 onSetDisplay={setDisplay}
+                register = {register}
+                errors = {errors}
+                formErrors = {formErrors}
+                watch = {watch}
+                onSetPhoneEtabl = {setPhoneEtabl}
+                buttonDisabled = {buttonDisabled}
+                onSetButtonDisabled={setButtonDisabled}
+                isLoadingSubmit = {isLoading}
             />
 
         </form>
-    )
-}
-
-function InfoPersonnelles ({onSetStep, display, onSetDisplay}){
-    const [isLoading, setIsLoading] = useState(false)
-
-    const handleClickToNext = (e) => {
-        e.preventDefault()
-
-        setIsLoading(true)
-
-        setTimeout(() => {
-            onSetStep(2)
-            onSetDisplay({
-                info: 'd-none',
-                etablissement: 'd-block'
-            })
-            setIsLoading(false)
-        }, 500)
-    }
-
-    return (
-        <div className={`info_personnelles m-0 ${display.info}`}>
-            <div className="form-group">
-                <Input
-                    label="Nom"
-                    important="true"
-                    placeholder="Votre nom"
-                />
-            </div>
-            <div className="form-group">
-                <Input
-                    label="Prénom(s)"
-                    important="true"
-                    placeholder="Votre prénom"
-                />
-            </div>
-
-            <div className="form-group">
-                <Input
-                    label="Contact"
-                    important="true"
-                    placeholder="Votre contact"
-                />
-                <PhoneInput
-                    country={'us'}
-                    required={true}
-                />
-            </div>
-            <div className="form-group">
-                <Input
-                    label="Email"
-                    important="true"
-                    type="email"
-                    placeholder="Votre email"
-                />
-            </div>
-            <div className="form-group">
-                <Input
-                    label="Mot de passe"
-                    type="password"
-                    important="true"
-                    placeholder="Votre mot de passe"
-                    isPassword = {true}
-                />
-            </div>
-            <div className="form-group">
-                <Input
-                    label="Confirmation du mot de passe"
-                    type="password"
-                    important="true"
-                    placeholder="Confirmez votre mot de passe"
-                    isPassword = {true}
-                />
-            </div>
-
-            <div id="pass-info" className="clearfix"></div>
-            <a
-                className="btn_full"
-                href="#"
-                onClick={handleClickToNext}
-            >
-                Suivant
-                {isLoading
-                    ? <i className="icon-spin6 animate-spin"></i>
-                    : <i className="icon-right-big"></i>
-                }</a>
-        </div>
-    )
-}
-
-function Etablissement ({onSetStep, display, onSetDisplay}){
-    const [isLoading, setIsLoading] = useState(false)
-
-    const handleClickToNext = (e) => {
-        e.preventDefault()
-
-        setIsLoading(true)
-
-        setTimeout(() => {
-            onSetStep(1)
-            onSetDisplay({
-                info: 'd-block',
-                etablissement: 'd-none'
-            })
-            setIsLoading(false)
-        }, 500)
-    }
-
-    return (
-        <div className={`etablissement m-0 ${display.etablissement}`}>
-           <div className="form-group">
-                <Input
-                    label="Etablissement"
-                    important="true"
-                    placeholder="Le nom de votre établissement"
-                />
-            </div>
-            <div className="form-group">
-                <Input
-                    label="Ville"
-                    important="true"
-                    placeholder="Ville"
-                />
-            </div>
-            <div className="form-group">
-                <Input
-                    label="Adresse"
-                    important="true"
-                    placeholder="L'adresse de l'établissement"
-                />
-            </div>
-            <div className="form-group">
-                <Input
-                    label="Contact"
-                    important="true"
-                    placeholder="Le contact de votre établissement"
-                />
-            </div>
-            <div className="form-group">
-                <Input
-                    label="Email"
-                    type="email"
-                    placeholder="L'email de votre établissement"
-                />
-            </div>
-
-            <div id="pass-info" className="clearfix"></div>
-            <button className="btn_full">Valider l'inscription <i className="icon-check-2"></i></button>
-            <a
-                className="btn_full_outline"
-                href="#"
-                onClick={handleClickToNext}
-            >
-                <i className="icon-left-3"></i>
-                Précédent {isLoading && <i className="icon-spin6 animate-spin"></i>}
-            </a>
-        </div>
     )
 }

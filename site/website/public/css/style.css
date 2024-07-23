@@ -8505,3 +8505,12 @@ a.box_news ul li:after {
 .show_password:hover{
     cursor: pointer;
 }
+
+button.disabled, a.btn_full.disabled{
+    background: rgb(0 0 0 / 21%);
+}
+
+button.disabled:hover, a.btn_full.disabled:hover{
+    cursor: not-allowed;
+    background: rgb(0 0 0 / 21%) !important;
+}

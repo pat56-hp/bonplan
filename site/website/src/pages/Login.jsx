@@ -14,6 +14,7 @@ const Login = () => {
                     important={true}
                     type={'email'}
                     placeholder={'Votre adresse email'}
+                    inputRegister={''}
                 />
             </div>
             <div className="form-group">
@@ -23,6 +24,7 @@ const Login = () => {
                     type={'password'}
                     placeholder={'Mot de passe'}
                     isPassword = {true}
+                    inputRegister={''}
                 />
             </div>
             <p className="small">

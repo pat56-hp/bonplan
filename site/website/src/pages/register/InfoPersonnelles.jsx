@@ -1,51 +1,57 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useState} from "react";
 import Input from "../../components/form/Input";
 import PhoneInput from "react-phone-input-2";
-import 'react-phone-input-2/lib/style.css'
-import { useForm } from "react-hook-form"
 
 /**
- * Register for customer
+ * Component Infopersonnelles Register of Prestataire
+ * @param onSetStep
+ * @param display
+ * @param onSetDisplay
+ * @param register
+ * @param errors
+ * @param onWatch
+ * @param phone
+ * @param onSetPhone
  * @returns {*}
  * @constructor
  */
-export default function Customer (){
+export default function InfoPersonnelles({onSetStep, display, onSetDisplay, register, errors,watch, phone, onSetPhone}){
+    const [isLoading, setIsLoading] = useState(false)
     const [buttonDisabled, setButtonDisabled] = useState(true)
     const [formErrors, setFormErrors] = useState({})
-    const [phone, setPhone] = useState(null)
 
-    const {
-        register,
-        handleSubmit,
-        watch,
-        formState: {errors}
-    } = useForm()
+    /** @Function Go to Next step **/
+    const handleClickToNext = () => {
+        setIsLoading(true)
 
-    /**
-     * Submit form function
-     * @param {Object} data
-     */
-    const onSubmit = (data) => {
-        //TODO: Verifie si le contact est bien renseigné
-        if (phone === null || phone === undefined || phone === "") {
-            setFormErrors({...formErrors, phone: {
-                message: "Veuillez renseigner votre contact"
-            }})
+        setTimeout(() => {
+            // TODO: Verifie si le contact est bien renseigné
+            if (phone === null || phone === undefined || phone === "") {
+                setFormErrors({...formErrors, phone: {
+                        message: "Veuillez renseigner votre contact"
+                    }})
 
-            return
-        }
+                setIsLoading(false)
+                return
+            }
 
-        setFormErrors({...formErrors, phone: null})
-        const formData = {...data, phone: phone}
-        console.log(formData)
+            setFormErrors({...formErrors, phone: null})
+
+            onSetStep(2)
+            onSetDisplay({
+                info: 'd-none',
+                etablissement: 'd-block'
+            })
+            setIsLoading(false)
+        }, 500)
     }
 
-    /**  Watch element **/
-    watch((element) => {
+    /** Watch form element for validation **/
+    watch(element => {
         if (element.password !== element.password_confirmation){
             setFormErrors({...formErrors, passwordConfirm: {
-                message: "La confirmation du mot de passe ne correspond pas"
-            }})
+                    message: "La confirmation du mot de passe ne correspond pas"
+                }})
             setButtonDisabled(true)
             return
         }
@@ -60,23 +66,23 @@ export default function Customer (){
     })
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <div className={`info_personnelles m-0 ${display.info}`}>
             <div className="form-group">
                 <Input
                     label="Nom"
                     important="true"
                     placeholder="Votre nom"
-                    inputRegister = {{...register('name', {
-                        required: "Veuillez saisir votre nom",
-                        minLength: {
-                            value: 3,
-                            message: "Veuillez saisir un nom d'au moins 3 caractères"
-                        },
-                        maxLength: {
-                            value: 100,
-                            message: "Votre nom doit avoir 100 caractères maximum"
-                        }
-                    })}}
+                    inputRegister ={{...register('name', {
+                            required: "Veuillez saisir votre nom",
+                            minLength: {
+                                value: 3,
+                                message: "Veuillez saisir un nom d'au moins 3 caractères"
+                            },
+                            maxLength: {
+                                value: 100,
+                                message: "Votre nom doit avoir 100 caractères maximum"
+                            }
+                        })}}
                 />
                 {errors.name && <span className="text-danger text-sm-start"><i className="icon-info-circled"></i>{errors.name.message}</span>}
             </div>
@@ -85,7 +91,7 @@ export default function Customer (){
                     label="Prénom(s)"
                     important="true"
                     placeholder="Votre prénom"
-                    inputRegister = {{...register('lastname', {
+                    inputRegister ={{...register('lastname', {
                             required: "Veuillez saisir votre prénom",
                             minLength: {
                                 value: 3,
@@ -99,13 +105,13 @@ export default function Customer (){
                 />
                 {errors.lastname && <span className="text-danger text-sm-start"><i className="icon-info-circled"></i>{errors.lastname.message}</span>}
             </div>
+
             <div className="form-group">
                 <label htmlFor="phone">Contact <span className="text-danger">*</span></label>
                 <PhoneInput
                     country={'ci'}
-                    name="phone"
-                    onChange={value => setPhone(value)}
                     required={true}
+                    onChange={value => onSetPhone(value)}
                     placeholder={'Entrez votre contact'}
                     inputStyle={{
                         width: '100%',
@@ -123,16 +129,16 @@ export default function Customer (){
             <div className="form-group">
                 <Input
                     label="Email"
-                    type="email"
                     important="true"
-                    placeholder="Votre adresse email"
+                    type="email"
+                    placeholder="Votre email"
                     inputRegister = {{...register('email', {
-                        required: "Veuillez saisir votre adresse email",
-                        pattern: {
-                            value: "/^\w+([\.-]?\w+)*@\w([\.-]?\w+)*(\.\w{2,3})$/",
-                            message: "Veuillez renseigner une adresse email valide"
-                        },
-                    })}}
+                            required: "Veuillez saisir votre adresse email",
+                            pattern: {
+                                value: "/^\w+([\.-]?\w+)*@\w([\.-]?\w+)*(\.\w{2,3})$/",
+                                message: "Veuillez renseigner une adresse email valide"
+                            },
+                        })}}
                 />
                 {errors.email && <span className="text-danger text-sm-start"><i className="icon-info-circled"></i>{errors.email.message}</span>}
             </div>
@@ -150,7 +156,6 @@ export default function Customer (){
                                 message: "Veuillez saisir un mot de passe d'au moins 6 caractères"
                             }
                         })}}
-
                 />
                 {errors.password && <span className="text-danger text-sm-start"><i className="icon-info-circled"></i>{errors.password.message}</span>}
             </div>
@@ -162,22 +167,29 @@ export default function Customer (){
                     placeholder="Confirmez votre mot de passe"
                     isPassword = {true}
                     inputRegister = {{...register('password_confirmation', {
-                        required: "Veuillez confirmer votre mot de passe"
-                    })}}
+                            required: "Veuillez confirmer votre mot de passe"
+                        })}}
                 />
                 {   (errors.password_confirmation ?? formErrors.passwordConfirm) &&
-                    <span className="text-danger text-sm-start">
+                <span className="text-danger text-sm-start">
                         <i className="icon-info-circled"></i>
-                        {errors.password_confirmation?.message ?? formErrors.passwordConfirm?.message}
+                    {errors.password_confirmation?.message ?? formErrors.passwordConfirm?.message}
                     </span>
                 }
             </div>
+
             <div id="pass-info" className="clearfix"></div>
             <button
                 className={`btn_full ${buttonDisabled && 'disabled'}`}
                 disabled={buttonDisabled}
-                type="submit"
-            >S'inscrire</button>
-        </form>
+                onClick={handleClickToNext}
+                type="button"
+            >
+                Suivant
+                {isLoading
+                    ? <i className="icon-spin6 animate-spin"></i>
+                    : <i className="icon-right-big"></i>
+                }</button>
+        </div>
     )
 }

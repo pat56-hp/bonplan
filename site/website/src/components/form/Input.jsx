@@ -7,7 +7,7 @@ import React, {useState} from "react";
  * @returns {*}
  * @constructor
  */
-export default function Input({label, important, type, placeholder, otherClass, isPassword = false}){
+export default function Input({label, important, type, placeholder, otherClass, isPassword = false, inputRegister}){
     const [passwordType, setPasswordType] = useState(type)
     const [showEye, setShowEye] = useState('icon-eye')
 
@@ -36,6 +36,7 @@ export default function Input({label, important, type, placeholder, otherClass, 
                 type={passwordType ? passwordType : 'text'}
                 className={`${otherClass ?? ''} form-control`}
                 placeholder={placeholder}
+                {...inputRegister}
             />
         </div>
     )

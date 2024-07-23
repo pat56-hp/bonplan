@@ -1,8 +1,21 @@
-import React from "react";
+import React, {useState} from "react";
 import Customer from "./Customer";
 import Prestataire from "./Prestataire";
 
 export default function Register () {
+    const [isDefaultCustomer, setIsDefaultCustomer] = useState(true)
+    const [isDefaultPrestataire, setIsDefaultPrestataire] = useState(false)
+
+    const handleDefaultCustomer = (e) => {
+        setIsDefaultCustomer(true)
+        setIsDefaultPrestataire(false)
+    }
+
+    const handleDefaultPrestataire = (e) => {
+        setIsDefaultCustomer(false)
+        setIsDefaultPrestataire(true)
+    }
+
     return (
         <>
             <div id="search_2" className="p-0 bg-white d-block register">
@@ -13,9 +26,10 @@ export default function Register () {
                             data-bs-toggle="tab"
                             aria-selected="false"
                             role="tab"
-                            className="show active"
+                            className={`show ${isDefaultCustomer && 'active'}`}
                             style={{paddingLeft : 10}}
                             tabIndex="-1"
+                            onClick={handleDefaultCustomer}
                         >
                             <i className="icon-user-7 pr-2"></i>
                             <span>Client</span>
@@ -29,6 +43,8 @@ export default function Register () {
                             role="tab"
                             style={{paddingLeft : 10}}
                             tabIndex="-1"
+                            className={`show ${isDefaultPrestataire && 'active'}`}
+                            onClick={handleDefaultPrestataire}
                         >
                             <i className="icon-shop-1 pr-2"></i>
                             <span>Prestataire</span>
@@ -38,10 +54,10 @@ export default function Register () {
 
                 <div className="tab-content mb-0">
                     <div className="tab-pane fade active show" id="client" role="tabpanel" aria-labelledby="#tab_bt_2">
-                        <Customer />
+                        {isDefaultCustomer && <Customer />}
                     </div>
                     <div className="tab-pane" id="prestataire" role="tabpanel" aria-labelledby="#tab_bt_3">
-                        <Prestataire />
+                        {isDefaultPrestataire && <Prestataire />}
                     </div>
                 </div>
             </div>
