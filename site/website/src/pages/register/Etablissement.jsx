@@ -1,6 +1,10 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Input from "../../components/form/Input";
 import PhoneInput from "react-phone-input-2";
+import {useQuery} from '@tanstack/react-query'
+import {getRequest} from "../../queries/sendRequest";
+import Select from 'react-select'
+
 
 /**
  * Component of info etablissement for register prestataire
@@ -13,6 +17,7 @@ import PhoneInput from "react-phone-input-2";
  * @param watch
  * @param phoneEtabl
  * @param onSetPhoneEtabl
+ * @param onSetCategory
  * @param buttonDisabled
  * @param onSetButtonDisabled
  * @param isLoadingSubmit
@@ -27,10 +32,33 @@ export default function Etablissement ({
         formErrors,
         watch,
         onSetPhoneEtabl,
+        onSetCategory,
         buttonDisabled,
         onSetButtonDisabled,
         isLoadingSubmit
     }){
+
+    const [categories, setCategories] = useState([])
+    const {data} = useQuery({
+        queryKey: ['getCategories'],
+        queryFn: () => getRequest('/categories')
+    })
+
+    //Mise à jour du state des catégories
+    const onSetCategories = (data) => {
+        if (data && Array.isArray(data.data)) {
+            const formattedCategories = data.data.map(d => ({
+                label: d.libelle,
+                value: d.id
+            }));
+            setCategories(formattedCategories);
+        }
+    }
+
+    useEffect(() => {
+        onSetCategories(data)
+    }, [data])
+
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -78,6 +106,17 @@ export default function Etablissement ({
                         })}}
                 />
                 {errors.etablissement && <span className="text-danger text-sm-start"><i className="icon-info-circled"></i>{errors.etablissement.message}</span>}
+            </div>
+            <div className="form-group">
+                <label htmlFor="categorie">Catégorie <span className="text-danger">*</span></label>
+                <Select
+                    name="category"
+                    options={categories}
+                    onChange={option => onSetCategory(option.value)}
+                    placeholder = "Sélectionnez une catégorie"
+                    noOptionsMessage = {() => 'Aucune catégorie disponible'}
+                />
+                {formErrors.category && <span className="text-danger"><i className="icon-info-circled"></i>{formErrors.category.message}</span>}
             </div>
             <div className="form-group">
                 <Input

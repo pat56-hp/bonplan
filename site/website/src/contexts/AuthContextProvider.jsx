@@ -1,4 +1,5 @@
-import {createContext, useContext, useState} from "react";
+import {createContext, useContext, useEffect, useState} from "react";
+import {postRequest} from "../queries/sendRequest";
 
 //Create du AuthContext avec les valeurs par defaut
 const AuthStateContext = createContext({
@@ -11,7 +12,7 @@ const AuthStateContext = createContext({
 //Partage des informations avec les enfants du context
 export const AuthContextProvider = ({children}) => {
     const [user, setUser] = useState({})
-    const [token, _setToken] = useState(null)
+    const [token, _setToken] = useState(localStorage.getItem('logU'))
 
     const setToken = (token) => {
         _setToken(token)

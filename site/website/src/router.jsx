@@ -3,7 +3,7 @@ import {createBrowserRouter} from "react-router-dom";
 import DefaultLayout from "./layouts/DefaultLayout";
 import GuestLayout from "./layouts/GuestLayout";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
+import Login from "./pages/login/Login";
 import NotFound from "./pages/NotFound";
 import Explore from "./pages/Explore";
 import Contact from "./pages/Contact";

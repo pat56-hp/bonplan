@@ -19,10 +19,6 @@ const GuestLayout = () => {
                         <div className="row justify-content-center">
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-8">
                                 <div id="login">
-                                    <div className="text-center">
-                                        <h3 className="text-uppercase mt-0">Inscription</h3>
-                                    </div>
-                                    <hr/>
                                     <Outlet />
                                 </div>
                             </div>

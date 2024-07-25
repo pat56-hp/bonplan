@@ -35,8 +35,8 @@ const HomePopular = () => {
                             <div className="row list_hotels_tabs">
                                 {
                                     Array.from({length:3}, (_, i) => (
-                                        <div className="col-lg-4 col-md-6">
-                                            <PlanItem key={i}/>
+                                        <div className="col-lg-4 col-md-6" key={i}>
+                                            <PlanItem />
                                         </div>
                                     ))
                                 }
@@ -46,8 +46,8 @@ const HomePopular = () => {
                             <div className="row list_hotels_tabs">
                                 {
                                     Array.from({length:3}, (_, i) => (
-                                        <div className="col-lg-4 col-md-6">
-                                            <PlanItem key={i}/>
+                                        <div className="col-lg-4 col-md-6" key={i}>
+                                            <PlanItem />
                                         </div>
                                     ))
                                 }

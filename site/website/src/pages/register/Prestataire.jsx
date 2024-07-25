@@ -5,6 +5,8 @@ import 'react-phone-input-2/lib/style.css'
 import {useForm} from "react-hook-form";
 import InfoPersonnelles from "./InfoPersonnelles";
 import Etablissement from "./Etablissement";
+import {useQuery} from "@tanstack/react-query";
+import {postRequest} from "../../queries/sendRequest";
 
 
 /**
@@ -19,6 +21,7 @@ export default function Prestataire (){
     const [buttonDisabled, setButtonDisabled] = useState(true)
     const [formErrors, setFormErrors] = useState({})
     const [isLoading, setIsLoading] = useState(false)
+    const [category, setCategory] = useState(null)
 
     const [display, setDisplay] = useState({
         info: 'd-block',
@@ -34,9 +37,9 @@ export default function Prestataire (){
 
     /**
      * Submit register
-     * @param {Object} data
+     * @param {Object} datas
      */
-    const onSubmit = (data) => {
+    const onSubmit = (datas) => {
         setIsLoading(true)
         if (phoneEtabl === null || phoneEtabl === undefined || phoneEtabl === '') {
             setFormErrors({...formErrors, phoneEtabl: {
@@ -47,9 +50,31 @@ export default function Prestataire (){
             return
         }
 
-        setFormErrors({...formErrors, phoneEtabl: null})
-        const formData = {...data, phone: phone, phoneEtabl:phoneEtabl}
-        console.log(formData)
+        if (category === null || category === undefined || category === ""){
+            setFormErrors({...formErrors, category: {
+                message: 'Veuillez sélectionner une catégorie'
+            }})
+
+            setIsLoading(false)
+            return;
+        }
+
+        setFormErrors({...formErrors, phoneEtabl: null, category: null})
+        const formData = {...datas, phone: phone, phoneEtabl:phoneEtabl, category: category}
+
+        /** Prestataire Register **/
+        postRequest('/register', formData)
+            .then((data) => {
+                console.log(data)
+            })
+            .catch(error => {
+                if (error.status === 422){
+                    console.log(error.message, error.response)
+                }
+
+                if (error.status === 401){}
+
+            })
         setIsLoading(false)
     }
 
@@ -111,6 +136,7 @@ export default function Prestataire (){
                 formErrors = {formErrors}
                 watch = {watch}
                 onSetPhoneEtabl = {setPhoneEtabl}
+                onSetCategory = {setCategory}
                 buttonDisabled = {buttonDisabled}
                 onSetButtonDisabled={setButtonDisabled}
                 isLoadingSubmit = {isLoading}

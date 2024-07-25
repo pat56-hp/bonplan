@@ -76,10 +76,10 @@ const Header = () => {
                                 </ul>
                             </div>
                             <ul id="top_tools">
-                                <li className='login-link' style={loginCss}><Link to={'/login'} id="access_link" className='text-white'>Se connecter</Link></li>
-
                                 {
-                                    token && <UserLoged />
+                                    token
+                                        ? <UserLoged />
+                                        : <li className='login-link' style={loginCss}><Link to={'/login'} id="access_link" className='text-white'>Se connecter</Link></li>
                                 }
                             </ul>
                         </nav>

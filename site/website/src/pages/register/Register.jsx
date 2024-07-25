@@ -18,6 +18,10 @@ export default function Register () {
 
     return (
         <>
+            <div className="text-center">
+                <h3 className="text-uppercase mt-0">Inscription</h3>
+            </div>
+            <hr/>
             <div id="search_2" className="p-0 bg-white d-block register">
                 <ul className="nav nav-tabs" role="tablist">
                     <li>

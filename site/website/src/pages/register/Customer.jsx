@@ -3,6 +3,9 @@ import Input from "../../components/form/Input";
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css'
 import { useForm } from "react-hook-form"
+import {postRequest} from "../../queries/sendRequest";
+import {useAuthStateProvider} from "../../contexts/AuthContextProvider";
+import {useNavigate} from "react-router";
 
 /**
  * Register for customer
@@ -10,15 +13,18 @@ import { useForm } from "react-hook-form"
  * @constructor
  */
 export default function Customer (){
+    const {setUser, setToken} = useAuthStateProvider()
     const [buttonDisabled, setButtonDisabled] = useState(true)
     const [formErrors, setFormErrors] = useState({})
     const [phone, setPhone] = useState(null)
-
+    const [isLoading, setIsLoading] = useState(false)
+    const navigate = useNavigate()
     const {
         register,
         handleSubmit,
         watch,
-        formState: {errors}
+        formState: {errors},
+        reset
     } = useForm()
 
     /**
@@ -26,18 +32,47 @@ export default function Customer (){
      * @param {Object} data
      */
     const onSubmit = (data) => {
+        setIsLoading(true)
         //TODO: Verifie si le contact est bien renseigné
         if (phone === null || phone === undefined || phone === "") {
             setFormErrors({...formErrors, phone: {
                 message: "Veuillez renseigner votre contact"
             }})
 
+            setIsLoading(false)
             return
         }
 
-        setFormErrors({...formErrors, phone: null})
-        const formData = {...data, phone: phone}
-        console.log(formData)
+        //Reset form errors
+        setFormErrors({})
+
+        //Get form value
+        const formData = {...data, phone: phone, type: 0}
+
+        // TODO: Send Request to register customer
+        postRequest('/register', formData)
+            .then((data) => {
+                setUser(data.user)
+                setToken(data.access_token)
+                reset()
+                setPhone(null)
+                setIsLoading(false)
+                navigate('/')
+            })
+            .catch(err => {
+                if (err.status === 422){
+                    const {errors} = err.response
+                    Object.keys(errors).map((key, _) =>{
+                        setFormErrors(formErrors => (
+                            {...formErrors, [key]: {
+                                message: errors[key],
+                            }}
+                        ))
+                    })
+                }
+            })
+
+        setIsLoading(false)
     }
 
     /**  Watch element **/
@@ -177,7 +212,14 @@ export default function Customer (){
                 className={`btn_full ${buttonDisabled && 'disabled'}`}
                 disabled={buttonDisabled}
                 type="submit"
-            >S'inscrire</button>
+            >
+                S'inscrire
+                {
+                    isLoading
+                        ? <i className="icon-spin6 animate-spin"></i>
+                        : <i className="icon-check-2"></i>
+                }
+            </button>
         </form>
     )
 }
