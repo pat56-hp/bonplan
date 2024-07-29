@@ -9,6 +9,7 @@ import {toast} from "react-hot-toast";
 const postRequest  = async (url, data= {}) =>  {
     const urlPath = import.meta.env.VITE_API_URL + url
     const token = localStorage.getItem('logU')
+    
     try {
         const resp = await fetch(urlPath, {
             method: 'POST',
@@ -32,12 +33,15 @@ const postRequest  = async (url, data= {}) =>  {
     }catch (error) {
         console.error('Request failed:', error);
         toast.remove()
-        if (error.status === 401) localStorage.removeItem('logU')
         if (error.status === 404) toast.error('Oups, url invalide')
-        if (error.status === 400) toast.error('Oups, une s\'est produite sur le server')
-        if (error.status === 500) {
+        else if (error.status === 400) toast.error('Oups, une s\'est produite sur le server')
+        else if (error.status === 500) {
             toast.error('Oups, erreur server')
             console.log(error.json())
+        }
+        else if(error.status === 419 || error.status === 401) {
+            toast.error('Oups, votre session a été interrompue...')
+            localStorage.removeItem('logU')
         }
 
         throw error;
@@ -75,13 +79,16 @@ const getRequest = async (url) => {
     }catch (error) {
         console.error('Request failed:', error);
         toast.remove()
-        if (error.status === 401) localStorage.removeItem('logU')
         if (error.status === 404) toast.error('Oups, url invalide')
-        if (error.status === 400) toast.error('Oups, une s\'est produite sur le server')
-        if (error.status === 500) {
-            toast.error('Oups, erreur server')
-            console.log(error.json())
-        }
+            else if (error.status === 400) toast.error('Oups, une s\'est produite sur le server')
+            else if (error.status === 500) {
+                toast.error('Oups, erreur server')
+                console.log(error.json())
+            }
+            else if(error.status === 419 || error.status === 401) {
+                toast.error('Oups, votre session a été interrompue...')
+                localStorage.removeItem('logU')
+            }
         
         throw error;
     }

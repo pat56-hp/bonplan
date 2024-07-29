@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Breadcrumbs from '../components/Breadcrumbs'
 import { useAuthStateProvider } from '../contexts/AuthContextProvider'
+import toast from 'react-hot-toast'
 
 export default function DashboadLayout() {
-    const {user, token} = useAuthStateProvider()
+    const {user, token, setToken, setUser} = useAuthStateProvider()
     const [info, setInfo] = useState({})
     const [breadcrumbs, setBreadcrumbs] = useState([])
     const [cdashboard, setCdashboard] = useState(true)
@@ -14,10 +15,6 @@ export default function DashboadLayout() {
     const [csetting, setCsetting] = useState(false)
     const location = useLocation()
     const navigate = useNavigate()
-
-    if (!token) {
-        navigate('/login')
-    }
 
     const titleOfDashboard = () => {
         setInfo({
@@ -106,11 +103,22 @@ export default function DashboadLayout() {
         setCdashboard(false)
     }
 
+    const getStorageElement = () => {
+        if (!localStorage.getItem('logU')) {
+            setToken(localStorage.getItem('logU'))
+            setUser(null)
+            toast.error('Oups, votre session a été interrompue...')
+            navigate('/login')
+        }
+    }
+
     useEffect(() => {
+        getStorageElement()
+        const parentPath = location.pathname.split('/').slice(0, 2).join('/')
         if (location.pathname === '/tableau-de-bord') titleOfDashboard()
         else if(location.pathname === '/mes-favoris') titleOfWishlist()
         else if(location.pathname === '/mon-profil') titleOfProfil()
-        else if(location.pathname === '/mes-etablissements') titleOfEtablissement()
+        else if(location.pathname === '/mes-etablissements' || parentPath === '/mes-etablissements') titleOfEtablissement()
         else if(location.pathname === '/parametres') titleOfSetting()
     }, [])
 

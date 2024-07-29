@@ -39,6 +39,7 @@ const Login = () => {
             postRequest('/login', data)
                 .then((data) => {
                     setIsLoading(false)
+                    console.log(data)
                     const user = data.user
                     const token = data.access_token
                     setUser(user)
@@ -59,8 +60,7 @@ const Login = () => {
                             ))
                         })
                     }
-
-                    if (error.status === 406){
+                    else if (error.status === 406){
                         setFormErrors(preError => (
                             {...preError, error: {
                                 message: error.response.message

@@ -5,6 +5,7 @@ import { useAuthStateProvider } from '../../../contexts/AuthContextProvider'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { postRequest } from '../../../queries/sendRequest'
+import { useNavigate } from 'react-router-dom'
 
 /**
  * 
@@ -12,11 +13,12 @@ import { postRequest } from '../../../queries/sendRequest'
  * @returns 
  */
 export default function EditProfile({onSetIsUpdating}) {
-    const {user, setUser} = useAuthStateProvider()
+    const {user, setUser, setToken} = useAuthStateProvider()
     const [formErrors, setFormErrors] = useState({})
     const [buttonDisabled, setButtonDisabled] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [phone, setPhone] = useState(user.phone)
+    const navigate = useNavigate()
 
     const {
         register,
@@ -67,9 +69,12 @@ export default function EditProfile({onSetIsUpdating}) {
                                 }}
                             ))
                         })
+                    }else if(err.status === 401 || err.status === 419) {
+                        setToken(null)
+                        setUser(null)
+                        navigate('/login')
                     }
                     setIsLoading(false)
-                    toast.remove()
                 })
         }, 800)
     }

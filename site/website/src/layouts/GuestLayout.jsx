@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {useAuthStateProvider} from "../contexts/AuthContextProvider";
-import {Navigate, Outlet} from 'react-router-dom'
+import {Outlet, useNavigate} from 'react-router-dom'
 import Header from "../components/head/Header";
 import Footer from "../components/Footer";
 
 const GuestLayout = () => {
 
     const {token} = useAuthStateProvider()
+    const navigate = useNavigate()
 
-    if (token) <Navigate to={'/'}/>
+    useEffect(() => {
+        if (token) navigate('/')
+    }, [])
 
     return (
         <>

@@ -1,28 +1,28 @@
 import React from 'react'
 import Input from '../../../components/form/Input'
+import { Link } from 'react-router-dom'
 
 export default function Etablissement() {
   return (
     <section id='etablissements' className='content-current'>
-        <div className="row mb-5">
+        <div className="row mb-3">
             <div className="col-md-6">
                 <h4 className=''>Mes établissements</h4>
             </div>
+        </div>
+        <div className='row mb-5 pb-3 border-bottom'>
+            <div className='col-md-6'>
+                <Link to={'/mes-etablissements/nouveau'} className='btn_1'><i className='icon-plus-circled'></i> Ajouter un établissement</Link>
+            </div>
             <div className='col-md-6'>
                 <div className='text-end'>
-                    <a className='btn_2 d-inline'><i className='icon-plus-circled'></i> Ajouter</a>
+                    <label>
+                        <Input 
+                            placeholder='Rechercher...'
+                            otherClass = ''
+                        />
+                    </label>
                 </div>
-            </div>
-        </div>
-        <div className='row mb-5'>
-            <div className='col-md-6'>
-                <span>1 resultat</span>
-            </div>
-            <div className='col-md-6'>
-                <Input 
-                    placeholder='Rechercher...'
-                    otherClass = ''
-                />
             </div>
         </div>
         <div className="strip_booking">

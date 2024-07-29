@@ -16,6 +16,7 @@ import Favoris from "./pages/Auth/Favoris";
 import Profile from "./pages/Auth/Profile/Profile";
 import Setting from "./pages/Auth/Profile/Setting";
 import Etablissement from "./pages/Auth/etablissements/Etablissement";
+import EtablissementForm from "./pages/Auth/etablissements/EtablissementForm";
 
 const router = createBrowserRouter([
     {
@@ -61,9 +62,18 @@ const router = createBrowserRouter([
                         element: <Setting />
                     },
                     {
-                        path: 'mes-etablissements',
-                        element: <Etablissement />
-                    }
+                        path: '/mes-etablissements',
+                        children: [
+                            {
+                                path: '',
+                                element: <Etablissement />
+                            },
+                            {
+                                path: 'nouveau',
+                                element: <EtablissementForm />
+                            }
+                        ]
+                    },
                 ]
             },
             {
