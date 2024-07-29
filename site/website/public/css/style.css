@@ -6366,10 +6366,10 @@ a.social_bt.linkedin:before {
 
 .divider span {
     position: relative;
-    top: -20px;
+    top: -10px;
     background-color: #fff;
     display: inline-block;
-    padding: 10px;
+    padding: 0px 10px;
     font-style: italic
 }
 
@@ -8513,4 +8513,27 @@ button.disabled, a.btn_full.disabled{
 button.disabled:hover, a.btn_full.disabled:hover{
     cursor: not-allowed;
     background: rgb(0 0 0 / 21%) !important;
+}
+
+#cart_items{
+    display: none
+}
+
+#cart_items.show{
+    display: block !important;
+}
+
+.loader-view{
+    margin: 25px 0 0 -25px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 50px;
+    height: 30px;
+    text-align: center;
+    font-size: 25px;
+}
+
+.btn_color{
+    background: #e04f67 !important;
 }

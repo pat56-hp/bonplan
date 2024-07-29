@@ -6,6 +6,7 @@ import Categories from "../components/Categories";
 import HomeWeekPlan from "../components/HomeWeekPlan";
 import HomePopular from "../components/HomePopular";
 import HomeOther from "../components/HomeOther";
+import TabScript from "../scripts/TabScript";
 
 const Home = () => {
     return (
@@ -16,6 +17,7 @@ const Home = () => {
             <HomeWeekPlan />
             <HomePopular/>
             <HomeOther/>
+            <TabScript />
         </>
     )
 }

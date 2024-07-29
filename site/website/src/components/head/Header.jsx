@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {Link, NavLink} from "react-router-dom";
 import {useAuthStateProvider} from "../../contexts/AuthContextProvider";
-import UserLoged from "../UserLoged";
 import Input from "../form/Input";
+import UserLoged from "./UserLoged";
+import { postRequest } from "../../queries/sendRequest";
 
 const Header = () => {
-    const {token} = useAuthStateProvider()
+    const {token, setUser} = useAuthStateProvider()
     const loginCss = {
         background : '#e04f67',
         padding : '3px 20px',
         color: '#fff'
     }
+
     return (
         <>
             <div className="layer"></div>

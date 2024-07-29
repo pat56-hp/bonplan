@@ -1,20 +1,8 @@
 import React, {useState} from "react";
-import Customer from "./Customer";
-import Prestataire from "./Prestataire";
+import RegisterForm from "./RegisterForm";
 
 export default function Register () {
-    const [isDefaultCustomer, setIsDefaultCustomer] = useState(true)
-    const [isDefaultPrestataire, setIsDefaultPrestataire] = useState(false)
-
-    const handleDefaultCustomer = (e) => {
-        setIsDefaultCustomer(true)
-        setIsDefaultPrestataire(false)
-    }
-
-    const handleDefaultPrestataire = (e) => {
-        setIsDefaultCustomer(false)
-        setIsDefaultPrestataire(true)
-    }
+    const [type, setType] = useState(0)
 
     return (
         <>
@@ -30,10 +18,10 @@ export default function Register () {
                             data-bs-toggle="tab"
                             aria-selected="false"
                             role="tab"
-                            className={`show ${isDefaultCustomer && 'active'}`}
+                            className={`show ${type === 0 && 'active'}`}
                             style={{paddingLeft : 10}}
                             tabIndex="-1"
-                            onClick={handleDefaultCustomer}
+                            onClick={() => setType(0)}
                         >
                             <i className="icon-user-7 pr-2"></i>
                             <span>Client</span>
@@ -47,8 +35,8 @@ export default function Register () {
                             role="tab"
                             style={{paddingLeft : 10}}
                             tabIndex="-1"
-                            className={`show ${isDefaultPrestataire && 'active'}`}
-                            onClick={handleDefaultPrestataire}
+                            className={`show ${type === 1 && 'active'}`}
+                            onClick={() => setType(1)}
                         >
                             <i className="icon-shop-1 pr-2"></i>
                             <span>Prestataire</span>
@@ -58,10 +46,10 @@ export default function Register () {
 
                 <div className="tab-content mb-0">
                     <div className="tab-pane fade active show" id="client" role="tabpanel" aria-labelledby="#tab_bt_2">
-                        {isDefaultCustomer && <Customer />}
+                        <RegisterForm type = {type} />
                     </div>
                     <div className="tab-pane" id="prestataire" role="tabpanel" aria-labelledby="#tab_bt_3">
-                        {isDefaultPrestataire && <Prestataire />}
+                        <RegisterForm type = {type} />
                     </div>
                 </div>
             </div>

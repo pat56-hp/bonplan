@@ -110,6 +110,7 @@ export default function InfoPersonnelles({onSetStep, display, onSetDisplay, regi
                 <label htmlFor="phone">Contact <span className="text-danger">*</span></label>
                 <PhoneInput
                     country={'ci'}
+                    
                     required={true}
                     onChange={value => onSetPhone(value)}
                     placeholder={'Entrez votre contact'}

@@ -10,6 +10,12 @@ import Contact from "./pages/Contact";
 import Event from "./pages/events/Event";
 import EventShow from "./pages/events/EventShow";
 import Register from "./pages/register/Register";
+import DashboadLayout from "./layouts/DashboadLayout";
+import Dashboard from "./pages/Auth/Dashboard";
+import Favoris from "./pages/Auth/Favoris";
+import Profile from "./pages/Auth/Profile/Profile";
+import Setting from "./pages/Auth/Profile/Setting";
+import Etablissement from "./pages/Auth/etablissements/Etablissement";
 
 const router = createBrowserRouter([
     {
@@ -34,6 +40,31 @@ const router = createBrowserRouter([
             {
                 path: '/contact',
                 element: <Contact />
+            },
+            {
+                element: <DashboadLayout />,
+                children: [
+                    {
+                        path: '/tableau-de-bord',
+                        element: <Dashboard />
+                    },
+                    {
+                        path: 'mon-profil',
+                        element: <Profile />
+                    },
+                    {
+                        path: 'mes-favoris',
+                        element: <Favoris />
+                    },
+                    {
+                        path: 'parametres',
+                        element: <Setting />
+                    },
+                    {
+                        path: 'mes-etablissements',
+                        element: <Etablissement />
+                    }
+                ]
             },
             {
                 path: '*',

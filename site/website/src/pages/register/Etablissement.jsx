@@ -149,6 +149,7 @@ export default function Etablissement ({
                 {errors.adresse && <span className="text-danger text-sm-start"><i className="icon-info-circled"></i>{errors.adresse.message}</span>}
             </div>
             <div className="form-group">
+                <label>Contact de l'établissement<span className="text-danger">*</span></label>
                 <PhoneInput
                     country={'ci'}
                     required={true}
@@ -163,7 +164,7 @@ export default function Etablissement ({
             </div>
             <div className="form-group">
                 <Input
-                    label="Email"
+                    label="Email de l'établissement"
                     type="email"
                     placeholder="L'email de votre établissement"
                     inputRegister = {{...register('etablissementEmail', {

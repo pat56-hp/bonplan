@@ -16,7 +16,6 @@ export const AuthContextProvider = ({children}) => {
 
     const setToken = (token) => {
         _setToken(token)
-
         if (token) localStorage.setItem('logU', token)
         else localStorage.removeItem('logU')
     }

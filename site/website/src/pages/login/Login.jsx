@@ -11,7 +11,6 @@ const Login = () => {
     const { setUser, setToken } = useAuthStateProvider()
     const navigate = useNavigate()
 
-
     const {
         formState: {errors},
         register,
@@ -47,7 +46,7 @@ const Login = () => {
                     reset()
                     toast.remove()
                     toast.success('Heureux de vous revoir')
-                    navigate('/')
+                    navigate('/mon-profil')
                 })
                 .catch(error => {
                     setIsLoading(false)
@@ -64,13 +63,13 @@ const Login = () => {
                     if (error.status === 406){
                         setFormErrors(preError => (
                             {...preError, error: {
-                                    message: error.response.message
-                                }}
+                                message: error.response.message
+                            }}
                         ))
                     }
 
-                    toast.remove()
-                    toast.error('Oups...')
+                    //toast.remove()
+                    //toast.error('Oups...')
                 })
         }, 700)
     }
@@ -89,7 +88,7 @@ const Login = () => {
                 {
                     formErrors.error &&
                     <div className="alert alert-danger" role="alert">
-                        {formErrors.error.message}
+                        <i className="icon-info-circled"></i> {formErrors.error.message}
                     </div>
                 }
                 <div className="form-group">

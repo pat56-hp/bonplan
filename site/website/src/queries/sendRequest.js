@@ -31,10 +31,15 @@ const postRequest  = async (url, data= {}) =>  {
         return await resp.json();
     }catch (error) {
         console.error('Request failed:', error);
-
+        toast.remove()
         if (error.status === 401) localStorage.removeItem('logU')
         if (error.status === 404) toast.error('Oups, url invalide')
         if (error.status === 400) toast.error('Oups, une s\'est produite sur le server')
+        if (error.status === 500) {
+            toast.error('Oups, erreur server')
+            console.log(error.json())
+        }
+
         throw error;
     }
 
@@ -69,9 +74,15 @@ const getRequest = async (url) => {
         return await resp.json()
     }catch (error) {
         console.error('Request failed:', error);
+        toast.remove()
         if (error.status === 401) localStorage.removeItem('logU')
         if (error.status === 404) toast.error('Oups, url invalide')
         if (error.status === 400) toast.error('Oups, une s\'est produite sur le server')
+        if (error.status === 500) {
+            toast.error('Oups, erreur server')
+            console.log(error.json())
+        }
+        
         throw error;
     }
 }

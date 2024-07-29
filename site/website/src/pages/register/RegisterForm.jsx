@@ -6,13 +6,14 @@ import { useForm } from "react-hook-form"
 import {postRequest} from "../../queries/sendRequest";
 import {useAuthStateProvider} from "../../contexts/AuthContextProvider";
 import {useNavigate} from "react-router";
+import toast from "react-hot-toast";
 
 /**
  * Register for customer
  * @returns {*}
  * @constructor
  */
-export default function Customer (){
+export default function Form ({type}){
     const {setUser, setToken} = useAuthStateProvider()
     const [buttonDisabled, setButtonDisabled] = useState(true)
     const [formErrors, setFormErrors] = useState({})
@@ -33,7 +34,8 @@ export default function Customer (){
      */
     const onSubmit = (data) => {
         setIsLoading(true)
-        //TODO: Verifie si le contact est bien renseigné
+        setTimeout(() => {
+            //TODO: Verifie si le contact est bien renseigné
         if (phone === null || phone === undefined || phone === "") {
             setFormErrors({...formErrors, phone: {
                 message: "Veuillez renseigner votre contact"
@@ -47,8 +49,9 @@ export default function Customer (){
         setFormErrors({})
 
         //Get form value
-        const formData = {...data, phone: phone, type: 0}
+        const formData = {...data, phone: phone, type: type}
 
+        toast.loading('Patientez...')
         // TODO: Send Request to register customer
         postRequest('/register', formData)
             .then((data) => {
@@ -57,12 +60,15 @@ export default function Customer (){
                 reset()
                 setPhone(null)
                 setIsLoading(false)
-                navigate('/')
+                toast.remove()
+                if(data.user.type === 0) navigate('/mon-profil')
+                else navigate('/')
+                
             })
             .catch(err => {
                 if (err.status === 422){
                     const {errors} = err.response
-                    Object.keys(errors).map((key, _) =>{
+                    Object.keys(errors).map((key, _) => {
                         setFormErrors(formErrors => (
                             {...formErrors, [key]: {
                                 message: errors[key],
@@ -70,9 +76,10 @@ export default function Customer (){
                         ))
                     })
                 }
-            })
 
-        setIsLoading(false)
+                setIsLoading(false)
+            })
+        }, 800);
     }
 
     /**  Watch element **/
@@ -85,7 +92,7 @@ export default function Customer (){
             return
         }
 
-        setFormErrors({...formErrors, passwordConfirm: null})
+        setFormErrors({})
 
         if (element.name && element.lastname && element.email && element.password && element.password_confirmation){
             setButtonDisabled(false)
@@ -96,6 +103,15 @@ export default function Customer (){
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
+            {
+                Object.keys(formErrors).length > 0 &&
+                <div className="alert alert-danger" role="alert">
+                {Object.keys(formErrors).map((key, i) => (
+                    <span key={i}><i className="icon-info-circled"></i> {formErrors[key].message} <br/></span>
+                ))}
+                </div>
+                
+            }
             <div className="form-group">
                 <Input
                     label="Nom"
@@ -169,7 +185,7 @@ export default function Customer (){
                         },
                     })}}
                 />
-                {errors.email && <span className="text-danger text-sm-start"><i className="icon-info-circled"></i>{errors.email.message}</span>}
+                {(errors.email ?? formErrors.email) && <span className="text-danger text-sm-start"><i className="icon-info-circled"></i>{errors?.email?.message ?? formErrors?.email?.message}</span>}
             </div>
             <div className="form-group">
                 <Input
