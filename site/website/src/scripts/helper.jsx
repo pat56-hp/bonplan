@@ -34,4 +34,14 @@ const partnerSlide = {
     },
 }
 
-export { weekPlanSlide, partnerSlide }
+const imageExtensions = [
+    'jpg', 'jpeg', 'png'
+]
+
+//Verification de l'extension de l'image
+const verifyExtension = (ext) => {
+    const verify = imageExtensions.includes(ext)
+    return verify
+  }
+
+export { weekPlanSlide, partnerSlide, verifyExtension, imageExtensions }

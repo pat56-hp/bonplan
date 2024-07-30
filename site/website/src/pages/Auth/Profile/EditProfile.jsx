@@ -35,17 +35,21 @@ export default function EditProfile({onSetIsUpdating}) {
      */
     const onSubmit = (data) => {
         setIsLoading(true)
+        setFormErrors({})
+        const errors = {}
         //Error message for phone
         if (phone === null || phone === '' || phone === undefined) {
-            setFormErrors({...formErrors, phone: {
+            errors.phone = {
                 message: 'Veuillez renseigner votre contact'
-            }})
-
-            setIsLoading(false)
-            return
+            }
         }
 
-        setFormErrors({})
+        if (Object.keys(errors).length > 0) {
+            setFormErrors(errors)
+            setIsLoading(false)
+            return 
+        }
+
         toast.loading('Patientez...')
         console.log(data)
         //Submit data to server

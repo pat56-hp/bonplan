@@ -105,7 +105,7 @@ export default function DashboadLayout() {
 
     const getStorageElement = () => {
         if (!localStorage.getItem('logU')) {
-            setToken(localStorage.getItem('logU'))
+            setToken(null)
             setUser(null)
             toast.error('Oups, votre session a été interrompue...')
             navigate('/login')

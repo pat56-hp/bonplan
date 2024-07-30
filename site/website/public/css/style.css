@@ -8555,8 +8555,8 @@ button.disabled:hover, a.btn_full.disabled:hover{
     cursor: pointer;
 }
 
-#image_input{
-    visibility: hidden;
+#image_input, #image_input_multiple{
+    display: none;
 }
 
 .img_uploded{
@@ -8569,4 +8569,9 @@ button.disabled:hover, a.btn_full.disabled:hover{
     width: 80px;
     height: 80px;
     object-fit: cover;
+    font-size: 12px;
+}
+
+.add_image_text{
+    color: #999
 }
