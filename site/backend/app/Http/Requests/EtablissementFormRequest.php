@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class EtablissementFormRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class EtablissementFormRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +22,27 @@ class EtablissementFormRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+        $rules = [
+            'libelle' => 'required|max:100',
+            'ville' => 'required|max:100',
+            'adresse' => 'required|max:255',
+            'phone' => 'required|min:5',
+            'category' => 'required|integer',
+            'image' => 'required|image|mimes:png,jpg,jpeg',
+            'gallerie' => ['sometimes', function ($attribute, $value, $fail) {
+                foreach ($value as $file) {
+                    if (!in_array($file->extension(), ['jpg', 'png', 'jpeg'])) {
+                        $fail($attribute . ' contient des extensions invalides.');
+                    }
+                }
+            }]
         ];
+
+        if (request()->method() === 'PUT') {
+            $rules ['id'] = [
+                'required|integer'
+            ];
+        }
+        return $rules;
     }
 }

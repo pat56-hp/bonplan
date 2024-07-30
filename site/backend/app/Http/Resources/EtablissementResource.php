@@ -17,7 +17,14 @@ class EtablissementResource extends JsonResource
         return [
             'id' => $this->id,
             'libelle' => $this->libelle,
-            'created_at' => $this->created_at->format()
+            'ville' => $this->ville,
+            'adresse' => $this->adresse,
+            'phone' => $this->phone,
+            'email' => $this->email,
+            'facebook' => $this->facebook,
+            'instagram' => $this->instagram,
+            'total_image' => $this->withCount('galleries'),
+            'created_at' => $this->created_at->format('d/m/Y à H:m')
         ];
     }
 }

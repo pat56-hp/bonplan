@@ -2,6 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\api\AuthController;
+use App\Http\Controllers\api\EtablissementController;
+use App\Http\Controllers\api\FrontendController;
+use App\Http\Controllers\api\ImageController;
+use App\Http\Controllers\api\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,12 +23,54 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => '/#/v1', 'middleware' => 'auth:api'], function (){
+Route::group(['prefix' => 'v1'], function (){
+    /**
+     * @Route of Authentication
+     * @Controller AuthController
+     */
     Route::controller(AuthController::class)->group(function (){
         Route::post('/login', 'login');
         Route::post('/register', 'register');
         Route::post('/refresh', 'refresh');
         Route::post('/me', 'me');
     });
+
+    /**
+     * @Route of Update profile
+     * @Controller ProfileController
+     */
+    Route::controller(ProfileController::class)->group(function(){
+        Route::post('/profile/update', 'updateProfile');
+        Route::post('/profile/update/password', 'updatePassword');
+    });
+
+    /**
+     * @Route of Etablissement
+     * @Controller EtablissementController
+     */
+    Route::controller(EtablissementController::class)->group(function(){
+        Route::group(['prefix' => 'etablissements'], function(){
+            Route::get('/', 'index');
+            Route::post('/store', 'store');
+            Route::get('/show/{etablissement}', 'show');
+            Route::put('/update/{etablissement}', 'update');
+            Route::delete('/delete/{etablissement}', 'destroy');
+        });
+    });
+
+    /**
+     * @Route of get element of web site page
+     * @Controller FrontendController
+     */
+    Route::controller(FrontendController::class)->group(function (){
+        Route::get('/categories', 'getCategories');
+        Route::post('/sendSms', 'sendSMS');
+    });
+
+    /**
+     * @Route of Delete image
+     * @Controller ImageController
+     */
+    Route::post('/image/delete', ImageController::class);
 });
 
