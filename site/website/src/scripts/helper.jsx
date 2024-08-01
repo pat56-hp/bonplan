@@ -44,4 +44,24 @@ const verifyExtension = (ext) => {
     return verify
   }
 
-export { weekPlanSlide, partnerSlide, verifyExtension, imageExtensions }
+//Convertir un fichier en base64
+const convertToBase64 = async (file) => {
+    let reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => reader.result
+
+    /* return await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => resolve(reader.result.split(',')[1]); // obtenir la partie base64
+        reader.onerror = reject;
+    }); */
+}
+
+export { 
+    weekPlanSlide, 
+    partnerSlide, 
+    verifyExtension, 
+    imageExtensions, 
+    convertToBase64
+ }

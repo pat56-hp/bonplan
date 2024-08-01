@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import Input from '../../../components/form/Input'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { getRequest } from '../../../queries/sendRequest'
+import { getRequest, postRequest } from '../../../queries/sendRequest'
 import Select from 'react-select'
 import PhoneInput from 'react-phone-input-2'
 import { useForm } from 'react-hook-form'
@@ -12,9 +12,13 @@ import UploadGalery from '../../../components/form/UploadGalery'
 import TextEditor from '../../../components/form/TextEditor'
 import { DatePicker } from 'rsuite';
 import toast from 'react-hot-toast'
+import { useAuthStateProvider } from '../../../contexts/AuthContextProvider'
 
-
+/**
+ * Commponent of Form Etablissement
+ */
 export default function EtablissementForm() {
+    const {setUser, setToken} = useAuthStateProvider()
     const navigate = useNavigate()
     const [categories, setCategories] = useState([])
     const [formErrors, setFormErrors] = useState({})
@@ -118,21 +122,78 @@ export default function EtablissementForm() {
         }
 
         const hoursSubmit = hours.filter(hour => hour.checked === true)
-        console.log(hoursSubmit)
-
-        
-        const formData = {
+        /* const datas = {
             ...data, 
             image: image, 
             gallery: galery, 
             phone: phone, 
             category: category, 
-            horaires: hoursSubmit,
-            commodites: commodites,
+            horaires: JSON.stringify(hoursSubmit),
+            commodites: JSON.stringify(commodites),
             description: descriptionRef.current.getContent()
         }
 
-        console.log(formData)
+        console.log(datas) */
+
+        const formData = new FormData()
+        Object.keys(data).forEach(key => {
+            formData.append(key, data[key])
+        })
+
+        galery.forEach((file, index) => {
+            if (file instanceof File) {
+                formData.append(`gallery[${index}]`, file);
+            }
+        });
+
+
+        formData.append('image', image);
+        formData.append('phone', phone);
+        formData.append('category', category);
+        formData.append('horaires', JSON.stringify(hoursSubmit)); // Convertir en JSON
+        formData.append('commodites', JSON.stringify(commodites)); // Convertir en JSON
+        formData.append('description', descriptionRef.current.getContent());
+
+        for (let [key, value] of formData.entries()) {
+            console.log(`${key}: ${value instanceof File ? value.name : value}`);
+        }
+
+        //console.log(formData)
+
+        setIsLoading(true)
+        toast.loading('Patientez...')
+
+        //Submit form
+        setTimeout(() => {  
+            
+            postRequest('/etablissements/store', formData)
+                .then(() => {
+                    toast.success('Votre établissement a été enregistré')
+                    //navigate('/mes-etablissements')
+                })
+                .catch(error => {
+                    if (error.status === 401 || error.status === 419) {
+                        setUser(null)
+                        setToken(null)
+                        navigate('/login')
+                    }else if (error.status === 422) {
+                        const {errors} = error.response
+                        //console.log(formErrors)
+                        Object.keys(errors).map(key => {
+                            setFormErrors(formErrors => (
+                                {...formErrors, [key] : {
+                                    message: errors[key]
+                                }}
+                            ))
+                        })
+                    }
+
+                    toast.remove()
+                    toast.error('Oups')
+                })
+            setIsLoading(false)
+        }, 800);
+
     }
 
     //Observer
@@ -295,7 +356,7 @@ export default function EtablissementForm() {
                             placeholder = "Sélectionnez une ou plusieurs commodité(s)"
                             isMulti={true}
                             noOptionsMessage = {() => 'Aucune catégorie disponible'}
-                            styles={{ zIndex: 99999999999999 }}
+                            styles={{ zIndex: 9 }}
                         />
                         <span className="text-secondary"><i className="icon-info-circled"></i>Services et installations que propose votre établissement pour améliorer le confort et l'expérience de vos clients</span>
                     </div>

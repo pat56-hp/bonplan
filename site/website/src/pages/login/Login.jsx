@@ -52,10 +52,11 @@ const Login = () => {
                 .catch(error => {
                     setIsLoading(false)
                     if (error.status === 422){
-                        Object.keys(error.response.data).map(key => {
+                        const errors = error.response.data
+                        Object.keys(errors).map(key => {
                             setFormErrors(preError => (
                                 {...preError, [key]: {
-                                    message: error[key]
+                                    message: errors[key]
                                 }}
                             ))
                         })
@@ -101,7 +102,7 @@ const Login = () => {
                                 required: 'Veuillez saisir votre adresse email'
                             })}}
                     />
-                    {(errors.email || formErrors.email) && <span className="text-danger text-sm-start"><i className="icon-info-circled"></i>{errors.email.message ?? formErrors.email.message}</span>}
+                    {(errors.email || formErrors.email) && <span className="text-danger text-sm-start"><i className="icon-info-circled"></i>{errors?.email?.message ?? formErrors?.email?.message}</span>}
                 </div>
                 <div className="form-group">
                     <Input
@@ -114,7 +115,7 @@ const Login = () => {
                                 required: 'Veuillez saisir votre mot de passe'
                             })}}
                     />
-                    {(errors.password || formErrors.password) && <span className="text-danger text-sm-start"><i className="icon-info-circled"></i>{errors.password.message ?? formErrors.password.message}</span>}
+                    {(errors.password || formErrors.password) && <span className="text-danger text-sm-start"><i className="icon-info-circled"></i>{errors?.password?.message ?? formErrors?.password?.message}</span>}
                 </div>
                 <p className="small">
                     <a href="#">Mot de passe oublié ?</a>

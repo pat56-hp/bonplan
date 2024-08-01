@@ -35,7 +35,8 @@ class EtablissementFormRequest extends FormRequest
                         $fail($attribute . ' contient des extensions invalides.');
                     }
                 }
-            }]
+            }],
+            'description' => 'required',
         ];
 
         if (request()->method() === 'PUT') {

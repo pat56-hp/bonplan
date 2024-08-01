@@ -11,7 +11,7 @@ class Etablissement extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'libelle', 'ville', 'adresse', 'email', 'phone', 'image', 'client_id', 'category_id', 'facebook', 'instagram', 'status'
+        'libelle', 'ville', 'adresse', 'email', 'phone', 'image', 'client_id', 'category_id', 'facebook', 'instagram', 'status', 'description'
     ];
 
     protected $hidden = [
@@ -32,5 +32,9 @@ class Etablissement extends Model
 
     public function commodites(){
         return $this->belongsToMany(Commodite::class, 'etablissement_commodites', 'etablissement_id', 'commodite_id');
+    }
+
+    public function jours(){
+        return $this->hasMany(Jour::class, 'horaires', 'etablissement_id', 'jour_id')->withPivot(['ouverture', 'fermeture']);
     }
 }

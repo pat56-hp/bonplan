@@ -50,11 +50,12 @@ class EtablissementController extends Controller
      */
     public function store(EtablissementFormRequest $request)
     {
-        //dd('ok');
         try {
             $data = $request->only([
-                'libelle', 'adresse', 'facebook', 'instagram', 'phone', 'category', 'email', 'ville', 'facebook', 'instagram'
+                'libelle', 'adresse', 'facebook', 'instagram', 'phone', 'category', 'email', 'ville', 'facebook', 'instagram', 'description', 'horaires', 'commodites'
             ]);
+
+            return $data;
 
             $data['image'] = $this->uploadFile->run($request->image, 'etablissements');
             if ($request->gallerie) {
@@ -68,7 +69,6 @@ class EtablissementController extends Controller
                 'message' => 'Etablissement enregistré avec succès'
             ]);
         } catch (\Exception $e) {
-            //dd($e->getMessage());
             return response()->json([
                 'data' => $e->getMessage(),
                 'message' => 'Oups, une erreur s\'est produite'

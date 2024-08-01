@@ -6,19 +6,23 @@
  */
 import {toast} from "react-hot-toast";
 
-const postRequest  = async (url, data= {}) =>  {
+const postRequest  = async (url, data= {}, method = 'POST') =>  {
     const urlPath = import.meta.env.VITE_API_URL + url
     const token = localStorage.getItem('logU')
+    const headers = {
+        'Authorization': 'Bearer ' + token
+    };
+
+    //Ajouter content type lorsqu'il ne s'agit pas de data provenant de formData
+    if (!(data instanceof FormData)) {
+        headers['Content-Type'] = 'application/json';
+    }
     
     try {
         const resp = await fetch(urlPath, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                "Authorization": "Bearer " + token
-            },
-            body: JSON.stringify(data)
+            method: method,
+            headers: headers,
+            body: data instanceof FormData ? data : JSON.stringify(data)
         })
 
         if (!resp.ok) {
@@ -55,12 +59,12 @@ const postRequest  = async (url, data= {}) =>  {
  * @param url
  * @returns {Promise<any>}
  */
-const getRequest = async (url) => {
+const getRequest = async (url, method = 'GET') => {
     const urlPath = import.meta.env.VITE_API_URL + url
     const token = localStorage.getItem('logU')
     try {
         const resp = await fetch(urlPath, {
-            method: 'GET',
+            method: method,
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + token

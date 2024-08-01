@@ -39,6 +39,7 @@ export default function UserLoged (){
                     localStorage.removeItem('logU')
                     setUser({})
                     setToken(null)
+                    navigate('/login')
                 }
             })
     }
