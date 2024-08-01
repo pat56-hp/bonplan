@@ -11,11 +11,11 @@ class UploadFile {
      */
     public function run($file, $doc){
         try {
-            $fileName = time() . '-' . $file->getExtension();
-            $path = 'public/uploads/' . $doc . '/' . date('Y').'/' . date('m');
+            $fileName = time() . '-' . rand(0, 9999) . '.' . $file->extension();
+            $path = 'uploads/' . $doc . '/' . date('Y').'/' . date('m');
             $file->move($path, $fileName);
-            $urlFile = url($path.'/'.$fileName);
-            return $urlFile;
+            $filePath = '/' . $path.'/'.$fileName;
+            return $filePath;
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
@@ -26,11 +26,14 @@ class UploadFile {
      * @param string path
      */
     public function delete($path){
-        if (!file_exists($path)) {
-            return;
+        if (file_exists(public_path($path))) {
+            unlink(public_path($path));
+            return true;
+        }elseif(file_exists(url($path))) {
+            unlink(url($path));
+            return true;
         }
 
-        unlink($path);
+        return false;
     }
-
 }

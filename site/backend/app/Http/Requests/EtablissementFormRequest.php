@@ -3,10 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class EtablissementFormRequest extends FormRequest
 {
+    
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -29,7 +29,7 @@ class EtablissementFormRequest extends FormRequest
             'phone' => 'required|min:5',
             'category' => 'required|integer',
             'image' => 'required|image|mimes:png,jpg,jpeg',
-            'gallerie' => ['sometimes', function ($attribute, $value, $fail) {
+            'gallerie' => ['nullable', function ($attribute, $value, $fail) {
                 foreach ($value as $file) {
                     if (!in_array($file->extension(), ['jpg', 'png', 'jpeg'])) {
                         $fail($attribute . ' contient des extensions invalides.');
@@ -39,10 +39,13 @@ class EtablissementFormRequest extends FormRequest
         ];
 
         if (request()->method() === 'PUT') {
-            $rules ['id'] = [
-                'required|integer'
+            $rules ['image'] = [
+                'nullable|image|mimes:png,jpg,jpeg'
             ];
         }
+
+        //dd($rules);
         return $rules;
     }
+
 }

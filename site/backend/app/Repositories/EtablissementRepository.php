@@ -6,6 +6,7 @@ use App\Http\Resources\EtablissementResource;
 use App\Models\Etablissement;
 use App\Models\Gallerie;
 use App\Services\UploadFile;
+use Illuminate\Support\Facades\DB;
 
 class EtablissementRepository {
 
@@ -19,13 +20,14 @@ class EtablissementRepository {
 
     public function getAll(){
         $etablissements = EtablissementResource::collection(
-            $this->etablissement->where('client_id', auth('api')->id())->latest()->paginate(50)
+            $this->etablissement->where(['client_id' => auth('api')->id(), 'status' => 1])->latest()->paginate(50)
         );
 
         return $etablissements;
     }
 
     public function storeOrUpdate($data, $id = null){
+        DB::beginTransaction();
         try {
             if (is_null($id)) {
                 $etablissement = $this->etablissement->create([
@@ -35,8 +37,10 @@ class EtablissementRepository {
                     'category_id' => $data['category'],
                     'adresse' => $data['adresse'],
                     'ville' => $data['ville'],
-                    'email' => $data['email'],
+                    'email' => $data['email'] ?? null,
                     'image' => $data['image'],
+                    'facebook' => $data['facebook'] ?? null,
+                    'instagram' => $data['instagram'] ?? null,
                 ]);
             }else{
                 $etablissement = $this->find($id);
@@ -46,8 +50,11 @@ class EtablissementRepository {
                     'category_id' => $data['category'],
                     'adresse' => $data['adresse'],
                     'ville' => $data['ville'],
-                    'email' => $data['email'],
+                    'email' => $data['email'] ?? $etablissement->email,
                     'image' => $data['image'] ?? $etablissement->image,
+                    'facebook' => $data['facebook'] ?? $etablissement->facebook,
+                    'instagram' => $data['instagram'] ?? $etablissement->instagram,
+                    'status' => $data['status'] ?? $etablissement->status
                 ]);
             }
             
@@ -62,11 +69,15 @@ class EtablissementRepository {
                 }
             }
 
+            DB::commit();
             return $etablissement;
         } catch (\Exception $e) {
+            DB::rollback();
             //Suppression des fichiers
-            foreach($data['gallerie'] as $key => $image){
-                $this->uploadFile->delete($image);
+            if (isset($data['gallerie'])) {
+                foreach($data['gallerie'] as $key => $image){
+                    $this->uploadFile->delete($image);
+                }
             }
 
             throw new \Exception($e->getMessage());

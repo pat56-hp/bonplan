@@ -28,14 +28,15 @@ class ImageController extends Controller
     public function __invoke(Request $request)
     {
         try {
-            $this->uploadFile->delete($request->image);
+            $resp = $this->uploadFile->delete($request->image);
+            throw_if(!$resp, 'Impossible de supprimer l\'image');
             return response()->json([
-                'message' => 'Image supprimé avec succès'
+                'message' => 'Image supprimée avec succès'
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'data' => $e->getMessage(),
-                'message' => 'Oups, ne erreur s\'est produite'
+                'message' => 'Oups, une erreur s\'est produite'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

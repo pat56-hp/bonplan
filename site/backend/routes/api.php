@@ -52,9 +52,9 @@ Route::group(['prefix' => 'v1'], function (){
         Route::group(['prefix' => 'etablissements'], function(){
             Route::get('/', 'index');
             Route::post('/store', 'store');
-            Route::get('/show/{etablissement}', 'show');
-            Route::put('/update/{etablissement}', 'update');
-            Route::delete('/delete/{etablissement}', 'destroy');
+            Route::get('/show/{id}', 'show');
+            Route::put('/update/{id}', 'update');
+            Route::delete('/delete/{id}', 'destroy');
         });
     });
 

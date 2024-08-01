@@ -46,12 +46,14 @@ class EtablissementController extends Controller
 
     /**
      * Store informations of etablissement
+     * @param EtablissementFormRequest $request
      */
     public function store(EtablissementFormRequest $request)
     {
+        //dd('ok');
         try {
             $data = $request->only([
-                'libelle', 'adresse', 'facebook', 'instagram', 'phone', 'category', 'email', 'ville'
+                'libelle', 'adresse', 'facebook', 'instagram', 'phone', 'category', 'email', 'ville', 'facebook', 'instagram'
             ]);
 
             $data['image'] = $this->uploadFile->run($request->image, 'etablissements');
@@ -66,9 +68,10 @@ class EtablissementController extends Controller
                 'message' => 'Etablissement enregistré avec succès'
             ]);
         } catch (\Exception $e) {
+            //dd($e->getMessage());
             return response()->json([
                 'data' => $e->getMessage(),
-                'message' => 'Oups, ne erreur s\'est produite'
+                'message' => 'Oups, une erreur s\'est produite'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -86,16 +89,17 @@ class EtablissementController extends Controller
     /**
      * Update etablissement informations
      */
-    public function update(EtablissementFormRequest $request)
+    public function update(EtablissementFormRequest $request, $id)
     {
+        //dd($request->libelle);
         try {
             $data = $request->only([
-                'libelle', 'adresse', 'facebook', 'instagram', 'phone', 'category', 'email', 'ville'
+                'libelle', 'adresse', 'facebook', 'instagram', 'phone', 'category', 'email', 'ville', 'facebook', 'instagram', 'status'
             ]);
 
             if ($request->hasFile('image')){
                 //Suppression de l'ancienne image
-                $etablissement = $this->repository->find($request->id);
+                $etablissement = $this->repository->find($id);
                 $this->uploadFile->delete($etablissement->image);
                 //Upload de la nouvelle image
                 $data['image'] = $this->uploadFile->run($request->image, 'etablissements');
@@ -108,7 +112,7 @@ class EtablissementController extends Controller
             }
 
             return response()->json([
-                'data' => $this->repository->storeOrUpdate($data, $request->id),
+                'data' => $this->repository->storeOrUpdate($data, $id),
                 'message' => 'Etablissement modifié avec succès'
             ]);
         } catch (\Exception $e) {

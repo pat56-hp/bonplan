@@ -11,7 +11,7 @@ class Etablissement extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'libelle', 'ville', 'adresse', 'email', 'phone', 'image', 'client_id', 'category_id', 'facebook'
+        'libelle', 'ville', 'adresse', 'email', 'phone', 'image', 'client_id', 'category_id', 'facebook', 'instagram', 'status'
     ];
 
     protected $hidden = [
@@ -28,5 +28,9 @@ class Etablissement extends Model
 
     public function galleries(){
         return $this->hasMany(Gallerie::class, 'etablissement_id');
+    }
+
+    public function commodites(){
+        return $this->belongsToMany(Commodite::class, 'etablissement_commodites', 'etablissement_id', 'commodite_id');
     }
 }
