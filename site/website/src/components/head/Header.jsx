@@ -3,15 +3,17 @@ import {Link, NavLink} from "react-router-dom";
 import {useAuthStateProvider} from "../../contexts/AuthContextProvider";
 import Input from "../form/Input";
 import UserLoged from "./UserLoged";
-import { postRequest } from "../../queries/sendRequest";
 
 const Header = () => {
-    const {token, setUser} = useAuthStateProvider()
-    const loginCss = {
-        background : '#e04f67',
-        padding : '3px 20px',
-        color: '#fff'
-    }
+    const { setUser, token, setToken } = useAuthStateProvider()
+
+    useEffect(() => {
+        console.log('Token changed')
+        if (!token) {
+            setUser({})
+            setToken(null)
+        }
+    }, [token])
 
     return (
         <>
@@ -53,7 +55,7 @@ const Header = () => {
                             </div>
                         </div>
                         <nav className="col-9">
-                            <Link className="cmn-toggle-switch cmn-toggle-switch__htx open_close" to={"/"}><span>Menu mobile</span></Link>
+                            <a className="cmn-toggle-switch cmn-toggle-switch__htx open_close" href="#"><span>Menu mobile</span></a>
                             <div className="main-menu">
                                 <div id="header_menu">
                                     <img src="img/logo_sticky.png" width="160" height="34" alt="Les bons plans" />
@@ -77,11 +79,12 @@ const Header = () => {
                                     </li>
                                 </ul>
                             </div>
+                            
                             <ul id="top_tools">
                                 {
                                     token
                                         ? <UserLoged />
-                                        : <li className='login-link' style={loginCss}><Link to={'/login'} id="access_link" className='text-white'>Se connecter</Link></li>
+                                        : <li className='login-link'><Link to={'/login'} id="access_link" className='text-white'>Se connecter</Link></li>
                                 }
                             </ul>
                         </nav>

@@ -107,7 +107,6 @@ export default function DashboadLayout() {
         if (!localStorage.getItem('logU')) {
             setToken(null)
             setUser(null)
-            toast.error('Oups, votre session a été interrompue...')
             navigate('/login')
         }
     }
@@ -120,7 +119,9 @@ export default function DashboadLayout() {
         else if(location.pathname === '/mon-profil') titleOfProfil()
         else if(location.pathname === '/mes-etablissements' || parentPath === '/mes-etablissements') titleOfEtablissement()
         else if(location.pathname === '/parametres') titleOfSetting()
-    }, [])
+
+        if(!token) navigate('/login')
+    }, [location])
 
   return (
     <>
