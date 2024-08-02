@@ -11,6 +11,6 @@ class Categories extends Model
     protected $table = 'categoriesplans';
 
     public function entreprises(){
-        return $this->hasMany(Entreprise::class, 'category_id');
+        return $this->hasMany(Etablissement::class, 'category_id');
     }
 }
