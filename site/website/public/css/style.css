@@ -8667,3 +8667,31 @@ ul#top_tools li{
 .empty-data{
     color: #535252;
 }
+
+.booking_buttons{
+    font-weight: blod;
+}
+
+.btn-status{
+    background: #ffd991 !important;
+    color: #fff !important
+}
+
+.btn-delete{
+    background: #e04f67cc !important;
+    color: #fff !important
+}
+
+.element_actif{
+    color: #348F34 !important
+}
+
+.element_inactif{
+    color: #e04f67cc !important
+}
+
+.rs-modal-xs{
+    display: flex !important;
+    align-items: center !important;
+    min-height: 100vh !important;
+}

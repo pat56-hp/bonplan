@@ -1,30 +1,44 @@
 import React, { useEffect, useState } from 'react'
 import Input from '../../../components/form/Input'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import EtablissementElement from './EtablissementElement'
 import { useQuery } from '@tanstack/react-query'
 import { getRequest } from '../../../queries/sendRequest'
 import toast from 'react-hot-toast'
 import Loader from '../../../components/Loader'
+import { useAuthStateProvider } from '../../../contexts/AuthContextProvider'
 
 export default function Etablissement() {
 
     const [etablissements, setEtablisements] = useState({})
+    const {setUser, setToken} = useAuthStateProvider()
+    const navigate = useNavigate()
 
+    //Get Etablissement Query
     const {
         data: getEtablissents,
         isFetching: isFetchingEtablissements,
         isSuccess: isSuccessEtablissements,
+        isError: isErrorEtablissements,
+        error: errorEtablissements
     } = useQuery({
         queryKey: ['getEtablissents'],
-        queryFn: () => getRequest('/etablissements'),
+        queryFn: () => getRequest('/etablissements')
     });
-
     
-    console.log(etablissements)
     useEffect(() => {
         if(isSuccessEtablissements) {
             setEtablisements(getEtablissents.data);
+        }
+        if (isErrorEtablissements) {
+            console.error('Error fetched Etablissements: ', errorEtablissements)
+            if(errorEtablissements.status === 401 || errorEtablissements.status === 419){
+                setUser(null)
+                setToken(null)
+                navigate('/login')
+            }
+
+            toast.error('Oups, une erreur s\'est produite. Veuillez rééssayer svp...')
         }
     }, [isFetchingEtablissements, getEtablissents])
 
