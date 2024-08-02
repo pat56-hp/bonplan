@@ -20,7 +20,9 @@ class EtablissementRepository {
 
     public function getAll(){
         $etablissements = EtablissementResource::collection(
-            $this->etablissement->where(['client_id' => auth('api')->id(), 'status' => 1])->latest()->paginate(50)
+            $this->etablissement->where(['client_id' => auth('api')->id(), 'validate' => 1])
+            ->latest()
+            ->paginate(50)
         );
 
         return $etablissements;
@@ -41,6 +43,7 @@ class EtablissementRepository {
                     'image' => $data['image'],
                     'facebook' => $data['facebook'] ?? null,
                     'instagram' => $data['instagram'] ?? null,
+                    'description' => $data['description'],
                 ]);
             }else{
                 $etablissement = $this->find($id);
@@ -54,8 +57,24 @@ class EtablissementRepository {
                     'image' => $data['image'] ?? $etablissement->image,
                     'facebook' => $data['facebook'] ?? $etablissement->facebook,
                     'instagram' => $data['instagram'] ?? $etablissement->instagram,
-                    'status' => $data['status'] ?? $etablissement->status
+                    'status' => $data['status'] ?? $etablissement->status,
+                    'description' => $data['description'],
                 ]);
+            }
+
+            if (isset($data['commodites'])) {
+                $commodites = json_decode($data['commodites']);
+                $etablissement->commodites()->sync($commodites);
+            }
+
+            if (isset($data['horaires'])) {
+                $horaires = json_decode($data['horaires']);
+                foreach ($horaires as $horaire) {
+                    $etablissement->jours()->sync([$horaire->value+1 => [
+                        'ouverture' => date('H:m', strtotime($horaire->ouverture)),
+                        'fermeture' => date('H:m', strtotime($horaire->fermeture))
+                    ]]);
+                }
             }
             
     

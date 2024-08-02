@@ -5,7 +5,7 @@ import Input from "../form/Input";
 import UserLoged from "./UserLoged";
 
 const Header = () => {
-    const { setUser, token, setToken } = useAuthStateProvider()
+    const { setUser, token, setToken, user } = useAuthStateProvider()
 
     useEffect(() => {
         console.log('Token changed')

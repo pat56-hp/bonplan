@@ -10,6 +10,7 @@ const postRequest  = async (url, data= {}, method = 'POST') =>  {
     const urlPath = import.meta.env.VITE_API_URL + url
     const token = localStorage.getItem('logU')
     const headers = {
+        'Accept' : 'application/json',
         'Authorization': 'Bearer ' + token
     };
 
@@ -52,7 +53,6 @@ const postRequest  = async (url, data= {}, method = 'POST') =>  {
     }
 
 }
-
 
 /**
  * Send get Request

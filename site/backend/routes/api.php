@@ -64,7 +64,7 @@ Route::group(['prefix' => 'v1'], function (){
      */
     Route::controller(FrontendController::class)->group(function (){
         Route::get('/categories', 'getCategories');
-        Route::post('/sendSms', 'sendSMS');
+        Route::get('/commodites', 'getCommodites');
     });
 
     /**

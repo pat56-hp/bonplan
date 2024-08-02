@@ -1,8 +1,33 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Input from '../../../components/form/Input'
 import { Link } from 'react-router-dom'
+import EtablissementElement from './EtablissementElement'
+import { useQuery } from '@tanstack/react-query'
+import { getRequest } from '../../../queries/sendRequest'
+import toast from 'react-hot-toast'
+import Loader from '../../../components/Loader'
 
 export default function Etablissement() {
+
+    const [etablissements, setEtablisements] = useState({})
+
+    const {
+        data: getEtablissents,
+        isFetching: isFetchingEtablissements,
+        isSuccess: isSuccessEtablissements,
+    } = useQuery({
+        queryKey: ['getEtablissents'],
+        queryFn: () => getRequest('/etablissements'),
+    });
+
+    
+    console.log(etablissements)
+    useEffect(() => {
+        if(isSuccessEtablissements) {
+            setEtablisements(getEtablissents.data);
+        }
+    }, [isFetchingEtablissements, getEtablissents])
+
   return (
     <section id='etablissements' className='content-current'>
         <div className="row mb-3">
@@ -25,31 +50,24 @@ export default function Etablissement() {
                 </div>
             </div>
         </div>
-        <div className="strip_booking">
-            <div className="row">
-                <div className="col-lg-2 col-md-2">
-                    <div className="date">
-                        <span className="month">Dec</span>
-                        <span className="day"><strong>23</strong>Sat</span>
-                    </div>
+        {
+            isFetchingEtablissements 
+            ? <Loader />
+            : (
+                etablissements.length > 0
+                ? etablissements.map((etablissement, index) => (
+                    <EtablissementElement 
+                        key={index}
+                        etablissement={etablissement} 
+                    />
+                ))
+                : <div className='text-center'>
+                    <h5 className='empty-data'>
+                        <i className='icon-info-circled-1'></i> Aucun établissement disponible
+                    </h5>
                 </div>
-                <div className="col-lg-6 col-md-5">
-                    <h3 className="hotel_booking">Hotel Mariott Paris<span>2 Adults / 2 Nights</span></h3>
-                </div>
-                <div className="col-lg-2 col-md-3">
-                    <ul className="info_booking">
-                        <li><strong>Booking id</strong> 23442</li>
-                        <li><strong>Booked on</strong> Sat. 23 Dec. 2015</li>
-                    </ul>
-                </div>
-                <div className="col-lg-2 col-md-2">
-                    <div className="booking_buttons">
-                        <a href="#0" className="btn_2">Edit</a>
-                        <a href="#0" className="btn_3">Cancel</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+            )
+        }
     </section>
   )
 }

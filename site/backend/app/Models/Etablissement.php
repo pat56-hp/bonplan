@@ -35,6 +35,6 @@ class Etablissement extends Model
     }
 
     public function jours(){
-        return $this->hasMany(Jour::class, 'horaires', 'etablissement_id', 'jour_id')->withPivot(['ouverture', 'fermeture']);
+        return $this->belongsToMany(Jour::class, Horaire::class, 'etablissement_id', 'jour_id')->withPivot(['ouverture', 'fermeture']);
     }
 }

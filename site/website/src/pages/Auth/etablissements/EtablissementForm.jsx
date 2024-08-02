@@ -27,9 +27,10 @@ export default function EtablissementForm() {
     const [buttonDisabled, setButtonDisabled] = useState(true)
     const [isLoading, setIsLoading] = useState(false)
     const [phone, setPhone] = useState(null)
-    const [category, setCategory] = useState(null)
     const [commodites, setCommodites] = useState([])
     const descriptionRef = useRef(null);
+    const categoryRef = useRef(null)
+    const commoditeRef = useRef([])
     const [hours, setHours] = useState([
         {label: 'Lundi', value: 0, checked: false, ouverture: null, fermeture: null},
         {label: 'Mardi', value: 1, checked: false, ouverture: null, fermeture: null},
@@ -41,19 +42,38 @@ export default function EtablissementForm() {
     ])
 
     const {
-        reset,
         handleSubmit,
         watch,
         formState: {errors},
         register
     } = useForm()
 
-    const {data} = useQuery({
+    //Recuperation des categories
+    const queryGetCatecories = useQuery({
         queryKey: ['getCategories'],
         queryFn: () => getRequest('/categories')
     })
 
-    //Mise à jour du state des catégories
+    //Recuperation des commodities
+    const queryGetCommodites = useQuery({
+        queryKey: ['getCommodites'],
+        queryFn: () => getRequest('/commodites')
+    })
+
+    //Initialisation des commodites
+    const onSetCommodites = (data) => {
+        if(data){
+            const getCommoites = data.data?.map(commodite => ({
+                label: commodite.libelle,
+                value: commodite.id
+            }))
+
+            setCommodites(getCommoites)
+        }
+    }
+
+
+    //Initialisation des catégories
     const onSetCategories = (data) => {
         if (data && Array.isArray(data.data)) {
             const formattedCategories = data.data.map(d => ({
@@ -64,18 +84,10 @@ export default function EtablissementForm() {
         }
     }
 
+    //Navigation retour
     const navigateBack = (e) => {
         e.preventDefault();
         navigate(-1)
-    }
-
-    //Recuperation des commodites selectionnees
-    const handleChangeCommodite = (elements) => {
-        setCommodites([])
-        elements.map(element => {
-            //console.log(element.value)
-            setCommodites(prevCommodites => [...prevCommodites, element.value])
-        })
     }
 
     /**
@@ -87,6 +99,9 @@ export default function EtablissementForm() {
         setFormErrors({}); // Réinitialisation des erreurs du formulaire
 
         let errors = {};
+        const category = categoryRef.current.getValue()[0]?.value;
+        //console.log(category)
+        
 
         if (phone === undefined || phone === null || phone === '') {
             errors.phone = {
@@ -94,7 +109,7 @@ export default function EtablissementForm() {
             };
         }
 
-        if (category === undefined || category === null || category === '') {
+        if (category === null || category === undefined || category === '') {
             errors.category = {
                 message: 'Veuillez sélectionner la catégorie de l\'établissement'
             };
@@ -111,8 +126,6 @@ export default function EtablissementForm() {
             errors.hour = {
                 message: 'Vous avez activé un jour sans marquer les heures'
             }
-
-            console.log(hourFaileds)
         }
 
         if (Object.keys(errors).length > 0) {
@@ -121,19 +134,10 @@ export default function EtablissementForm() {
             return;
         }
 
-        const hoursSubmit = hours.filter(hour => hour.checked === true)
-        /* const datas = {
-            ...data, 
-            image: image, 
-            gallery: galery, 
-            phone: phone, 
-            category: category, 
-            horaires: JSON.stringify(hoursSubmit),
-            commodites: JSON.stringify(commodites),
-            description: descriptionRef.current.getContent()
-        }
+        //return
 
-        console.log(datas) */
+        const commoditeValue = commoditeRef.current.getValue()?.map(element => element.value)
+        const hoursSubmit = hours.filter(hour => hour.checked === true)
 
         const formData = new FormData()
         Object.keys(data).forEach(key => {
@@ -146,17 +150,12 @@ export default function EtablissementForm() {
             }
         });
 
-
         formData.append('image', image);
         formData.append('phone', phone);
         formData.append('category', category);
         formData.append('horaires', JSON.stringify(hoursSubmit)); // Convertir en JSON
-        formData.append('commodites', JSON.stringify(commodites)); // Convertir en JSON
+        formData.append('commodites', JSON.stringify(commoditeValue)); // Convertir en JSON
         formData.append('description', descriptionRef.current.getContent());
-
-        for (let [key, value] of formData.entries()) {
-            console.log(`${key}: ${value instanceof File ? value.name : value}`);
-        }
 
         //console.log(formData)
 
@@ -168,8 +167,9 @@ export default function EtablissementForm() {
             
             postRequest('/etablissements/store', formData)
                 .then(() => {
-                    toast.success('Votre établissement a été enregistré')
-                    //navigate('/mes-etablissements')
+                    toast.remove()
+                    toast.success('Enregistrement effectué')
+                    navigate('/mes-etablissements')
                 })
                 .catch(error => {
                     if (error.status === 401 || error.status === 419) {
@@ -178,7 +178,6 @@ export default function EtablissementForm() {
                         navigate('/login')
                     }else if (error.status === 422) {
                         const {errors} = error.response
-                        //console.log(formErrors)
                         Object.keys(errors).map(key => {
                             setFormErrors(formErrors => (
                                 {...formErrors, [key] : {
@@ -189,7 +188,7 @@ export default function EtablissementForm() {
                     }
 
                     toast.remove()
-                    toast.error('Oups')
+                    toast.error('Oups, une erreur s\'est produite')
                 })
             setIsLoading(false)
         }, 800);
@@ -230,8 +229,9 @@ export default function EtablissementForm() {
     }
 
     useEffect(() => {
-        onSetCategories(data)
-    }, [data])
+        onSetCategories(queryGetCatecories.data)
+        onSetCommodites(queryGetCommodites.data)
+    }, [queryGetCatecories.data, queryGetCommodites.data])
 
   return (
     <section id='etablissements' className='content-current'>
@@ -272,7 +272,7 @@ export default function EtablissementForm() {
                         <Select
                             name="category"
                             options={categories}
-                            onChange={category => setCategory(category.value)}
+                            ref={categoryRef}
                             placeholder = "Sélectionnez une catégorie"
                             noOptionsMessage = {() => 'Aucune catégorie disponible'}
                             styles={{ zIndex: 99999999999999 }}
@@ -351,11 +351,11 @@ export default function EtablissementForm() {
                         <label htmlFor="categorie">Commodité(s)</label>
                         <Select
                             name="commodites"
-                            options={categories}
-                            onChange={commodites => handleChangeCommodite(commodites)}
+                            options={commodites}
+                            ref={commoditeRef}
                             placeholder = "Sélectionnez une ou plusieurs commodité(s)"
                             isMulti={true}
-                            noOptionsMessage = {() => 'Aucune catégorie disponible'}
+                            noOptionsMessage = {() => 'Aucune commodité disponible'}
                             styles={{ zIndex: 9 }}
                         />
                         <span className="text-secondary"><i className="icon-info-circled"></i>Services et installations que propose votre établissement pour améliorer le confort et l'expérience de vos clients</span>

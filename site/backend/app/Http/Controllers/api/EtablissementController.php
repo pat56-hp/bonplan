@@ -55,7 +55,7 @@ class EtablissementController extends Controller
                 'libelle', 'adresse', 'facebook', 'instagram', 'phone', 'category', 'email', 'ville', 'facebook', 'instagram', 'description', 'horaires', 'commodites'
             ]);
 
-            return $data;
+            //return $data;
 
             $data['image'] = $this->uploadFile->run($request->image, 'etablissements');
             if ($request->gallerie) {
