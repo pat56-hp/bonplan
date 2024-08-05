@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useAuthStateProvider} from "../../contexts/AuthContextProvider";
 import {Link, useNavigate} from "react-router-dom";
 import { Dropdown } from 'rsuite';
@@ -6,6 +6,7 @@ import 'rsuite/dist/rsuite-no-reset.min.css'
 import 'rsuite/Button/styles/index.css';
 import toast from "react-hot-toast";
 import useHttp from "../../hooks/useHttp";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 /**
  * Composant utilisatateur connecté : dans le header
@@ -15,6 +16,7 @@ import useHttp from "../../hooks/useHttp";
 export default function UserLoged (){
     const { user, setUser, token, setToken } = useAuthStateProvider()
     const {sendRequest} = useHttp()
+    const [isLoading, setIsLoading] = useState(true)
     const navigate = useNavigate()
 
     const logout = (e) => {
@@ -31,13 +33,20 @@ export default function UserLoged (){
     }
 
     //Recuperation des informations de l'utilisateur connecté
-    const getUser = async () => {
-        const {success, data} = await sendRequest('/me', 'POST')
-        if (success) setUser(data)
-    }
+    const getUser = useMutation({
+        mutationFn: async () => await sendRequest('/me', 'POST'),
+        mutationKey: ['getUser'],
+        onSuccess: ({data}) => {
+            setUser(data)
+            setIsLoading(false)
+        },
+        onMutate: () => {
+            setIsLoading(true)
+        }
+    })
 
     useEffect(() => {
-        if (token) getUser()
+        if (token) getUser.mutate()
         else{
             setUser(null)
             setToken(null)
@@ -47,8 +56,8 @@ export default function UserLoged (){
 
     return (
         <Dropdown 
-            title={user.name + ' ' + user.lastname} 
-            icon={<UserIcon />}
+            title={!isLoading && (user.name + ' ' + user.lastname)} 
+            icon={isLoading ? <LoadIngIcon /> : <UserIcon />}
             className='userLogedInButton'
         >
             {
@@ -112,5 +121,11 @@ function LogoutIcon (){
 function EtablissementIcon(){
     return (
         <span className="icon-building"></span>
+    )
+}
+
+function LoadIngIcon(){
+    return (
+        <span className="icon-spin5 animate-spin"></span>
     )
 }

@@ -9,7 +9,7 @@ import { imageExtensions, verifyExtension } from '../../scripts/helper';
  * @param formErrors
  * @param url
  */
-export default function UploadImage({onSetImage, formErrors, url}) {
+export default function UploadImage({onSetImage, formErrors = [], url}) {
     const [fileUrl, setFileUrl] = useState(url || null)
     const fileInputRef = useRef(null);
     const [imgError, setImgError] = useState(null)

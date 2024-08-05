@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import React from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 
 /**
@@ -22,12 +22,8 @@ export default function TextEditor({label, important, descriptionRef, errors = {
         <Editor
             apiKey= {import.meta.env.VITE_TINY_KEY}
             onInit={(_evt, editor) => descriptionRef.current = editor}
-            onEditorChange={(content, editor) => {
-                if (descriptionRef.current) {
-                    descriptionRef.current.setContent(content);
-                }
-            }}
-            initialValue={value??''}
+            onChange={(_evt, editor) => descriptionRef.current = editor}
+            initialValue={value}
         />
         {errors.description && <span className="text-danger"><i className="icon-info-circled"></i>{errors.description.message}</span>}
     </>

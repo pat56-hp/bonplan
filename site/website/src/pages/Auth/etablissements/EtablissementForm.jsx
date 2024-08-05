@@ -258,8 +258,8 @@ export default function EtablissementForm() {
         }
     
         //Soumission du formulaire
-        const postUrl = params.id !== null ? `/etablissements/update/${params.id}` : '/etablissements/store'
-        const postAlertSuccess = params.id !== null ? 'Enregistrement modifié' : 'Enregistrement effectué'
+        const postUrl = params.id ? `/etablissements/update/${params.id}` : '/etablissements/store'
+        const postAlertSuccess = params.id ? 'Enregistrement modifié' : 'Enregistrement effectué'
         submitEtablissement.mutate({postUrl, formData}, {
             onSuccess: () => {
                 toast.remove();
@@ -326,13 +326,13 @@ export default function EtablissementForm() {
 
 
     useEffect(() => {
-        setValue('libelle', etablissement.libelle)
-        setValue('email', etablissement.email)
-        setValue('ville', etablissement.ville)
-        setValue('adresse', etablissement.adresse)
-        setValue('facebook', etablissement.facebook)
-        setValue('instagrame', etablissement.instagram)
-    }, [etablissement])
+        etablissement.libelle && setValue('libelle', etablissement.libelle)
+        etablissement.email && setValue('email', etablissement.email)
+        etablissement.ville && setValue('ville', etablissement.ville)
+        etablissement.adresse && setValue('adresse', etablissement.adresse)
+        etablissement.facebook && setValue('facebook', etablissement.facebook)
+        etablissement.instagram && setValue('instagram', etablissement.instagram)
+    }, [etablissement, params])
 
   return (
     <section id='etablissements' className='content-current'>

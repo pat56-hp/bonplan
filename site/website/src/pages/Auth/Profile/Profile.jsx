@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useAuthStateProvider } from '../../../contexts/AuthContextProvider'
 import Loader from '../../../components/Loader'
 import EditProfile from './EditProfile'
+import UploadImage from '../../../components/form/UploadImage'
 
 export default function Profile() {
 
@@ -23,7 +24,7 @@ export default function Profile() {
 
     useEffect (() => {
         loadData()
-    }, [])
+    }, [user])
 
 
   return (
@@ -62,11 +63,6 @@ export default function Profile() {
                                     }
                                     
                                 </a>
-                            </div>
-                            <div className="col-md-6">
-                                <p>
-                                    <img src="img/tourist_guide_pic.jpg" alt="Image" className="img-fluid styled profile_pic" width={200} />
-                                </p>
                             </div>
                         </div>
                         {

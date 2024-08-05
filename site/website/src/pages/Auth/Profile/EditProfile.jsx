@@ -19,6 +19,7 @@ export default function EditProfile({onSetIsUpdating}) {
     const [isLoading, setIsLoading] = useState(false)
     const [phone, setPhone] = useState(user.phone)
     const navigate = useNavigate()
+    
 
     const {
         register,
