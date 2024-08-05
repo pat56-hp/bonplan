@@ -47,6 +47,7 @@ class EtablissementRepository {
                     'facebook' => $data['facebook'] ?? null,
                     'instagram' => $data['instagram'] ?? null,
                     'description' => $data['description'],
+                    'status' => 1
                 ]);
             }else{
                 $etablissement = $this->find($id);

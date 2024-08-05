@@ -62,6 +62,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'type' => $request->type, //Customer
             'status' => 1, // Actif
+            'image' => '/images/user.png',
             'validate' => 0
         ]);
 

@@ -58,8 +58,8 @@ class EtablissementController extends Controller
             //return $data;
 
             $data['image'] = $this->uploadFile->run($request->image, 'etablissements');
-            if ($request->gallerie) {
-                foreach($request->gallerie as $key => $gallerie) {
+            if ($request->gallery) {
+                foreach($request->gallery as $key => $gallerie) {
                     $data['gallerie'][$key] = $this->uploadFile->run($gallerie, 'gallerie');
                 }
             }

@@ -12,7 +12,7 @@ class Client extends Authenticatable implements JWTSubject
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'name', 'lastname', 'email', 'phone', 'password', 'status', 'validate', 'adresse', 'type'
+        'name', 'lastname', 'email', 'phone', 'password', 'status', 'validate', 'adresse', 'type', 'image'
     ];
 
     protected $hidden = [
