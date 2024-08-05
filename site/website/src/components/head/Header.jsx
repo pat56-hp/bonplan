@@ -1,24 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {Link, NavLink} from "react-router-dom";
 import {useAuthStateProvider} from "../../contexts/AuthContextProvider";
 import Input from "../form/Input";
 import UserLoged from "./UserLoged";
 
 const Header = () => {
-    const { setUser, token, setToken, user } = useAuthStateProvider()
 
-    useEffect(() => {
-        console.log('Token changed')
-        if (!token) {
-            setUser({})
-            setToken(null)
-        }
-    }, [token])
+    const { token } = useAuthStateProvider()
 
     return (
         <>
             <div className="layer"></div>
-
             <header id="plain" style={{borderBottom: '1px solid #ddd'}}>
                 <div id="top_line">
                     <div className="container">

@@ -3,9 +3,11 @@ import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-do
 import Breadcrumbs from '../components/Breadcrumbs'
 import { useAuthStateProvider } from '../contexts/AuthContextProvider'
 import toast from 'react-hot-toast'
+import useAuthToken from '../hooks/useAuthToken'
 
 export default function DashboadLayout() {
-    const {user, token, setToken, setUser} = useAuthStateProvider()
+    const {user} = useAuthStateProvider()
+    const { resetToken } = useAuthToken()
     const [info, setInfo] = useState({})
     const [breadcrumbs, setBreadcrumbs] = useState([])
     const [cdashboard, setCdashboard] = useState(true)
@@ -14,7 +16,6 @@ export default function DashboadLayout() {
     const [cprofile, setCprofile] = useState(false)
     const [csetting, setCsetting] = useState(false)
     const location = useLocation()
-    const navigate = useNavigate()
 
     const titleOfDashboard = () => {
         setInfo({
@@ -103,25 +104,16 @@ export default function DashboadLayout() {
         setCdashboard(false)
     }
 
-    const getStorageElement = () => {
-        if (!localStorage.getItem('logU')) {
-            setToken(null)
-            setUser(null)
-            navigate('/login')
-        }
-    }
 
     useEffect(() => {
-        getStorageElement()
+        resetToken()
         const parentPath = location.pathname.split('/').slice(0, 2).join('/')
         if (location.pathname === '/tableau-de-bord') titleOfDashboard()
         else if(location.pathname === '/mes-favoris') titleOfWishlist()
         else if(location.pathname === '/mon-profil') titleOfProfil()
         else if(location.pathname === '/mes-etablissements' || parentPath === '/mes-etablissements') titleOfEtablissement()
         else if(location.pathname === '/parametres') titleOfSetting()
-
-        if(!token) navigate('/login')
-    }, [location])
+    }, [location, user])
 
   return (
     <>

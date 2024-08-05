@@ -1,16 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { imageExtensions, verifyExtension } from '../../scripts/helper'
+import { useMutation } from '@tanstack/react-query'
+import useHttp from '../../hooks/useHttp'
+import toast from 'react-hot-toast'
 
 /**
  * Component of upload galery
  * @param galery
  * @param onSetGalery
  * @param formErrors
+ * @param url
  * @returns 
  */
-export default function UploadGalery({galery, onSetGalery, formErrors}) {
+export default function UploadGalery({galery, onSetGalery, formErrors, url = [], isUpdate = false}) {
 
-  const [imgUrl, setImgUrl] = useState([])
+  const {sendRequest} = useHttp()
+  const [imgUrl, setImgUrl] = useState(url)
   const [imgError, setImgError] = useState(null)
   const fileInputRef = useRef()
 
@@ -53,10 +58,31 @@ export default function UploadGalery({galery, onSetGalery, formErrors}) {
     e.stopPropagation();
     const newImgUrl = imgUrl.filter(objUrl => objUrl !== url)
     const newGallery = galery.filter(objGalery => objGalery !== galery[index]) 
-    setImgUrl(newImgUrl)
-    onSetGalery(newGallery)
-    setImgError(null)
+
+    if (isUpdate) {
+      deteleFile.mutate(url, {
+        onSuccess: () => {
+          toast.remove()
+          setImgUrl(newImgUrl)
+          onSetGalery(newGallery)
+          setImgError(null)
+        }
+      })
+    }else{
+      setImgUrl(newImgUrl)
+      onSetGalery(newGallery)
+      setImgError(null)
+    }
   }
+
+  //Suppression du fichier sur le server
+  const deteleFile = useMutation({
+    mutationKey: ['deleteFile'],
+    mutationFn: async (urlFile) => sendRequest('/etablissements/delete/image/', 'PUT', {image: urlFile}),
+    onMutate: () => {
+      toast.loading('Patientez...')
+    }
+  })
 
   return (
     <>

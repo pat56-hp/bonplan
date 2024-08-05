@@ -71,6 +71,10 @@ const router = createBrowserRouter([
                             {
                                 path: 'nouveau',
                                 element: <EtablissementForm />
+                            },
+                            {
+                                path: 'modification/:id/:slug',
+                                element: <EtablissementForm />
                             }
                         ]
                     },

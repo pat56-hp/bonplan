@@ -3,16 +3,15 @@ import Input from '../../../components/form/Input'
 import { Link, useNavigate } from 'react-router-dom'
 import EtablissementElement from './EtablissementElement'
 import { useQuery } from '@tanstack/react-query'
-import { getRequest } from '../../../queries/sendRequest'
 import toast from 'react-hot-toast'
 import Loader from '../../../components/Loader'
 import { useAuthStateProvider } from '../../../contexts/AuthContextProvider'
+import useHttp from '../../../hooks/useHttp'
 
 export default function Etablissement() {
 
     const [etablissements, setEtablisements] = useState({})
-    const {setUser, setToken} = useAuthStateProvider()
-    const navigate = useNavigate()
+    const {sendRequest} = useHttp()
 
     //Get Etablissement Query
     const {
@@ -23,23 +22,21 @@ export default function Etablissement() {
         error: errorEtablissements
     } = useQuery({
         queryKey: ['getEtablissents'],
-        queryFn: () => getRequest('/etablissements')
+        queryFn: async () => await sendRequest('/etablissements'),
     });
-    
-    useEffect(() => {
-        if(isSuccessEtablissements) {
-            setEtablisements(getEtablissents.data);
-        }
-        if (isErrorEtablissements) {
-            console.error('Error fetched Etablissements: ', errorEtablissements)
-            if(errorEtablissements.status === 401 || errorEtablissements.status === 419){
-                setUser(null)
-                setToken(null)
-                navigate('/login')
-            }
 
-            toast.error('Oups, une erreur s\'est produite. Veuillez rééssayer svp...')
+    //Set data of etablissement
+    const getElements = () => {
+        if(isSuccessEtablissements) {
+            const {data} = getEtablissents
+            setEtablisements(data.data);
+        }else if (isErrorEtablissements) {
+            console.error('Error fetched Etablissements: ', errorEtablissements.message)
         }
+    }
+
+    useEffect(() => {
+        getElements()
     }, [isFetchingEtablissements, getEtablissents])
 
   return (

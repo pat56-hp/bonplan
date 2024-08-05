@@ -11,7 +11,7 @@ const GuestLayout = () => {
 
     useEffect(() => {
         if (token) navigate('/')
-    }, [])
+    }, [token])
 
     return (
         <>

@@ -1,11 +1,11 @@
 import React, {useEffect} from "react";
 import {useAuthStateProvider} from "../../contexts/AuthContextProvider";
 import {Link, useNavigate} from "react-router-dom";
-import {postRequest} from "../../queries/sendRequest";
 import { Dropdown } from 'rsuite';
 import 'rsuite/dist/rsuite-no-reset.min.css'
 import 'rsuite/Button/styles/index.css';
 import toast from "react-hot-toast";
+import useHttp from "../../hooks/useHttp";
 
 /**
  * Composant utilisatateur connecté : dans le header
@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
  */
 export default function UserLoged (){
     const { user, setUser, token, setToken } = useAuthStateProvider()
+    const {sendRequest} = useHttp()
     const navigate = useNavigate()
 
     const logout = (e) => {
@@ -30,25 +31,17 @@ export default function UserLoged (){
     }
 
     //Recuperation des informations de l'utilisateur connecté
-    const getUser = () => {
-        postRequest('/me')
-            .then((data) => {
-                setUser(data)
-            }).catch(err => {
-                if (err.status === 401) {
-                    localStorage.removeItem('logU')
-                    setUser({})
-                    setToken(null)
-                    navigate('/login')
-                }
-            })
+    const getUser = async () => {
+        const {success, data} = await sendRequest('/me', 'POST')
+        if (success) setUser(data)
     }
 
     useEffect(() => {
         if (token) getUser()
         else{
-            setUser({})
+            setUser(null)
             setToken(null)
+            localStorage.removeItem('logU')
         }
     }, [token])
 

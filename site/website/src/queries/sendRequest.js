@@ -31,6 +31,8 @@ const postRequest  = async (url, data= {}, method = 'POST') =>  {
             const error = new Error(`HTTP error! status: ${resp.status}`);
             error.status = resp.status;
             error.response = errorData;
+            console.log("Error Data:", errorData);
+            console.log("Error Status:", error.status);
             throw error;
         }
 
@@ -42,10 +44,10 @@ const postRequest  = async (url, data= {}, method = 'POST') =>  {
         else if (error.status === 400) toast.error('Oups, une s\'est produite sur le server')
         else if (error.status === 500) {
             toast.error('Oups, erreur server')
-            console.log(error.json())
+            console.log(error.response)
         }
         else if(error.status === 419 || error.status === 401) {
-            toast.error('Oups, votre session a été interrompue...')
+            //toast.error('Oups, votre session a été interrompue...')
             localStorage.removeItem('logU')
         }
 
@@ -66,8 +68,9 @@ const getRequest = async (url, method = 'GET') => {
         const resp = await fetch(urlPath, {
             method: method,
             headers: {
+                "Accept": "application/json",
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + token
+                "Authorization": "Bearer " + token,
             }
         })
 
@@ -87,10 +90,10 @@ const getRequest = async (url, method = 'GET') => {
             else if (error.status === 400) toast.error('Oups, une s\'est produite sur le server')
             else if (error.status === 500) {
                 toast.error('Oups, erreur server')
-                console.log(error.json())
+                console.log(error.response)
             }
             else if(error.status === 419 || error.status === 401) {
-                toast.error('Oups, votre session a été interrompue...')
+                //toast.error('Oups, votre session a été interrompue...')
                 localStorage.removeItem('logU')
             }
         

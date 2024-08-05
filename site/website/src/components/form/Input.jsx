@@ -1,9 +1,15 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 /**
  * Input component
- * @param type
- * @param placeholder
+ * @param {String} label
+ * @param {bool} important
+ * @param {String} type
+ * @param {String} placeholder
+ * @param {String} otherClass
+ * @param {bool} isPassword
+ * @param {*} inputRegister
+ * @param {String} defaultValue
  * @returns {*}
  * @constructor
  */

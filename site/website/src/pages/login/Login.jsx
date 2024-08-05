@@ -6,9 +6,12 @@ import {postRequest} from "../../queries/sendRequest";
 import {useAuthStateProvider} from "../../contexts/AuthContextProvider";
 import {useNavigate} from "react-router";
 import {toast} from "react-hot-toast";
+import useHttp from "../../hooks/useHttp";
+import { useMutation } from "@tanstack/react-query";
 
 const Login = () => {
     const { setUser, setToken } = useAuthStateProvider()
+    const { sendRequest } = useHttp()
     const navigate = useNavigate()
 
     const {
@@ -23,6 +26,45 @@ const Login = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [buttonDisabled, setButtonDisabled] = useState(true)
 
+    //Mutation of login
+    const mutation = useMutation({
+        mutationFn: async (data) => await sendRequest('/login', 'POST', data),
+        mutationKey: ['login'],
+        onMutate: () => {
+            toast.loading('Patientez...')
+            setIsLoading(true)
+        },
+        onSuccess: ({data}) => {
+            setIsLoading(false)
+            setUser(data.user)
+            setToken(data.access_token)
+            reset()
+            toast.remove()
+            toast.success('Heureux de vous revoir')
+            navigate('/mon-profil')
+        },
+        onError: (error) => {
+            setIsLoading(false)
+            if (error.status === 422){
+                const errors = error.response.data
+                Object.keys(errors).map(key => {
+                    setFormErrors(preError => (
+                        {...preError, [key]: {
+                            message: errors[key]
+                        }}
+                    ))
+                })
+            }else if (error.status === 406){
+                setFormErrors(preError => (
+                    {...preError, error: {
+                        message: error.response.message
+                    }}
+                ))
+            }
+        },
+        
+    })
+
     watch(element => {
         if (element.email && element.password && element.password.length > 5) {
             setButtonDisabled(false)
@@ -31,48 +73,10 @@ const Login = () => {
         }
     })
 
+    //Submit data
     const onsubmit = (data) => {
         setFormErrors({})
-        setIsLoading(true)
-        toast.loading('Patientez...')
-        setTimeout(() => {
-            postRequest('/login', data)
-                .then((data) => {
-                    setIsLoading(false)
-                    console.log(data)
-                    const user = data.user
-                    const token = data.access_token
-                    setUser(user)
-                    setToken(token)
-                    reset()
-                    toast.remove()
-                    toast.success('Heureux de vous revoir')
-                    navigate('/mon-profil')
-                })
-                .catch(error => {
-                    setIsLoading(false)
-                    if (error.status === 422){
-                        const errors = error.response.data
-                        Object.keys(errors).map(key => {
-                            setFormErrors(preError => (
-                                {...preError, [key]: {
-                                    message: errors[key]
-                                }}
-                            ))
-                        })
-                    }
-                    else if (error.status === 406){
-                        setFormErrors(preError => (
-                            {...preError, error: {
-                                message: error.response.message
-                            }}
-                        ))
-                    }
-
-                    //toast.remove()
-                    //toast.error('Oups...')
-                })
-        }, 700)
+        mutation.mutate(data)
     }
 
     return (

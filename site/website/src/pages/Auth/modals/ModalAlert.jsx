@@ -5,17 +5,18 @@ import { useAuthStateProvider } from '../../../contexts/AuthContextProvider';
 import { useNavigate } from 'react-router-dom';
 
 /**
- * 
+ * Component of Modal Alert
  * @param {String} title 
  * @param {String} description 
  * @param {String} icon 
  * @param {bool} open 
  * @param {React.SetStateAction} onSetOpen
- * @param {Object} data
+ * @param {*} id
  * @param {*} mutation
+ * @param {String} successMessage
  * @returns 
  */
-export default function ModalAlert({title, description, icon, open, onSetOpen, data, mutation}) {
+export default function ModalAlert({title, description, icon, open, onSetOpen, id, mutation, successMessage = "Succès !"}) {
     const [isLoading, setIsLoading] = useState(false);
     const {setToken, setUser} = useAuthStateProvider()
     const navigate = useNavigate()
@@ -26,24 +27,17 @@ export default function ModalAlert({title, description, icon, open, onSetOpen, d
 
     const handleSubmit = () => {
         setIsLoading(true);
-        mutation.mutate({ id: data.id, title: 'Alerte data' }, {
+        mutation.mutate({ id: id, title: 'Alerte data' }, {
             onMutate: () => {
                 setIsLoading(true);
             },
             onSuccess: () => {
                 setIsLoading(false);
-                toast.success('Etablissement supprimé');
+                toast.success(successMessage);
                 onSetOpen(false);
             },
-            onError: (error) => {
+            onError: () => {
                 setIsLoading(false);
-                toast.error('Oups, une erreur s\'est produite...');
-                console.error('Mutation error: ', error);
-                if (error.status === 401 || error.status === 419) {
-                    setToken(null)
-                    setUser(null)
-                    navigate('/login')
-                }
             },
         });
     };

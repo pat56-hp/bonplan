@@ -1,12 +1,13 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useState} from "react";
 import Input from "../../components/form/Input";
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css'
 import { useForm } from "react-hook-form"
-import {postRequest} from "../../queries/sendRequest";
 import {useAuthStateProvider} from "../../contexts/AuthContextProvider";
 import {useNavigate} from "react-router";
 import toast from "react-hot-toast";
+import useHttp from "../../hooks/useHttp";
+import { useMutation } from "@tanstack/react-query";
 
 /**
  * Register for customer
@@ -15,6 +16,7 @@ import toast from "react-hot-toast";
  */
 export default function Form ({type}){
     const {setUser, setToken} = useAuthStateProvider()
+    const {sendRequest} = useHttp()
     const [buttonDisabled, setButtonDisabled] = useState(true)
     const [formErrors, setFormErrors] = useState({})
     const [phone, setPhone] = useState(null)
@@ -25,17 +27,47 @@ export default function Form ({type}){
         handleSubmit,
         watch,
         formState: {errors},
-        reset
     } = useForm()
+
+
+    //Register query
+    const registerMutation = useMutation({
+        mutationKey: ['register'],
+        mutationFn: async (data) => await sendRequest('/register', 'POST', data),
+        onMutate: () => {
+            setIsLoading(true)
+            toast.loading('Patientez...')
+        },
+        onSuccess: ({data}) => {
+            setUser(data.user)
+            setToken(data.access_token)
+            setPhone(null)
+            setIsLoading(false)
+            toast.remove()
+            if(data.user.type === 0) navigate('/mon-profil')
+            else navigate('/')
+        },
+        onError: (error) => {
+            setIsLoading(false)
+            if (error.status === 422){
+                const {errors} = error.response
+                Object.keys(errors).map((key, _) => {
+                    setFormErrors(formErrors => (
+                        {...formErrors, [key]: {
+                            message: errors[key],
+                        }}
+                    ))
+                })
+            }
+        }
+    })
 
     /**
      * Submit form function
      * @param {Object} data
      */
     const onSubmit = (data) => {
-        setIsLoading(true)
-        setTimeout(() => {
-            //TODO: Verifie si le contact est bien renseigné
+        //TODO: Verifie si le contact est bien renseigné
         if (phone === null || phone === undefined || phone === "") {
             setFormErrors({...formErrors, phone: {
                 message: "Veuillez renseigner votre contact"
@@ -47,39 +79,11 @@ export default function Form ({type}){
 
         //Reset form errors
         setFormErrors({})
-
         //Get form value
         const formData = {...data, phone: phone, type: type}
 
-        toast.loading('Patientez...')
-        // TODO: Send Request to register customer
-        postRequest('/register', formData)
-            .then((data) => {
-                setUser(data.user)
-                setToken(data.access_token)
-                reset()
-                setPhone(null)
-                setIsLoading(false)
-                toast.remove()
-                if(data.user.type === 0) navigate('/mon-profil')
-                else navigate('/')
-                
-            })
-            .catch(err => {
-                if (err.status === 422){
-                    const {errors} = err.response
-                    Object.keys(errors).map((key, _) => {
-                        setFormErrors(formErrors => (
-                            {...formErrors, [key]: {
-                                message: errors[key],
-                            }}
-                        ))
-                    })
-                }
-
-                setIsLoading(false)
-            })
-        }, 800);
+        //Send request
+        registerMutation.mutate(formData)
     }
 
     /**  Watch element **/

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useState } from 'react';
 import { imageExtensions, verifyExtension } from '../../scripts/helper';
 
@@ -7,9 +7,10 @@ import { imageExtensions, verifyExtension } from '../../scripts/helper';
  * @param image
  * @param onSetImage
  * @param formErrors
+ * @param url
  */
-export default function UploadImage({image, onSetImage, formErrors}) {
-    const [fileUrl, setFileUrl] = useState(null)
+export default function UploadImage({onSetImage, formErrors, url}) {
+    const [fileUrl, setFileUrl] = useState(url || null)
     const fileInputRef = useRef(null);
     const [imgError, setImgError] = useState(null)
 
@@ -46,12 +47,13 @@ export default function UploadImage({image, onSetImage, formErrors}) {
         setImgError(null)
     }
 
+
   return (
     <div className='form-group'>
         <label>Image <span className='text-danger'>* ({imageExtensions.join(', ')})</span></label>
         <div onClick={uploadFileOnClick} className='img_upload_card position-relative card mt-3 p-1 align-items-center justify-content-center d-flex' style={{width: '200px', height: '200px'}}>
             {
-                image 
+                fileUrl 
                 ? <><img src={fileUrl} alt="Image" className="img-fluid styled img_uploded m-0" /><a onClick={handleRemoveImage} className='position-absolute remove_image'><i className='icon-trash-7'></i></a></>
                 : <span className='add_image_text'><i className='icon-plus-circled'></i> Ajouter</span> 
             }
