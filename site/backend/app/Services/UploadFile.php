@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use PharIo\Manifest\Url;
+
 class UploadFile {
 
     /**
@@ -26,7 +28,7 @@ class UploadFile {
      * @param string path
      */
     public function delete($path){
-        if (file_exists(public_path($path))) {
+         if (file_exists(public_path($path))) {
             unlink(public_path($path));
             return true;
         }elseif(file_exists(url($path))) {

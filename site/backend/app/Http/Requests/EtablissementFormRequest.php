@@ -28,7 +28,6 @@ class EtablissementFormRequest extends FormRequest
             'adresse' => 'required|max:255',
             'phone' => 'required|min:5',
             'category' => 'required|integer',
-            'image' => 'required|image|mimes:png,jpg,jpeg',
             'gallerie' => ['nullable', function ($attribute, $value, $fail) {
                 foreach ($value as $file) {
                     if (!in_array($file->extension(), ['jpg', 'png', 'jpeg'])) {
@@ -40,12 +39,13 @@ class EtablissementFormRequest extends FormRequest
         ];
 
         if (request()->method() === 'PUT') {
-            $rules ['image'] = [
-                'nullable|image|mimes:png,jpg,jpeg'
-            ];
+            if (request()->hasFile('image')) {
+                $rules['image'] = 'nullable|image|mimes:png,jpg,jpeg';
+            }
+        } else {
+            $rules['image'] = 'required|image|mimes:png,jpg,jpeg';
         }
 
-        //dd($rules);
         return $rules;
     }
 

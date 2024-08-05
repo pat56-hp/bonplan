@@ -73,6 +73,7 @@ class AuthController extends Controller
             return $this->respondWithToken($token);
         }
 
+
         DB::rollBack();
         return response()->json(['error' => 'Une erreur s\'est produite.'], Response::HTTP_BAD_REQUEST);
     }

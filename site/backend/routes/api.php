@@ -55,6 +55,8 @@ Route::group(['prefix' => 'v1'], function (){
             Route::get('/show/{id}', 'show');
             Route::put('/update/{id}', 'update');
             Route::delete('/delete/{id}', 'destroy');
+            Route::put('/status/{id}', 'updateStatus');
+            Route::put('/delete/image/', 'deleteImage');
         });
     });
 

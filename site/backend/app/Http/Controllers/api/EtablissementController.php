@@ -91,22 +91,21 @@ class EtablissementController extends Controller
      */
     public function update(EtablissementFormRequest $request, $id)
     {
-        //dd($request->libelle);
         try {
             $data = $request->only([
-                'libelle', 'adresse', 'facebook', 'instagram', 'phone', 'category', 'email', 'ville', 'facebook', 'instagram', 'status'
+                'libelle', 'adresse', 'facebook', 'instagram', 'phone', 'category', 'email', 'ville', 'facebook', 'instagram', 'description', 'horaires', 'commodites'
             ]);
 
             if ($request->hasFile('image')){
                 //Suppression de l'ancienne image
                 $etablissement = $this->repository->find($id);
-                $this->uploadFile->delete($etablissement->image);
+                if(!empty($etablissement->image)) $this->uploadFile->delete($etablissement->image);
                 //Upload de la nouvelle image
                 $data['image'] = $this->uploadFile->run($request->image, 'etablissements');
             }
             
-            if ($request->gallerie) {
-                foreach($request->gallerie as $key => $gallerie) {
+            if ($request->gallery) {
+                foreach($request->gallery as $key => $gallerie) {
                     $data['gallerie'][$key] = $this->uploadFile->run($gallerie, 'gallerie');
                 }
             }
@@ -118,7 +117,8 @@ class EtablissementController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'data' => $e->getMessage(),
-                'message' => 'Oups, ne erreur s\'est produite'
+                'message' => 'Oups, une erreur s\'est produite',
+                'trace' => $e->getTrace()
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -136,7 +136,41 @@ class EtablissementController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'data' => $e->getMessage(),
-                'message' => 'Oups, ne erreur s\'est produite'
+                'message' => 'Oups, une erreur s\'est produite'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Modification du status
+     */
+    public function updateStatus(Request $request){
+        try {
+            $this->repository->changeStatus($request->id);
+            return response()->json([
+                'message' => 'Statut de l\'etablissement changé avec succès'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'data' => $e->getMessage(),
+                'message' => 'Oups, une erreur s\'est produite'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Suppression d'une image dans la gallerie
+     */
+    public function deleteImage(Request $request){
+        try {
+            $this->repository->deleteImage($request->image);
+            return response()->json([
+                'message' => 'Image supprimée avec succès'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'data' => $e->getMessage(),
+                'message' => 'Oups, une erreur s\'est produite'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

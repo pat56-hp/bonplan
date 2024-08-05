@@ -10,6 +10,12 @@ class Categories extends Model
     use HasFactory;
     protected $table = 'categoriesplans';
 
+    protected $hidden = [
+        'created_at',
+        'created_by',
+        'updated_at'
+    ];
+
     public function entreprises(){
         return $this->hasMany(Etablissement::class, 'category_id');
     }
