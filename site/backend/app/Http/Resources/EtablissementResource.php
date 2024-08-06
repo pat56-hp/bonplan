@@ -26,6 +26,7 @@ class EtablissementResource extends JsonResource
             'instagram' => $this->instagram,
             'image' => $this->image,
             'status' => $this->status,
+            'validate' => $this->validate,
             'total_image' => $this->galleries->count(),
             'created_at' => $this->created_at->format('d/m/Y à H:m')
         ];

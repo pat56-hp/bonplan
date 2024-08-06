@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EtablissementFormRequest;
+use App\Http\Resources\EtablissementResource;
 use App\Models\Etablissement;
 use App\Models\Gallerie;
 use App\Repositories\EtablissementRepository;
@@ -37,10 +38,16 @@ class EtablissementController extends Controller
     /**
      * Display a listing of etablissement.
      */
-    public function index()
-    {
+    public function index(Request $request)
+    {   $etablissements = $this->repository->getAll($request->key);
         return response()->json([
-            'data' => $this->repository->getAll()
+            'data' => EtablissementResource::collection($etablissements),
+            'meta' => [
+                'current_page' => $etablissements->currentPage(),
+                'last_page' => $etablissements->lastPage(),
+                'per_page' => $etablissements->perPage(),
+                'total' => $etablissements->total(),
+            ]
         ]);
     }
 

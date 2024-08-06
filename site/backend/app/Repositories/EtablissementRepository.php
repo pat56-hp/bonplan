@@ -20,12 +20,14 @@ class EtablissementRepository {
     }
 
     //Recuperation de tous les etablissements
-    public function getAll(){
-        $etablissements = EtablissementResource::collection(
-            $this->etablissement->where(['client_id' => auth('api')->id()])
-            ->latest()
-            ->paginate(50)
-        );
+    public function getAll($key = null){
+        
+
+        $etablissements = $this->etablissement
+        ->when(!empty($key), fn($q) => $q->whereAll(['libelle', 'description'], 'LIKE', '%' . $key . '%'))
+        ->where(['client_id' => auth('api')->id()])
+        ->latest()
+        ->paginate(30);
 
         return $etablissements;
     }
