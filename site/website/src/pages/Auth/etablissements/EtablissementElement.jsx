@@ -94,7 +94,7 @@ export default function EtablissementElement({etablissement, index}) {
                     <li className='mt-2'>
                         <strong>
                             <span className={etablissement.validate === 1 ? 'element_actif' : 'element_inactif'}>
-                                {etablissement.validate === 1 ? 'Validé' : 'Invalidé'}
+                                {etablissement.validate === 1 ? 'Validé' : (etablissement.validate === 0 ? 'En attente' : 'Refusé')}
                             </span> / 
                             <span className={etablissement.status === 1 ? 'element_actif' : 'element_inactif'}> {etablissement.status === 1 ? 'Actif' : 'Inactif'}</span>
                         </strong>

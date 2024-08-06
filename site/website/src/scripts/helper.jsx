@@ -83,6 +83,15 @@ const parseTimeStringToDate = (timeString) => {
     return date;
 };
 
+function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+        const context = this;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(context, args), wait);
+    };
+}
+
 export { 
     weekPlanSlide, 
     partnerSlide, 
@@ -91,5 +100,6 @@ export {
     convertToBase64,
     slug,
     createDate,
-    parseTimeStringToDate
+    parseTimeStringToDate,
+    debounce
 }

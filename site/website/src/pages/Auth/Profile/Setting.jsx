@@ -81,11 +81,11 @@ export default function Setting() {
     })
 
   return (
-    <section id='setting' className='content-current'>
-       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className='row justify-content-center'>
+    <>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <div className='row justify-content-center'>
                 <div className='col-md-8'>
-                    <h4 className='mb-4'>Modifier mon mot de passe</h4>
+                    <h4 className='my-4'>Modifier mon mot de passe</h4>
                     {
                         formErrors.error &&
                         <div className="alert alert-danger" role="alert">
@@ -161,6 +161,7 @@ export default function Setting() {
                 </button>
             </div>
         </div>
-    </section>
+    </>
+        
   )
 }

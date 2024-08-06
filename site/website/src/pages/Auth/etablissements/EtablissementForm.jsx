@@ -13,6 +13,7 @@ import { DatePicker } from 'rsuite';
 import toast from 'react-hot-toast'
 import { createDate } from '../../../scripts/helper'
 import useHttp from '../../../hooks/useHttp'
+import AlertMessage from '../../../components/AlertMessage'
 
 /**
  * Commponent of Form Etablissement
@@ -120,7 +121,7 @@ export default function EtablissementForm() {
             setPhone(response.phone)
             setCategory(response.category_id)
         },
-        isFetching : () => {
+        onMutate : () => {
             setIsFetching(true)
         },
     })
@@ -309,7 +310,6 @@ export default function EtablissementForm() {
     //Mise à jour des champs avec les valeurs de l'etablissement
     const handleGetEtablissement = () => {
         if (params.id) {
-            setIsFetching(true)
             getEtablissement.mutate(params.id)
         }
     }
@@ -321,7 +321,6 @@ export default function EtablissementForm() {
     useEffect(() => {
         if(queryGetCatecories.isSuccess) onSetCategories(queryGetCatecories.data)
         if(queryGetCommodites.isSuccess) onSetCommodites(queryGetCommodites.data)
-        handleGetEtablissement()
     }, [queryGetCatecories.data, queryGetCommodites.data, params])
 
 
@@ -333,6 +332,10 @@ export default function EtablissementForm() {
         etablissement.facebook && setValue('facebook', etablissement.facebook)
         etablissement.instagram && setValue('instagram', etablissement.instagram)
     }, [etablissement, params])
+
+    useEffect(() => {
+        handleGetEtablissement()
+    }, [])
 
   return (
     <section id='etablissements' className='content-current'>
@@ -351,6 +354,7 @@ export default function EtablissementForm() {
                         </div>
                     </div>
                     <form onSubmit={handleSubmit(onSubmit)}>
+                        <AlertMessage errors={formErrors} />
                         <div className='row'>
                             <div className='col-md-6'>
                                 <div className='form-group'>

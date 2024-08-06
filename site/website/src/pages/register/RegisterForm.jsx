@@ -8,6 +8,7 @@ import {useNavigate} from "react-router";
 import toast from "react-hot-toast";
 import useHttp from "../../hooks/useHttp";
 import { useMutation } from "@tanstack/react-query";
+import AlertMessage from "../../components/AlertMessage";
 
 /**
  * Register for customer
@@ -107,15 +108,7 @@ export default function Form ({type}){
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            {
-                Object.keys(formErrors).length > 0 &&
-                <div className="alert alert-danger" role="alert">
-                {Object.keys(formErrors).map((key, i) => (
-                    <span key={i}><i className="icon-info-circled"></i> {formErrors[key].message} <br/></span>
-                ))}
-                </div>
-                
-            }
+            <AlertMessage errors={formErrors} />
             <div className="form-group">
                 <Input
                     label="Nom"

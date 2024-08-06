@@ -1,26 +1,70 @@
-import React from "react";
+import { useMutation } from "@tanstack/react-query";
+import React, { useEffect } from "react";
+import { Pagination } from 'rsuite';
+import useHttp from "../hooks/useHttp";
+import toast from "react-hot-toast";
 
-export default function Paginate (){
+/**
+ * Component of Pagination
+ * @param {Object} meta 
+ * @param {React.useState} onSetMeta
+ * @param {React.useState} onSetLoading
+ * @param {String} pageUrl
+ * @returns 
+ */
+export default function Paginate ({meta, onSetMeta, onSetData, pageUrl}){
+    const {sendRequest} = useHttp()
+    const [currentPage, setCurrentPage] = React.useState(meta.current_page);
+    const [total, setTotal] = React.useState(meta.total)
+    const [limit, setLimit] = React.useState(meta.per_page)
+
+
+
+    const getDataFromPagination = useMutation({
+        
+        mutationFn: async (pageNumber) => await sendRequest(pageUrl + pageNumber, 'GET'),
+        mutationKey: ['getDataFromPagination'],
+        onMutate: () => {
+            toast.loading('Patientez...')
+        },
+        onSuccess: ({data}) => {
+            toast.remove()
+            onSetData(data.data)
+            onSetMeta(data.meta)
+        },
+        onError: () => {
+            toast.remove()
+        }
+    })
+
+    const handleChangePage = (value) => {
+        getDataFromPagination.mutate(value)
+    }
+
+    const handleState = () => {
+        setCurrentPage(meta.current_page)
+        setTotal(meta.total)
+        setLimit(meta.per_page)
+    }
+
+    useEffect(() => {
+        handleState()
+    }, [meta])
+
     return (
-        <nav aria-label="Page navigation">
-            <ul className="pagination justify-content-center">
-                <li className="page-item">
-                    <a className="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span className="sr-only">Previous</span>
-                    </a>
-                </li>
-                <li className="page-item active"><span className="page-link">1</span>
-                </li>
-                <li className="page-item"><a className="page-link" href="#">2</a></li>
-                <li className="page-item"><a className="page-link" href="#">3</a></li>
-                <li className="page-item">
-                    <a className="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span className="sr-only">Next</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        <div className="my-4 d-flex justify-content-center" style={{display: meta ? 'block' : 'none'}}>
+            {(total > limit) && <Pagination
+                prev
+                last
+                next
+                first
+                size="md"
+                page={total}
+                total={total}
+                limit={limit}
+                activePage={currentPage}
+                onChangePage={value => handleChangePage(value)}
+            />}
+        </div>
     )
 }

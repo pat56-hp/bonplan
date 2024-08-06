@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useLocation} from 'react-router-dom'
 import Breadcrumbs from '../components/Breadcrumbs'
 import { useAuthStateProvider } from '../contexts/AuthContextProvider'
 import toast from 'react-hot-toast'
 import useAuthToken from '../hooks/useAuthToken'
+import Loader from '../components/Loader'
+
 
 export default function DashboadLayout() {
     const {user} = useAuthStateProvider()
@@ -14,7 +16,6 @@ export default function DashboadLayout() {
     const [cetablissement, setCetablissement] = useState(false)
     const [cfavoris, setCfavoris] = useState(false)
     const [cprofile, setCprofile] = useState(false)
-    const [csetting, setCsetting] = useState(false)
     const location = useLocation()
 
     const titleOfDashboard = () => {
@@ -31,7 +32,6 @@ export default function DashboadLayout() {
         setCetablissement(false)
         setCfavoris(false)
         setCprofile(false)
-        setCsetting(false)
     }
 
     const titleOfEtablissement = () => {
@@ -48,7 +48,6 @@ export default function DashboadLayout() {
         setCdashboard(false)
         setCfavoris(false)
         setCprofile(false)
-        setCsetting(false)
     }
 
     const titleOfWishlist = () => {
@@ -65,7 +64,6 @@ export default function DashboadLayout() {
         setCetablissement(false)
         setCdashboard(false)
         setCprofile(false)
-        setCsetting(false)
     }
 
     const titleOfProfil = () => {
@@ -83,28 +81,9 @@ export default function DashboadLayout() {
         setCfavoris(false)
         setCetablissement(false)
         setCdashboard(false)
-        setCsetting(false)
     }
 
-    const titleOfSetting = () => {
-        setInfo({
-            title: 'Paramètres du compte',
-            subtitle: 'Cursus neque cursus curae ante scelerisque vehicula.'
-        })
-
-        setBreadcrumbs([
-            {label: 'Accueil', link : '/'},
-            {label: 'Paramètres du compte'}
-        ])
-
-        setCsetting(true)
-        setCprofile(false)
-        setCfavoris(false)
-        setCetablissement(false)
-        setCdashboard(false)
-    }
-
-
+    
     useEffect(() => {
         resetToken()
         const parentPath = location.pathname.split('/').slice(0, 2).join('/')
@@ -112,13 +91,13 @@ export default function DashboadLayout() {
         else if(location.pathname === '/mes-favoris') titleOfWishlist()
         else if(location.pathname === '/mon-profil') titleOfProfil()
         else if(location.pathname === '/mes-etablissements' || parentPath === '/mes-etablissements') titleOfEtablissement()
-        else if(location.pathname === '/parametres') titleOfSetting()
     }, [location, user])
 
   return (
     <>
         <Breadcrumbs info={info} breadcrumbs = {breadcrumbs} />
         <div className="margin_60 container">
+            
 			<div id="tabs" className="tabs">
 				<nav>
 					<ul>
@@ -130,16 +109,34 @@ export default function DashboadLayout() {
                                 <li className={cdashboard ? 'tab-current' : ''}>
                                     <Link 
                                         to="/tableau-de-bord" 
-                                        className="icon-booking"
+                                        className="icon-home"
                                         onClick={titleOfDashboard}
                                     ><span>Tableau de bord</span></Link>
                                 </li>
                                 <li className={cetablissement ? 'tab-current' : ''}>
                                     <Link 
                                         to="/mes-etablissements" 
-                                        className="icon-profile"
+                                        className="icon-icon-briefcase"
                                         onClick={titleOfEtablissement}
                                     ><span>Mes établissements</span></Link>
+                                </li>
+                                <li className=''>
+                                    <Link 
+                                        to="/mes-etablissements" 
+                                        className="icon-box"
+                                    ><span>Mes Produits</span></Link>
+                                </li>
+                                <li className=''>
+                                    <Link 
+                                        to="/mes-etablissements" 
+                                        className="icon-newspaper"
+                                    ><span>Mes Evènements</span></Link>
+                                </li>
+                                <li className=''>
+                                    <Link 
+                                        to="/mes-etablissements" 
+                                        className="icon-bag"
+                                    ><span>Mes Commandes</span></Link>
                                 </li>
                             </>
                         }
@@ -149,7 +146,7 @@ export default function DashboadLayout() {
                                 to="/mon-profil" 
                                 className="icon-profile"
                                 onClick={titleOfProfil}
-                            ><span>Profile</span></Link>
+                            ><span>Mon profile</span></Link>
                         </li>
                         <li className={cfavoris ? 'tab-current' : ''}>
                             <Link 
@@ -158,13 +155,6 @@ export default function DashboadLayout() {
                                 onClick={titleOfWishlist}
                             ><span>Mes favoris</span></Link>
                         </li>
-                        <li className={csetting ? 'tab-current' : ''}>
-                            <Link 
-                                to="/parametres" 
-                                className="icon-settings"
-                                onClick={titleOfSetting}
-                            ><span>Paramètres</span></Link>
-                        </li>
 					</ul>
 				</nav>
 				<div className="content">
@@ -172,6 +162,7 @@ export default function DashboadLayout() {
                 </div>
             </div>
         </div>
+        
     </>
   )
 }

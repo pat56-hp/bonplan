@@ -64,7 +64,7 @@ const Header = () => {
                                         <NavLink to={'/evenements'} className="show-submenu">Evènements</NavLink>
                                     </li>
                                     <li className="submenu">
-                                        <NavLink to={'/'} className="show-submenu">Devenir prestataire</NavLink>
+                                        <NavLink to={'/'} className="show-submenu">Boutique</NavLink>
                                     </li>
                                     <li className="submenu">
                                         <NavLink to={'/contact'} className="show-submenu">Contact</NavLink>

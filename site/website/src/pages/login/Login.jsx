@@ -8,6 +8,7 @@ import {useNavigate} from "react-router";
 import {toast} from "react-hot-toast";
 import useHttp from "../../hooks/useHttp";
 import { useMutation } from "@tanstack/react-query";
+import AlertMessage from "../../components/AlertMessage";
 
 const Login = () => {
     const { setUser, setToken } = useAuthStateProvider()
@@ -90,12 +91,7 @@ const Login = () => {
                 <a href="#0" className="social_bt facebook">Se connecter avec Facebook</a>
                 <a href="#0" className="social_bt google">Se connecter avec Google</a>
                 <div className="divider"><span>Ou</span></div>
-                {
-                    formErrors.error &&
-                    <div className="alert alert-danger" role="alert">
-                        <i className="icon-info-circled"></i> {formErrors.error.message}
-                    </div>
-                }
+                <AlertMessage errors={formErrors} />
                 <div className="form-group">
                     <Input
                         label={'Email'}

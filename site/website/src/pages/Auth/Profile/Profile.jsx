@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useAuthStateProvider } from '../../../contexts/AuthContextProvider'
 import Loader from '../../../components/Loader'
 import EditProfile from './EditProfile'
-import UploadImage from '../../../components/form/UploadImage'
+import Setting from './Setting'
 
 export default function Profile() {
 
@@ -24,7 +24,7 @@ export default function Profile() {
 
     useEffect (() => {
         loadData()
-    }, [user])
+    }, [])
 
 
   return (
@@ -36,9 +36,24 @@ export default function Profile() {
                     : 
                 (
                     <>
-                        <div className="row">
-                            <div className="col-md-6">
-                                <h4 className='mb-4'>Mon profile</h4>
+                        <div className="row justify-content-center">
+                            <div className="col-md-8">
+                                <h4 className='mb-4 d-flex justify-content-between'>
+                                    Mon profile
+                                    <a 
+                                        href='#' 
+                                        title={isUpdating ? 'Fermer le formulaire' : 'Modifier mon profil'}
+                                        className={`btn_1 pt-1 pb-2 ${isUpdating ? 'btn_color' : ''}`} 
+                                        onClick={handleUpdatingUser}
+                                    > 
+                                        {
+                                            !isUpdating
+                                                ? <><i className='icon-edit-2'></i></>
+                                                : <><i className='icon-cancel-circled2'></i></>
+                                        }
+                                        
+                                    </a>
+                                </h4>
                                 <ul id="profile_summary">
                                     <li>Nom <span>{user.name}</span>
                                     </li>
@@ -50,24 +65,14 @@ export default function Profile() {
                                     </li>
                                     <li>Adresse <span>{user.adresse ?? 'Aucune info'}</span></li>
                                 </ul>
-                                <a 
-                                    href='#' 
-                                    title={isUpdating ? 'Fermer le formulaire' : 'Modifier mon profil'}
-                                    className={`btn_1 pt-1 pb-2 ${isUpdating ? 'btn_color' : ''}`} 
-                                    onClick={handleUpdatingUser}
-                                > 
-                                    {
-                                        !isUpdating
-                                            ? <><i className='icon-edit-2'></i></>
-                                            : <><i className='icon-cancel-circled2'></i></>
-                                    }
-                                    
-                                </a>
+                                
                             </div>
                         </div>
                         {
                             isUpdating && <EditProfile onSetIsUpdating = {setIsUpdating} />
                         }
+                        <div className="divider"></div>
+                        <Setting />
                     </>
                 )
             }            

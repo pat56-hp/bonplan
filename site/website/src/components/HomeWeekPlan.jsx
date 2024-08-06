@@ -32,10 +32,6 @@ const HomeWeekPlan = () => {
                     ))
                 }
             </Swiper>
-
-            <p className="text-center add_bottom_30">
-                <a href="#" className="btn_1">Voir plus</a>
-            </p>
         </div>
     )
 }

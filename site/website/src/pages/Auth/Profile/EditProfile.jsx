@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { postRequest } from '../../../queries/sendRequest'
 import { useNavigate } from 'react-router-dom'
+import AlertMessage from '../../../components/AlertMessage'
 
 /**
  * 
@@ -98,85 +99,92 @@ export default function EditProfile({onSetIsUpdating}) {
   return (
     <>
         <div className="divider"></div>
-        <h4 className='my-4'>Modification du profile</h4>
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div className='row'>
-                <div className='col-md-6'>
-                    <div className='form-group'>
-                        <Input
-                            label= 'Nom'
-                            placeholder= 'Veuillez renseigner votre nom'
-                            important={true}
-                            defaultValue={user.name}
-                            inputRegister = {{...register('name', {
-                                required: 'Veuillez saisir votre nom',
-                                minLength : {
-                                    value: 3,
-                                    message: "Veuillez saisir un nom d'au moins 3 caractères"
-                                },
-                                maxLength : {
-                                    value: 100,
-                                    message: "Votre nom doit avoir 100 caractères maximum"
+            <AlertMessage errors={formErrors} />
+            <div className='row justify-content-center'>
+                <div className='col-md-8'>
+                    <h4 className='my-4'>Modification du profile</h4>
+                </div>
+                <div className='row justify-content-center'>
+                    <div className='col-md-4'>
+                        <div className='form-group'>
+                            <Input
+                                label= 'Nom'
+                                placeholder= 'Veuillez renseigner votre nom'
+                                important={true}
+                                defaultValue={user.name}
+                                inputRegister = {{...register('name', {
+                                    required: 'Veuillez saisir votre nom',
+                                    minLength : {
+                                        value: 3,
+                                        message: "Veuillez saisir un nom d'au moins 3 caractères"
+                                    },
+                                    maxLength : {
+                                        value: 100,
+                                        message: "Votre nom doit avoir 100 caractères maximum"
+                                    }
                                 }
-                            }
-                            )}}
-                        />
-                        {errors.name && <span className="text-danger text-sm-start"><i className="icon-info-circled"></i>{errors.name.message}</span>}
+                                )}}
+                            />
+                            {errors.name && <span className="text-danger text-sm-start"><i className="icon-info-circled"></i>{errors.name.message}</span>}
+                        </div>
+                    </div>
+                    <div className='col-md-4'>
+                        <div className='form-group'>
+                            <Input
+                                label= 'Prénom(s)'
+                                placeholder= 'Veuillez renseigner votre prénom'
+                                important={true}
+                                defaultValue={user.lastname}
+                                inputRegister= {{...register('lastname', {
+                                    required: "Veuillez saisir votre prénom",
+                                    minLength: {
+                                        value: 3,
+                                        message: "Veuillez saisir un prénom d'au moins 3 caractères"
+                                    },
+                                    maxLength: {
+                                        value: 100,
+                                        message: "Votre prénom doit avoir 100 caractères maximum"
+                                    }
+                                })}}
+                            />
+                            {errors.lastname && <span className="text-danger text-sm-start"><i className="icon-info-circled"></i>{errors.lastname.message}</span>}
+                        </div>
                     </div>
                 </div>
-                <div className='col-md-6'>
-                    <div className='form-group'>
-                        <Input
-                            label= 'Prénom(s)'
-                            placeholder= 'Veuillez renseigner votre prénom'
-                            important={true}
-                            defaultValue={user.lastname}
-                            inputRegister= {{...register('lastname', {
-                                required: "Veuillez saisir votre prénom",
-                                minLength: {
-                                    value: 3,
-                                    message: "Veuillez saisir un prénom d'au moins 3 caractères"
-                                },
-                                maxLength: {
-                                    value: 100,
-                                    message: "Votre prénom doit avoir 100 caractères maximum"
-                                }
-                            })}}
-                        />
-                        {errors.lastname && <span className="text-danger text-sm-start"><i className="icon-info-circled"></i>{errors.lastname.message}</span>}
+                <div className='row justify-content-center'>
+                    <div className='col-md-4'>
+                        <div className='form-group'>
+                            <label htmlFor="phone">Contact <span className="text-danger">*</span></label>
+                            <PhoneInput 
+                                country={'ci'}
+                                name="phone"
+                                value={phone}
+                                onChange={value => setPhone(value)}
+                                required={true}
+                                placeholder={'Entrez votre contact'}
+                                inputStyle={{
+                                    width: '100%',
+                                    height: '40px'
+                                }}
+                            />
+                            {formErrors.phone && <span className="text-danger text-sm-start"><i className="icon-info-circled"></i>{formErrors.phone.message}</span>}
+                        </div>
                     </div>
-                </div>
-                <div className='col-md-6'>
-                    <div className='form-group'>
-                        <label htmlFor="phone">Contact <span className="text-danger">*</span></label>
-                        <PhoneInput 
-                            country={'ci'}
-                            name="phone"
-                            value={phone}
-                            onChange={value => setPhone(value)}
-                            required={true}
-                            placeholder={'Entrez votre contact'}
-                            inputStyle={{
-                                width: '100%',
-                                height: '40px'
-                            }}
-                        />
-                        {formErrors.phone && <span className="text-danger text-sm-start"><i className="icon-info-circled"></i>{formErrors.phone.message}</span>}
-                    </div>
-                </div>
-                <div className='col-md-6'>
-                    <div className='form-group'>
-                        <Input
-                            label= 'Adresse'
-                            placeholder= 'Veuillez renseigner votre adresse'
-                            defaultValue={user.adresse}
-                            inputRegister={{...register('adresse', {
-                                maxLength: {
-                                    value: 250,
-                                    message: 'Votre adresse ne doit pas dépasser 250 lettres',
-                                }
-                            })}}
-                        />
+                    <div className='col-md-4'>
+                        <div className='form-group'>
+                            <Input
+                                label= 'Adresse'
+                                placeholder= 'Veuillez renseigner votre adresse'
+                                defaultValue={user.adresse}
+                                inputRegister={{...register('adresse', {
+                                    maxLength: {
+                                        value: 250,
+                                        message: 'Votre adresse ne doit pas dépasser 250 lettres',
+                                    }
+                                })}}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

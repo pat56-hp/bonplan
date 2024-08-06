@@ -8694,3 +8694,24 @@ ul#top_tools li{
     align-items: center !important;
     min-height: 100vh !important;
 }
+
+.icon-icon-briefcase::before{
+    content: '\e8f5'
+}
+
+.icon-box::before{
+    content: '\e86f';
+}
+
+.icon-bag::before{
+    content: '\e9cf'
+}
+
+.icon-newspaper-1::before {
+    content: '\eced';
+}
+
+.rs-pagination-btn-active{
+    border: 1px solid #e04f67cc !important;
+    color: #e04f67cc !important;
+}
