@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Breadcrumbs from "../components/Breadcrumbs";
 import Paginate from "../components/Paginate";
-import PlanFilter from "../components/PlanFilter";
+import PlanFilter from "../components/filter/PlanFilter";
 import PlanItemRow from "../components/PlanItemRow";
 import PlanFilterSort from "../components/PlanFilterSort";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -89,7 +89,6 @@ export default function Explore (){
 
                     <div className="col-lg-9">
 
-                        <PlanFilterSort />
                         {
                             isLoading 
                             ? <Chargement />

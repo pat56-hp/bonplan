@@ -1,5 +1,5 @@
 import React from "react";
-import { apiUrl } from "../scripts/helper";
+import { apiUrl, getShortDescription } from "../scripts/helper";
 import Rating from "./Rating";
 
 export default function PlanItemRow({bonplan}) {
@@ -26,12 +26,12 @@ export default function PlanItemRow({bonplan}) {
                         {/* <div className="score">Superb<span>9.0</span></div> */}
                         <h3 className="mt-2"><strong>{bonplan.libelle}</strong></h3>
                         <Rating />
-                        <p>
-                            Lorem ipsum dolor sit amet, quem convenire interesset ut vix, ad dicat
-                            sanctus detracto vis. Eos modus dolorum...
+                        <p className="mt-3 mb-3">
+                            {getShortDescription(bonplan.description, 200)}
                         </p>
                         
                         <span><i className='icon-location-outline'></i>{bonplan.ville}</span>
+
                         {
                             bonplan.commodites &&
                             <ul className="add_info mt-4 mb-4">

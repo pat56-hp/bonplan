@@ -6,7 +6,7 @@ import HomeWeekPlan from "../components/HomeWeekPlan";
 import HomeOther from "../components/HomeOther";
 import TabScript from "../scripts/TabScript";
 import { Placeholder } from 'rsuite';
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import useHttp from "../hooks/useHttp";
 import toast from "react-hot-toast";
 
@@ -17,37 +17,40 @@ const Home = () => {
     const [recommandes, setRecommandes] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const timeOutRef = useRef()
-    
-    const etablissementMutate = useMutation({
-        mutationFn: async () => await sendRequest('/home-datas', 'GET'),
-        mutationKey: ['getHomeData'],
-        onMutate: () => setIsLoading(true),
-        onSuccess: ({data}) => {
-            setCategories(data.categories)
-            setBonPlans(data.bonPlans)
-            setRecommandes(data.recommandes)
-            setIsLoading(false);
-            toast.remove()
-        },
-        onError : () => setIsLoading(false)
+
+    const {
+        data: getData,
+        isFetching,
+        isSuccess
+    } = useQuery({
+        queryKey: ['getHomeData'],
+        queryFn: () => sendRequest('/home-datas')
     })
 
-
     const setData = () => {
-        setIsLoading(true);
-        toast.loading('Chargement...')
+        if (isFetching) {
+            setIsLoading(true);
+            toast.loading('Chargement...');
+        }
+    
         timeOutRef.current = setTimeout(() => {
-            etablissementMutate.mutate()
-        }, 800)
+            if (isSuccess && getData) {
+                const { data } = getData;
+                setCategories(data.categories);
+                setBonPlans(data.bonPlans);
+                setRecommandes(data.recommandes);
+                setIsLoading(false);
+                toast.remove();
+            }
+        }, 800);
     }
 
     useEffect(() => {
         setData()
         return () => {
             clearTimeout(timeOutRef.current)
-            toast.remove()
         }
-    }, [])
+    }, [getData])
 
     return (
         <>

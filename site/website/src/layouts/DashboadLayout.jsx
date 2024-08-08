@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, Outlet, useLocation, useNavigate} from 'react-router-dom'
 import Breadcrumbs from '../components/Breadcrumbs'
 import { useAuthStateProvider } from '../contexts/AuthContextProvider'
-import toast from 'react-hot-toast'
 import useAuthToken from '../hooks/useAuthToken'
-import Loader from '../components/Loader'
-
 
 export default function DashboadLayout() {
     const {user, token} = useAuthStateProvider()
@@ -165,7 +162,6 @@ export default function DashboadLayout() {
 
     
     useEffect(() => {
-        resetToken()
         const parentPath = location.pathname.split('/').slice(0, 2).join('/')
         if (location.pathname === '/tableau-de-bord') titleOfDashboard()
         else if(location.pathname === '/mes-favoris') titleOfWishlist()
@@ -175,6 +171,10 @@ export default function DashboadLayout() {
         else if(location.pathname === '/mes-reservations') titleOfOrder()
 
     }, [location, user])
+
+    useEffect(() => {
+        resetToken()
+    }, [token])
 
   return (
     <>

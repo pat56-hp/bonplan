@@ -3,6 +3,7 @@ import {useAuthStateProvider} from "../contexts/AuthContextProvider";
 import {Outlet, useNavigate} from 'react-router-dom'
 import Header from "../components/head/Header";
 import Footer from "../components/Footer";
+import ScrollToTop from "../components/ScrollToTop";
 
 const GuestLayout = () => {
 
@@ -15,6 +16,7 @@ const GuestLayout = () => {
 
     return (
         <>
+            <ScrollToTop />
             <Header/>
             <main>
                 <section id="hero" className="login">

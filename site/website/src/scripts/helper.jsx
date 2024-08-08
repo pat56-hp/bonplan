@@ -94,6 +94,17 @@ function debounce(func, wait) {
 
 const apiUrl = () => import.meta.env.VITE_API_DOMAIN
 
+const stripHtmlTags = (html) => {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    return div.textContent || div.innerText || '';
+};
+
+const getShortDescription = (html, length) => {
+    const text = stripHtmlTags(html);
+    return text.length > length ? text.substring(0, length) + '...' : text;
+};
+
 export { 
     weekPlanSlide, 
     partnerSlide, 
@@ -104,5 +115,6 @@ export {
     createDate,
     parseTimeStringToDate,
     debounce,
-    apiUrl
+    apiUrl,
+    getShortDescription
 }

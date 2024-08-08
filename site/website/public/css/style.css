@@ -8758,3 +8758,14 @@ ul#top_tools li{
     padding: 0 !important;
     margin: 0 !important;
 }
+
+.reseau_sociaux{
+    margin: 10px 0;
+    padding: 0;
+    list-style: none;
+    display: block;
+}
+
+.reseau_sociaux li{
+    display: inline-block;
+}

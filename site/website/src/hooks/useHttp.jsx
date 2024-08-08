@@ -10,6 +10,11 @@ const useHttp = (props) => {
     const [success, setSuccess] = useState(false)
     const navigate = useNavigate()
     
+    useEffect(() => {
+        return () => {
+            toast.remove()
+        }
+    }, [toast])
     
     const sendRequest = async (
         url, 
