@@ -17,6 +17,8 @@ class EtablissementResource extends JsonResource
         return [
             'id' => $this->id,
             'category' => $this->category->libelle,
+            'category_icon' => $this->category->icon,
+            'commodites' => $this->commodites,
             'libelle' => $this->libelle,
             'ville' => $this->ville,
             'adresse' => $this->adresse,
@@ -27,6 +29,7 @@ class EtablissementResource extends JsonResource
             'image' => $this->image,
             'status' => $this->status,
             'validate' => $this->validate,
+            'description' => $this->description,
             'total_image' => $this->galleries->count(),
             'created_at' => $this->created_at->format('d/m/Y à H:m')
         ];

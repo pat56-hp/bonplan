@@ -67,6 +67,8 @@ Route::group(['prefix' => 'v1'], function (){
     Route::controller(FrontendController::class)->group(function (){
         Route::get('/categories', 'getCategories');
         Route::get('/commodites', 'getCommodites');
+        Route::get('/home-datas', 'getDataToHome');
+        Route::get('/explore-plans', 'explorePlan');
     });
 
     /**

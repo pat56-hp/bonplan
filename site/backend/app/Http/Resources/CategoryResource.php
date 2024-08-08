@@ -19,6 +19,7 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'libelle' => $this->libelle,
             'icon' => $this->icon,
+            'total_entreprise' => $this->entreprises->count()
         ];
     }
 }

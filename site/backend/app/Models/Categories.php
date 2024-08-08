@@ -17,6 +17,6 @@ class Categories extends Model
     ];
 
     public function entreprises(){
-        return $this->hasMany(Etablissement::class, 'category_id');
+        return $this->hasMany(Etablissement::class, 'category_id')->where(['status' => 1, 'validate' => 1]);
     }
 }

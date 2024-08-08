@@ -44,7 +44,6 @@ class EtablissementController extends Controller
             'data' => EtablissementResource::collection($etablissements),
             'meta' => [
                 'current_page' => $etablissements->currentPage(),
-                'last_page' => $etablissements->lastPage(),
                 'per_page' => $etablissements->perPage(),
                 'total' => $etablissements->total(),
             ]
