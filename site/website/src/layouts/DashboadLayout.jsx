@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, Outlet, useLocation} from 'react-router-dom'
+import { Link, Outlet, useLocation, useNavigate} from 'react-router-dom'
 import Breadcrumbs from '../components/Breadcrumbs'
 import { useAuthStateProvider } from '../contexts/AuthContextProvider'
 import toast from 'react-hot-toast'
@@ -8,7 +8,7 @@ import Loader from '../components/Loader'
 
 
 export default function DashboadLayout() {
-    const {user} = useAuthStateProvider()
+    const {user, token} = useAuthStateProvider()
     const { resetToken } = useAuthToken()
     const [info, setInfo] = useState({})
     const [breadcrumbs, setBreadcrumbs] = useState([])
@@ -16,7 +16,15 @@ export default function DashboadLayout() {
     const [cetablissement, setCetablissement] = useState(false)
     const [cfavoris, setCfavoris] = useState(false)
     const [cprofile, setCprofile] = useState(false)
+    const [cproduct, setCproduct] = useState(false)
+    const [cevent, setCevent] = useState(false)
+    const [corder, setCorder] = useState(false)
     const location = useLocation()
+    const navigate = useNavigate()
+
+    if (!token) {
+        navigate('/login')
+    }
 
     const titleOfDashboard = () => {
         setInfo({
@@ -32,6 +40,9 @@ export default function DashboadLayout() {
         setCetablissement(false)
         setCfavoris(false)
         setCprofile(false)
+        setCproduct(false)
+        setCevent(false)
+        setCorder(false)
     }
 
     const titleOfEtablissement = () => {
@@ -48,6 +59,9 @@ export default function DashboadLayout() {
         setCdashboard(false)
         setCfavoris(false)
         setCprofile(false)
+        setCproduct(false)
+        setCevent(false)
+        setCorder(false)
     }
 
     const titleOfWishlist = () => {
@@ -64,6 +78,9 @@ export default function DashboadLayout() {
         setCetablissement(false)
         setCdashboard(false)
         setCprofile(false)
+        setCproduct(false)
+        setCevent(false)
+        setCorder(false)
     }
 
     const titleOfProfil = () => {
@@ -81,6 +98,69 @@ export default function DashboadLayout() {
         setCfavoris(false)
         setCetablissement(false)
         setCdashboard(false)
+        setCproduct(false)
+        setCevent(false)
+        setCorder(false)
+    }
+
+    const titleOfProduct = () => {
+        setInfo({
+            title: 'Mes produits',
+            subtitle: 'Cursus neque cursus curae ante scelerisque vehicula.'
+        })
+
+        setBreadcrumbs([
+            {label: 'Accueil', link : '/'},
+            {label: 'Mes produits'}
+        ])
+
+        setCproduct(true)
+        setCprofile(false)
+        setCfavoris(false)
+        setCetablissement(false)
+        setCdashboard(false)
+        setCevent(false)
+        setCorder(false)
+    }
+
+    const titleOfEvent = () => {
+        setInfo({
+            title: 'Mes évènements',
+            subtitle: 'Cursus neque cursus curae ante scelerisque vehicula.'
+        })
+
+        setBreadcrumbs([
+            {label: 'Accueil', link : '/'},
+            {label: 'Mes évènements'}
+        ])
+
+        setCevent(true)
+        setCproduct(false)
+        setCprofile(false)
+        setCfavoris(false)
+        setCetablissement(false)
+        setCdashboard(false)
+        setCorder(false)
+    }
+
+    const titleOfOrder = () => {
+        setInfo({
+            title: 'Mes reservations',
+            subtitle: 'Cursus neque cursus curae ante scelerisque vehicula.'
+        })
+
+        setBreadcrumbs([
+            {label: 'Accueil', link : '/'},
+            {label: 'Mes reservations'}
+        ])
+
+        setCevent(false)
+        setCproduct(false)
+        setCprofile(false)
+        setCfavoris(false)
+        setCetablissement(false)
+        setCdashboard(false)
+        setCorder(true)
     }
 
     
@@ -91,6 +171,9 @@ export default function DashboadLayout() {
         else if(location.pathname === '/mes-favoris') titleOfWishlist()
         else if(location.pathname === '/mon-profil') titleOfProfil()
         else if(location.pathname === '/mes-etablissements' || parentPath === '/mes-etablissements') titleOfEtablissement()
+        else if(location.pathname === '/mes-evenements') titleOfEvent()
+        else if(location.pathname === '/mes-reservations') titleOfOrder()
+
     }, [location, user])
 
   return (
@@ -120,23 +203,17 @@ export default function DashboadLayout() {
                                         onClick={titleOfEtablissement}
                                     ><span>Mes établissements</span></Link>
                                 </li>
-                                <li className=''>
+                                <li className={cevent ? 'tab-current' : ''}>
                                     <Link 
-                                        to="/mes-etablissements" 
-                                        className="icon-box"
-                                    ><span>Mes Produits</span></Link>
-                                </li>
-                                <li className=''>
-                                    <Link 
-                                        to="/mes-etablissements" 
+                                        to="/mes-evenements" 
                                         className="icon-newspaper"
                                     ><span>Mes Evènements</span></Link>
                                 </li>
-                                <li className=''>
+                                <li className={corder ? 'tab-current' : ''}>
                                     <Link 
-                                        to="/mes-etablissements" 
+                                        to="/mes-reservations" 
                                         className="icon-bag"
-                                    ><span>Mes Commandes</span></Link>
+                                    ><span>Mes Réservations</span></Link>
                                 </li>
                             </>
                         }

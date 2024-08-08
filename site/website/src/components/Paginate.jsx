@@ -14,9 +14,9 @@ import toast from "react-hot-toast";
  */
 export default function Paginate ({meta, onSetMeta, onSetData, pageUrl}){
     const {sendRequest} = useHttp()
-    const [currentPage, setCurrentPage] = React.useState(meta.current_page);
-    const [total, setTotal] = React.useState(meta.total)
-    const [limit, setLimit] = React.useState(meta.per_page)
+    const [currentPage, setCurrentPage] = React.useState(null);
+    const [total, setTotal] = React.useState(null)
+    const [limit, setLimit] = React.useState(null)
 
 
 
@@ -42,9 +42,9 @@ export default function Paginate ({meta, onSetMeta, onSetData, pageUrl}){
     }
 
     const handleState = () => {
-        setCurrentPage(meta.current_page)
-        setTotal(meta.total)
-        setLimit(meta.per_page)
+        setCurrentPage(meta?.current_page)
+        setTotal(meta?.total)
+        setLimit(meta?.per_page)
     }
 
     useEffect(() => {

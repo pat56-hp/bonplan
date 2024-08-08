@@ -41,12 +41,12 @@ const Header = () => {
 
                 <div className="container">
                     <div className="row">
-                        <div className="col-3">
+                        <div className="col-4">
                             <div id="logo_home">
                                 <h1><NavLink to={'/'} title="City tours travel template">City Tours travel template</NavLink></h1>
                             </div>
                         </div>
-                        <nav className="col-9">
+                        <nav className="col-8">
                             <a className="cmn-toggle-switch cmn-toggle-switch__htx open_close" href="#"><span>Menu mobile</span></a>
                             <div className="main-menu">
                                 <div id="header_menu">
@@ -62,9 +62,6 @@ const Header = () => {
                                     </li>
                                     <li className="submenu">
                                         <NavLink to={'/evenements'} className="show-submenu">Evènements</NavLink>
-                                    </li>
-                                    <li className="submenu">
-                                        <NavLink to={'/'} className="show-submenu">Boutique</NavLink>
                                     </li>
                                     <li className="submenu">
                                         <NavLink to={'/contact'} className="show-submenu">Contact</NavLink>

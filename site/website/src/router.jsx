@@ -17,6 +17,10 @@ import Profile from "./pages/Auth/Profile/Profile";
 import Setting from "./pages/Auth/Profile/Setting";
 import Etablissement from "./pages/Auth/etablissements/Etablissement";
 import EtablissementForm from "./pages/Auth/etablissements/EtablissementForm";
+import Product from "./pages/Auth/products/Product";
+import Order from "./pages/Auth/orders/Order";
+import MyEvent from "./pages/Auth/events/MyEvent";
+import ProdutForm from "./pages/Auth/products/ProdutForm";
 
 const router = createBrowserRouter([
     {
@@ -24,7 +28,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: <Home />
+                element: <Home />,
             },
             {
                 path: '/explorer',
@@ -69,7 +73,7 @@ const router = createBrowserRouter([
                                 element: <Etablissement />
                             },
                             {
-                                path: 'nouveau',
+                                path: 'ajouter',
                                 element: <EtablissementForm />
                             },
                             {
@@ -78,6 +82,27 @@ const router = createBrowserRouter([
                             }
                         ]
                     },
+                    {
+                        path: 'mes-evenements',
+                        element: <MyEvent />
+                    },
+                    {
+                        path: '/mes-produits',
+                        children: [
+                            {
+                                path: '',
+                                element: <Product />
+                            },
+                            {
+                                path: 'ajouter',
+                                element: <ProdutForm />
+                            }
+                        ]
+                    },
+                    {
+                        path: 'mes-reservations',
+                        element: <Order />
+                    }
                 ]
             },
             {

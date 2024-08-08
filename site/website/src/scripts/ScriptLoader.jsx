@@ -18,10 +18,6 @@ const ScriptLoader = () => {
         loadScript('/js/jquery-3.6.4.min.js'),
         loadScript('/js/common_scripts_min.js'),
         loadScript('/js/functions.js'),
-        //loadScript('/js/switcher.js'),
-        //loadScript('/js/infobox.js')
-        /*
-        loadScript('/js/map_listing_hotels.js'),*/
   
       ])
       .then(() => {

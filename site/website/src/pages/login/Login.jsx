@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import Input from "../../components/form/Input";
 import {useForm} from "react-hook-form";
-import {postRequest} from "../../queries/sendRequest";
 import {useAuthStateProvider} from "../../contexts/AuthContextProvider";
 import {useNavigate} from "react-router";
 import {toast} from "react-hot-toast";

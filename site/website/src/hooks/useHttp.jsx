@@ -3,7 +3,7 @@ import { useAuthStateProvider } from '../contexts/AuthContextProvider'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 
-const useHttp = () => {
+const useHttp = (props) => {
     const {token, setToken, setUser} = useAuthStateProvider()
     const [error, setError] = useState(null)
     const [data, setData] = useState(null)
@@ -60,15 +60,18 @@ const useHttp = () => {
                 localStorage.removeItem('logU')
                 setToken(null)
                 setUser(null)
-                toast.error('Oups, votre session a est interrompue. Veuillez vous reconnecter svp.')
-                navigate('/login')
+                if (!props.isFrontend) {
+                    toast.error('Oups, votre session a est interrompue. Veuillez vous reconnecter svp.')
+                    navigate('/login')
+                }
+                
             }else if(error.status === 500 || error.status === 404) {
                 toast.error('Oups, erreur serveur...')
                 setError(error.response)
                 console.log(error.response)
             }else{
                 console.log(error.message)
-                toast.error('Oups, une erreur s\'est produite. Veuillez rééssayer svp.')
+                //toast.error('Oups, une erreur s\'est produite. Veuillez rééssayer svp.')
             }
 
             throw error

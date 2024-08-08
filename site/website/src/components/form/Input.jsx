@@ -14,7 +14,7 @@ import React, {useEffect, useState} from "react";
  * @returns {*}
  * @constructor
  */
-export default function Input({label, important, type, placeholder, otherClass, isPassword = false, inputRegister, defaultValue = '', onChange = {}}){
+export default function Input({label, important, type, placeholder, otherClass, isPassword = false, inputRegister, defaultValue = '', onChange = null}){
     const [passwordType, setPasswordType] = useState(type)
     const [showEye, setShowEye] = useState('icon-eye')
 

@@ -78,24 +78,25 @@ export default function Etablissement() {
 
   return (
     <section id='etablissements' className='content-current'>
-        <div className="row mb-3">
-            <div className="col-md-6">
-                <h4 className=''>Mes établissements</h4>
-            </div>
-        </div>
-        <div className='row mb-5 pb-3 border-bottom'>
-            <div className='col-md-6'>
-                <Link to={'/mes-etablissements/nouveau'} className='btn_1'><i className='icon-plus-circled'></i> Ajouter un établissement</Link>
-            </div>
-            <div className='col-md-6'>
-                <div className='text-end'>
-                    <label>
+        <div className="row mb-5 pb-3 border-bottom">
+            <div className="col-md-12">
+                <div className='d-flex justify-content-between flex-wrap'>
+                    <div className='mb-3'>
+                        <h4 className=''>Mes établissements</h4>
+                        <span className='section_sub_title'><i className='icon-info-circled'></i> Cette section est utilisée pour la gestion de vos établissements</span>
+                    </div>
+                    <div className='d-flex justify-content-between gap-2'>
+                        <div className=''>
+                            <Link to={'/mes-etablissements/ajouter'} className='btn_1 mb align-items-center d-flex' style={{height : '40px'}}>
+                                <i className='icon-plus-circled'></i> Ajouter
+                            </Link>
+                        </div>
                         <Input 
                             placeholder='Rechercher...'
                             otherClass = ''
                             onChange = {handleSearch}
                         />
-                    </label>
+                    </div>
                 </div>
             </div>
         </div>

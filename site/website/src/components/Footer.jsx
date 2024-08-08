@@ -2,6 +2,7 @@ import React from "react";
 import Input from "./form/Input";
 
 const Footer = () => {
+
     return (
         <>
             <footer className="revealed">
@@ -57,7 +58,7 @@ const Footer = () => {
                 </div>
             </footer>
 
-            <div id="toTop"></div>
+            <div id="toTop" onClick={() => scrollY(0)}></div>
         </>
     )
 }

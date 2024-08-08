@@ -2,13 +2,13 @@ import { useAuthStateProvider } from "../contexts/AuthContextProvider"
 
 const weekPlanSlide = {
     0: {
-        slidesPerView: 2,
+        slidesPerView: 1,
       },
       375: {
-        slidesPerView: 2,
+        slidesPerView: 1,
       },
-      767: {
-        slidesPerView: 3,
+      930: {
+        slidesPerView: 2,
       },
       1400: {
         slidesPerView: 3,
@@ -17,7 +17,7 @@ const weekPlanSlide = {
 
 const partnerSlide = {
     0: {
-        slidesPerView: 2,
+        slidesPerView: 1,
     },
     375: {
         slidesPerView: 3,
@@ -92,6 +92,8 @@ function debounce(func, wait) {
     };
 }
 
+const apiUrl = () => import.meta.env.VITE_API_DOMAIN
+
 export { 
     weekPlanSlide, 
     partnerSlide, 
@@ -101,5 +103,6 @@ export {
     slug,
     createDate,
     parseTimeStringToDate,
-    debounce
+    debounce,
+    apiUrl
 }

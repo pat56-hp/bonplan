@@ -1,8 +1,10 @@
 import React from "react";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import EventFilter from "../../components/EventFilter";
+import { ScrollRestoration } from "react-router-dom";
 
 export default function EventShow () {
+    ScrollRestoration({})
     const breadcrumbs = [
         {label: 'Accueil', link: '/'},
         {label: 'Evènements', link: '/evenements'},
