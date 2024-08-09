@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import PlanItem from "./PlanItem";
+import PlanItem from "../bonplans/PlanItem";
 import { Link } from "react-router-dom";
 
-const HomeOther = ({datas}) => {
+const HomeOther = ({datas, total}) => {
     
     return (
         <>
@@ -26,7 +26,7 @@ const HomeOther = ({datas}) => {
                         </div>
                         <p className="text-center add_bottom_30">
                             <Link to={'/explorer'} className="btn_1 medium"><i className="icon-eye-7"></i>Explorer
-                                (144) </Link>
+                                ({total}) </Link>
                         </p>
                     </div>
                 </div>

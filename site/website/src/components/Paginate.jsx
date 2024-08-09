@@ -17,6 +17,7 @@ export default function Paginate ({meta, onSetMeta, onSetData, pageUrl}){
     const [currentPage, setCurrentPage] = React.useState(null);
     const [total, setTotal] = React.useState(null)
     const [limit, setLimit] = React.useState(null)
+    const timeOutRef = React.useRef(null)
 
 
 
@@ -24,13 +25,15 @@ export default function Paginate ({meta, onSetMeta, onSetData, pageUrl}){
         
         mutationFn: async (pageNumber) => await sendRequest(pageUrl + pageNumber, 'GET'),
         mutationKey: ['getDataFromPagination'],
-        onMutate: () => {
-            toast.loading('Patientez...')
-        },
         onSuccess: ({data}) => {
             toast.remove()
             onSetData(data.data)
             onSetMeta(data.meta)
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: 'instant'
+            });
         },
         onError: () => {
             toast.remove()
@@ -38,7 +41,10 @@ export default function Paginate ({meta, onSetMeta, onSetData, pageUrl}){
     })
 
     const handleChangePage = (value) => {
-        getDataFromPagination.mutate(value)
+        toast.loading('Patientez...')
+        timeOutRef.current = setTimeout(() => {
+            getDataFromPagination.mutate(value)
+        }, 500);
     }
 
     const handleState = () => {
@@ -49,6 +55,10 @@ export default function Paginate ({meta, onSetMeta, onSetData, pageUrl}){
 
     useEffect(() => {
         handleState()
+
+        return () => {
+            clearTimeout(timeOutRef.current)
+        }
     }, [meta])
 
     return (

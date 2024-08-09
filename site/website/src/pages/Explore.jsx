@@ -1,14 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import Breadcrumbs from "../components/Breadcrumbs";
 import Paginate from "../components/Paginate";
-import PlanFilter from "../components/filter/PlanFilter";
-import PlanItemRow from "../components/PlanItemRow";
-import PlanFilterSort from "../components/PlanFilterSort";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import PlanFilter from "./bonplans/filter/PlanFilter";
+import { useMutation } from "@tanstack/react-query";
 import { Placeholder } from 'rsuite';
 import useHttp from "../hooks/useHttp";
 import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
+import PlanItemRow from "./bonplans/PlanItemRow";
 
 export default function Explore (){
     const {sendRequest} = useHttp()
@@ -16,7 +15,8 @@ export default function Explore (){
     const [isLoading, setIsLoading] = useState(false)
     const [meta, setMeta] = useState({})
     const location = useSearchParams()
-    const timeOutRef = useRef()
+    const timeOutRef = useRef(null)    
+
 
     const breadcrumbs = [
         {label: 'Accueil', link: '/'},
@@ -28,6 +28,7 @@ export default function Explore (){
         subtitle: 'Cursus neque cursus curae ante scelerisque vehicula.'
     }
 
+    //Recuperation des bonplans en fonction de l'url de la requette
     const getData = useMutation({
         mutationKey: ['getAllEtablissements'],
         mutationFn: async (requestUrl) => await sendRequest(requestUrl),
@@ -37,31 +38,47 @@ export default function Explore (){
         onSuccess: ({data}) => {
             const {data : etablissements, meta} = data
             setBonPlans(etablissements)
+            console.log(meta)
             setMeta(meta)
             setIsLoading(false)
             toast.remove()
+            
         },
         onError: () => setIsLoading(false)
     })
 
+    //Envoie des infos lors du chargement de la page
     const setData = () => {
         setIsLoading(true)
         toast.loading('Chargement...')
+        const searchData = Object.fromEntries(location[0])
+        submitRequest(searchData)
+    }
+
+    //Preparation de la requette
+    const submitRequest = (searchData) => {
         timeOutRef.current = setTimeout(() => {
-            const searchData = Object.fromEntries(location[0])
-
             if (Object.keys(searchData).length > 0) {
-                const requestUrl = `/explore-plans?${
-                    Object.keys(searchData).map((key, index) => index === 0 ? `${key}=${searchData[key]}` : `&${key}=${searchData[key]}`)
-                }`
-
-                getData.mutate(requestUrl.replace(',', ''))
+                const requestUrl = `/explore-plans?${Object.keys(searchData).map(key => `${key}=${searchData[key]}`).join('&')}`;
+                getData.mutate(requestUrl)
             }else{
                 const requestUrl = '/explore-plans'
                 getData.mutate(requestUrl)
             }
         }, 800);
     }
+
+    //Envoie des infos pour le filtre
+    const handleFilter = (data) => {
+        setIsLoading(true)
+        //toast.loading('Chargement...')
+        if (timeOutRef.current) {
+            clearTimeout(timeOutRef.current)
+        }
+
+        submitRequest(data)
+    }
+
 
     useEffect(() => {
         setData()
@@ -85,7 +102,7 @@ export default function Explore (){
             <div className="container margin_60">
 
                 <div className="row">
-                    <PlanFilter />
+                    <PlanFilter getData = {getData} handleFilter = {handleFilter} />
 
                     <div className="col-lg-9">
 
@@ -104,7 +121,9 @@ export default function Explore (){
                                 </div>
                             )
                         }
+
                         
+                
                         <Paginate 
                             meta={meta}
                             onSetMeta={setMeta}

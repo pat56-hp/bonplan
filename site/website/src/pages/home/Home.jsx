@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import Banner from "../components/head/Banner";
-import HomeEvent from "../components/HomeEvent";
-import Categories from "../components/Categories";
-import HomeWeekPlan from "../components/HomeWeekPlan";
-import HomeOther from "../components/HomeOther";
-import TabScript from "../scripts/TabScript";
+import Banner from "../../components/head/Banner";
+import HomeEvent from "./HomeEvent";
+import Categories from "../../components/Categories";
+import HomeWeekPlan from "./HomeWeekPlan";
+import HomeOther from "./HomeOther";
+import TabScript from "../../scripts/TabScript";
 import { Placeholder } from 'rsuite';
 import { useMutation, useQuery } from "@tanstack/react-query";
-import useHttp from "../hooks/useHttp";
+import useHttp from "../../hooks/useHttp";
 import toast from "react-hot-toast";
 
 const Home = () => {
@@ -15,6 +15,7 @@ const Home = () => {
     const [categories, setCategories] =  useState([])
     const [bonPlans, setBonPlans] = useState([])
     const [recommandes, setRecommandes] = useState([])
+    const [total, setTotal] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
     const timeOutRef = useRef()
 
@@ -39,6 +40,7 @@ const Home = () => {
                 setCategories(data.categories);
                 setBonPlans(data.bonPlans);
                 setRecommandes(data.recommandes);
+                setTotal(data.total)
                 setIsLoading(false);
                 toast.remove();
             }
@@ -61,7 +63,7 @@ const Home = () => {
                     <HomeEvent/>
                     <Categories datas = {categories}/>
                     <HomeWeekPlan datas = {recommandes} />
-                    <HomeOther datas = {bonPlans}/>
+                    <HomeOther datas = {bonPlans} total = {total}/>
                 </>
             }
             

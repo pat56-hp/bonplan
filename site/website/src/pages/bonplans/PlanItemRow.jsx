@@ -1,6 +1,6 @@
 import React from "react";
-import { apiUrl, getShortDescription } from "../scripts/helper";
-import Rating from "./Rating";
+import { apiUrl, getShortDescription } from "../../scripts/helper";
+import Rating from "../../components/Rating";
 
 export default function PlanItemRow({bonplan}) {
     

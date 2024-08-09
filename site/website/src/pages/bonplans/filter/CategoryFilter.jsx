@@ -1,21 +1,21 @@
-import { useQuery } from '@tanstack/react-query'
 import React, { useEffect, useRef, useState } from 'react'
-import useHttp from '../../hooks/useHttp'
 import Chargement from './Chargement'
+import { useQuery } from '@tanstack/react-query'
+import useHttp from '../../../hooks/useHttp'
 
-export default function CommoditeFilter() {
+export default function CategoryFilter({category, onSetCategory}) {
     const {sendRequest} = useHttp()
-    const [commodites, setCommodites] = useState([])
+    const [categories, setCategories] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const timeoutRef = useRef(null)
 
     const {
-        data: getCommodites,
+        data: getCategories,
         isFetching,
         isSuccess,
     } = useQuery({
-        queryKey: ['getCommodites'],
-        queryFn: async () => await sendRequest('/commodites')
+        queryKey: ['getCategoriesBanner'],
+        queryFn: async () => await sendRequest('/categories')
     })
 
     const setData = () => {
@@ -25,36 +25,48 @@ export default function CommoditeFilter() {
 
         timeoutRef.current = setTimeout(() => {
             if (isSuccess) {
-                const {data} = getCommodites
-                setCommodites(data.data)
+                const {data} = getCategories
+                setCategories(data.data)
                 setIsLoading(false)
             }
         }, 800);   
     }
 
+    const handleChecked = (id, e) => {
+        const isChecked = e.target.checked;
+    
+        if (isChecked) {
+            onSetCategory(prev => [...prev, id]);
+        } else {
+            const updatedCategories = category.filter(cat => cat !== id);
+            onSetCategory(updatedCategories);
+        }
+    };
+    
     useEffect(() => {
         setData()
         return () => {
             clearTimeout(timeoutRef.current)
         }
-    }, [getCommodites, isSuccess])
+    }, [getCategories, isSuccess])
 
   return (
     <div className="filter_type">
-        <h6>Par commodités</h6>
+        <h6>Par catégories</h6>
         {
             isLoading 
                 ? <Chargement />
                 : (
                     <ul>
                         {
-                            commodites.map((commodite, key) => (
+                            categories.map((cat, key) => (
                                 <li key = {key}>
                                     <label className="container_check">
-                                        {commodite.libelle} ({commodite.total_entreprise})
+                                        {cat.libelle} ({cat.total_entreprise})
                                         <input
                                             type="checkbox"
-                                            defaultChecked={false}
+                                            checked={category.includes(cat.id) ? true : false}
+                                            onChange={e => handleChecked(cat.id, e)}
                                         />
                                         <span className="checkmark"></span>
                                     </label>
@@ -67,3 +79,4 @@ export default function CommoditeFilter() {
     </div>
   )
 }
+

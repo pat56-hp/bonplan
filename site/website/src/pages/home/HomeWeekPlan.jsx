@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import {Swiper, SwiperSlide} from "swiper/react";
-import {weekPlanSlide} from "../scripts/helper";
+import {weekPlanSlide} from "../../scripts/helper";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import PlanItem from "./PlanItem";
+import PlanItem from "../bonplans/PlanItem";
 
 const HomeWeekPlan = ({datas}) => {
     

@@ -1,6 +1,6 @@
 import React from "react";
-import { apiUrl } from "../scripts/helper";
-import Rating from "./Rating";
+import { apiUrl } from "../../scripts/helper";
+import Rating from "../../components/Rating";
 
 /**
  * Bon plan item
