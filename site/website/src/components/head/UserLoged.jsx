@@ -63,14 +63,14 @@ export default function UserLoged (){
             {
                 user.type === 1 &&
                 <>
-                    <Link to={'/tableau-de-bord'}>
-                        <Dropdown.Item icon={<DashboardIcon />}>
-                            Tableau de bord
-                        </Dropdown.Item>
-                    </Link>
                     <Link to={'/mes-etablissements'}>
                         <Dropdown.Item icon={<EtablissementIcon />}>
                             Mes établissements
+                        </Dropdown.Item>
+                    </Link>
+                    <Link to={'/mes-evenements'}>
+                        <Dropdown.Item icon={<EventIcon />}>
+                            Mes évènements
                         </Dropdown.Item>
                     </Link>
                 </>
@@ -106,9 +106,9 @@ function HeartIcon () {
     );
 }
 
-function DashboardIcon (){
+function EventIcon (){
     return (
-        <span className="icon-home-outline"></span>
+        <span className="icon-calendar"></span>
     )
 }
 

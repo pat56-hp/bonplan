@@ -1,6 +1,7 @@
 import React from "react";
-import { apiUrl } from "../../scripts/helper";
+import { apiUrl, slug } from "../../scripts/helper";
 import Rating from "../../components/Rating";
+import { Link } from "react-router-dom";
 
 /**
  * Bon plan item
@@ -14,13 +15,18 @@ export default function PlanItem({bonplan}){
         <div className="hotel_container">
             {/* <div className="ribbon_3"><span>Top rated</span></div> */}
             <div className="img_container">
-                <a href="single_hotel.html">
-                    <img src={apiUrl() + bonplan.image} width="800" height="533" className="img-fluid"
-                         alt="Image"/>
+                <Link to={`/explorer/${slug(bonplan.id + '-' +bonplan.libelle)}`}>
+                    <img 
+                        src={apiUrl() + bonplan.image} 
+                        width="800" 
+                        height="533" 
+                        className="img-fluid"
+                        alt="Image"
+                    />
                     <div className="short_info">
                         <i className={bonplan.category_icon}></i>{bonplan.category}
                     </div>
-                </a>
+                </Link>
             </div>
             <div className="hotel_title">
                 <h3><strong>{bonplan.libelle}</strong></h3>

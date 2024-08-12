@@ -3,24 +3,26 @@ import {createBrowserRouter} from "react-router-dom";
 import DefaultLayout from "./layouts/DefaultLayout";
 import GuestLayout from "./layouts/GuestLayout";
 import Home from "./pages/home/Home";
-import Login from "./pages/login/Login";
+import Login from "./pages/auth/login/Login";
 import NotFound from "./pages/NotFound";
-import Explore from "./pages/Explore";
 import Contact from "./pages/Contact";
 import Event from "./pages/events/Event";
 import EventShow from "./pages/events/EventShow";
-import Register from "./pages/register/Register";
+import Register from "./pages/auth/register/Register";
 import DashboadLayout from "./layouts/DashboadLayout";
-import Dashboard from "./pages/Auth/Dashboard";
-import Favoris from "./pages/Auth/Favoris";
-import Profile from "./pages/Auth/Profile/Profile";
-import Setting from "./pages/Auth/Profile/Setting";
-import Etablissement from "./pages/Auth/etablissements/Etablissement";
-import EtablissementForm from "./pages/Auth/etablissements/EtablissementForm";
-import Product from "./pages/Auth/products/Product";
-import Order from "./pages/Auth/orders/Order";
-import MyEvent from "./pages/Auth/events/MyEvent";
-import ProdutForm from "./pages/Auth/products/ProdutForm";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Favoris from "./pages/dashboard/Favoris";
+import Profile from "./pages/dashboard/Profile/Profile";
+import EtablissementForm from "./pages/dashboard/etablissements/EtablissementForm";
+import Product from "./pages/dashboard/products/Product";
+import Order from "./pages/dashboard/orders/Order";
+import ProdutForm from "./pages/dashboard/products/ProdutForm";
+import Explore from "./pages/bonplans/Explore";
+import Details from "./pages/bonplans/details/Details";
+import Etablissement from "./pages/dashboard/etablissements/Etablissement";
+import EventForm from "./pages/dashboard/events/EventForm";
+import MyEvent from "./pages/dashboard/events/MyEvent";
+import Setting from "./pages/dashboard/Profile/Setting";
 
 const router = createBrowserRouter([
     {
@@ -32,7 +34,16 @@ const router = createBrowserRouter([
             },
             {
                 path: '/explorer',
-                element: <Explore />
+                children: [
+                    {
+                        path: '',
+                        element: <Explore />
+                    },
+                    {
+                        path: ':slug',
+                        element: <Details />
+                    }
+                ]
             },
             {
                 path: '/evenements',
@@ -83,8 +94,17 @@ const router = createBrowserRouter([
                         ]
                     },
                     {
-                        path: 'mes-evenements',
-                        element: <MyEvent />
+                        path: '/mes-evenements',
+                        children: [
+                            {
+                                path: '',
+                                element: <MyEvent />
+                            },
+                            {
+                                path: 'ajouter',
+                                element: <EventForm />
+                            }
+                        ]
                     },
                     {
                         path: '/mes-produits',

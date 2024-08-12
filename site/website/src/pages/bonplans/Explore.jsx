@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import Breadcrumbs from "../components/Breadcrumbs";
-import Paginate from "../components/Paginate";
-import PlanFilter from "./bonplans/filter/PlanFilter";
+import Breadcrumbs from "../../components/Breadcrumbs";
+import Paginate from "../../components/Paginate";
+import PlanFilter from "./filter/PlanFilter";
 import { useMutation } from "@tanstack/react-query";
 import { Placeholder } from 'rsuite';
-import useHttp from "../hooks/useHttp";
+import useHttp from "../../hooks/useHttp";
 import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
-import PlanItemRow from "./bonplans/PlanItemRow";
+import PlanItemRow from "./PlanItemRow";
+import ElementNotFound from "../../components/ElementNotFound";
 
 export default function Explore (){
     const {sendRequest} = useHttp()
@@ -16,7 +17,6 @@ export default function Explore (){
     const [meta, setMeta] = useState({})
     const location = useSearchParams()
     const timeOutRef = useRef(null)    
-
 
     const breadcrumbs = [
         {label: 'Accueil', link: '/'},
@@ -38,7 +38,6 @@ export default function Explore (){
         onSuccess: ({data}) => {
             const {data : etablissements, meta} = data
             setBonPlans(etablissements)
-            console.log(meta)
             setMeta(meta)
             setIsLoading(false)
             toast.remove()
@@ -79,7 +78,6 @@ export default function Explore (){
         submitRequest(data)
     }
 
-
     useEffect(() => {
         setData()
         return () => {
@@ -114,16 +112,10 @@ export default function Explore (){
                                     <PlanItemRow bonplan= {bonplan} key={key}/>
                                 ))
                                 :
-                                <div className='text-center my-5'>
-                                    <h5 className='empty-data'>
-                                        <i className='icon-info-circled-1'></i> Oups, aucun bon plan trouvé
-                                    </h5>
-                                </div>
+                                <ElementNotFound />
                             )
                         }
 
-                        
-                
                         <Paginate 
                             meta={meta}
                             onSetMeta={setMeta}

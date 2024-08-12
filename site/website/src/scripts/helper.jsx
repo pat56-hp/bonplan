@@ -116,5 +116,6 @@ export {
     parseTimeStringToDate,
     debounce,
     apiUrl,
+    stripHtmlTags,
     getShortDescription
 }

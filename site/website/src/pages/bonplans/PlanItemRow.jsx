@@ -1,6 +1,7 @@
 import React from "react";
-import { apiUrl, getShortDescription } from "../../scripts/helper";
+import { apiUrl, getShortDescription, slug } from "../../scripts/helper";
 import Rating from "../../components/Rating";
+import { Link } from "react-router-dom";
 
 export default function PlanItemRow({bonplan}) {
     
@@ -15,10 +16,10 @@ export default function PlanItemRow({bonplan}) {
                         </a>
                     </div>
                     <div className="img_list">
-                        <a href="single_hotel.html">
+                        <Link to={`/explorer/${slug(bonplan.id + '-' +bonplan.libelle)}`}>
                             <img src={apiUrl() + bonplan.image} alt="Image" />
                             <div className="short_info"><i className={bonplan.category_icon}></i>{bonplan.category}</div>
-                        </a>
+                        </Link>
                     </div>
                 </div>
                 <div className="col-lg-8 col-md-8">

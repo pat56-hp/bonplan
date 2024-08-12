@@ -8,6 +8,7 @@ import useHttp from '../../../hooks/useHttp'
 import { Pagination } from 'rsuite';
 import Paginate from '../../../components/Paginate'
 import toast from 'react-hot-toast'
+import ElementNotFound from '../../../components/ElementNotFound'
 
 export default function Etablissement() {
 
@@ -78,7 +79,7 @@ export default function Etablissement() {
 
   return (
     <section id='etablissements' className='content-current'>
-        <div className="row mb-5 pb-3 border-bottom">
+        <div className="row mb-4 pb-3 border-bottom">
             <div className="col-md-12">
                 <div className='d-flex justify-content-between flex-wrap'>
                     <div className='mb-3'>
@@ -104,24 +105,27 @@ export default function Etablissement() {
             isFetchingEtablissements
             ? <Loader />
             : (
-                etablissements.length > 0
-                ? 
-                    <>
-                        {
-                            etablissements.map((etablissement, index) => (
-                                <EtablissementElement 
-                                    key={index}
-                                    etablissement={etablissement} 
-                                />
-                            ))
-                        }
-                        
-                    </>
-                : <div className='text-center'>
-                    <h5 className='empty-data'>
-                        <i className='icon-info-circled-1'></i> Aucun établissement disponible
-                    </h5>
+                <>
+                <div className='mb-4'>
+                    <h6 className='text-end'>Total : <span>{meta.total}</span></h6>
                 </div>
+                {
+                    etablissements.length > 0
+                    ? 
+                        <>
+                            {
+                                etablissements.map((etablissement, index) => (
+                                    <EtablissementElement 
+                                        key={index}
+                                        etablissement={etablissement} 
+                                    />
+                                ))
+                            }
+                            
+                        </>
+                    : <ElementNotFound />
+                }
+                </>
             )
         }
         <Paginate 

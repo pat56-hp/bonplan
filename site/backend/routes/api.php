@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\EtablissementController;
+use App\Http\Controllers\api\EventController;
 use App\Http\Controllers\api\FrontendController;
 use App\Http\Controllers\api\ImageController;
 use App\Http\Controllers\api\ProfileController;
@@ -61,14 +62,32 @@ Route::group(['prefix' => 'v1'], function (){
     });
 
     /**
+     * @Route of Events
+     * @Controller EventController
+     */
+    Route::controller(EventController::class)->group(function(){
+        Route::group(['prefix' => 'evenements'], function(){
+            Route::get('/', 'index');
+            Route::post('/store', 'store');
+            Route::get('/show/{id}', 'show');
+            Route::put('/update/{id}', 'update');
+            Route::delete('/delete/{id}', 'destroy');
+            Route::put('/status/{id}', 'updateStatus');
+            Route::put('/delete/image/', 'deleteImage');
+        });
+    });
+
+    /**
      * @Route of get element of web site page
      * @Controller FrontendController
      */
     Route::controller(FrontendController::class)->group(function (){
         Route::get('/categories', 'getCategories');
+        Route::get('/eventCategories', 'getEventCategories');
         Route::get('/commodites', 'getCommodites');
         Route::get('/home-datas', 'getDataToHome');
         Route::get('/explore-plans', 'explorePlan');
+        Route::get('/details-plans/{etablissement}', 'showEtablissement');
     });
 
     /**

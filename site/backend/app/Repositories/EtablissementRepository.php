@@ -21,8 +21,6 @@ class EtablissementRepository {
 
     //Recuperation de tous les etablissements
     public function getAll($key = null){
-        
-
         $etablissements = $this->etablissement
         ->when(!empty($key), fn($q) => $q->whereAll(['libelle', 'description'], 'LIKE', '%' . $key . '%'))
         ->where(['client_id' => auth('api')->id()])
@@ -44,7 +42,7 @@ class EtablissementRepository {
                     'category_id' => $data['category'],
                     'adresse' => $data['adresse'],
                     'ville' => $data['ville'],
-                    'email' => isset($data['email']) && $data['email'] !== 'null' ? $data['email'] : null,
+                    'email' => $data['email'] ?? null,
                     'image' => $data['image'],
                     'facebook' => $data['facebook'] ?? null,
                     'instagram' => $data['instagram'] ?? null,
@@ -59,7 +57,7 @@ class EtablissementRepository {
                     'category_id' => $data['category'],
                     'adresse' => $data['adresse'],
                     'ville' => $data['ville'],
-                    'email' => isset($data['email']) ? $data['email'] : null,
+                    'email' => $data['email'] ?? null,
                     'image' => $data['image'] ?? $etablissement->image,
                     'facebook' => $data['facebook'] ?? null,
                     'instagram' => $data['instagram'] ?? null,

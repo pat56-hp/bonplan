@@ -2194,16 +2194,20 @@ a#filters_col_bt .icon_set_1_icon-65 {
 
 .table.table_summary tr.total {
     color: #e04f67;
-    font-size: 16px;
     font-weight: 700;
-    text-transform: uppercase;
     white-space: nowrap
+}
+
+.table.table_summary tr.horaire {
+    font-weight: 700;
+    white-space: nowrap;
+    color: #008489;
 }
 
 .review_strip_single {
     position: relative;
     padding: 30px 0 20px;
-    margin: 30px 0 25px;
+    /* margin: 30px 0 25px; */
     border-bottom: 1px solid #ddd
 }
 
@@ -2221,14 +2225,14 @@ a#filters_col_bt .icon_set_1_icon-65 {
 
 .review_strip_single h4 {
     font-size: 18px;
-    margin: -12px 0 35px 90px;
+   /*  margin: -12px 0 35px 90px; */
     padding: 0
 }
 
 .review_strip_single small {
     float: right;
     font-size: 12px;
-    margin-top: -10px;
+/*     margin-top: -10px; */
     font-style: italic
 }
 
@@ -2288,7 +2292,9 @@ a#filters_col_bt .icon_set_1_icon-65 {
 
 #general_rating {
     font-size: 18px;
-    margin: 10px 0 20px
+    margin: 10px 0 0px;
+    border-bottom: 1px solid #ddd;
+    padding: 0 0px 20px 0px;
 }
 
 #general_rating .rating {
@@ -3582,7 +3588,7 @@ ul.list_order li span {
 }
 
 .parallax-window {
-    min-height: 470px;
+    min-height: 600px;
     background: transparent;
     position: relative
 }
@@ -8666,8 +8672,8 @@ ul#top_tools li{
 }
 
 .facebook-icon, .instagram-icon, .gallery-icon{
-    font-size: 14px;
-    padding: 0 2px
+    font-size: 14px !important;
+    padding: 0 2px !important
 }
 
 .empty-data{
@@ -8768,4 +8774,16 @@ ul#top_tools li{
 
 .reseau_sociaux li{
     display: inline-block;
+}
+
+.rs_info, .contact_email{
+    font-size: 15px !important;
+}
+
+.rs_info a{
+    padding: 0 5px;
+}
+
+.rs_info i, .contact_email i{
+    font-size: 15px !important;
 }

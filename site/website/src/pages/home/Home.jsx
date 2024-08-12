@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Banner from "../../components/head/Banner";
 import HomeEvent from "./HomeEvent";
-import Categories from "../../components/Categories";
+import Categories from "./Categories";
 import HomeWeekPlan from "./HomeWeekPlan";
 import HomeOther from "./HomeOther";
 import TabScript from "../../scripts/TabScript";

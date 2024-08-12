@@ -21,7 +21,10 @@ export default function Register () {
                             className={`show ${type === 0 && 'active'}`}
                             style={{paddingLeft : 10}}
                             tabIndex="-1"
-                            onClick={() => setType(0)}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setType(0)
+                            }}
                         >
                             <i className="icon-user-7 pr-2"></i>
                             <span>Client</span>
@@ -36,7 +39,10 @@ export default function Register () {
                             style={{paddingLeft : 10}}
                             tabIndex="-1"
                             className={`show ${type === 1 && 'active'}`}
-                            onClick={() => setType(1)}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setType(1)
+                            }}
                         >
                             <i className="icon-shop-1 pr-2"></i>
                             <span>Prestataire</span>
@@ -45,10 +51,10 @@ export default function Register () {
                 </ul>
 
                 <div className="tab-content mb-0">
-                    <div className="tab-pane fade active show" id="client" role="tabpanel" aria-labelledby="#tab_bt_2">
+                    <div className={`tab-pane fade ${type === 0 && 'active show'}`} id="client" role="tabpanel" aria-labelledby="#tab_bt_2">
                         <RegisterForm type = {type} />
                     </div>
-                    <div className="tab-pane" id="prestataire" role="tabpanel" aria-labelledby="#tab_bt_3">
+                    <div className={`tab-pane fade ${type === 1 && 'active show'}`} id="prestataire" role="tabpanel" aria-labelledby="#tab_bt_3">
                         <RegisterForm type = {type} />
                     </div>
                 </div>

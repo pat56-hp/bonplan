@@ -7,9 +7,9 @@ export default function NotFound (){
             <div className="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
                 <div className="intro_title error">
                     <h1 className="animated fadeInDown">404</h1>
-                    <p className="animated fadeInDown">Oops!! La page que vous rechercher est introuvable</p>
+                    <p className="animated fadeInDown">Oups!! La page que vous rechercher est introuvable</p>
                     <NavLink to="/" className="animated fadeInUp button_intro">Retourner à l'accueil</NavLink> <NavLink
-                    to="all_tours_list.html" className="animated fadeInUp button_intro outline">Explorer les bons plans</NavLink>
+                    to={'/explorer'} className="animated fadeInUp button_intro outline">Explorer les bons plans</NavLink>
                 </div>
             </div>
         </section>

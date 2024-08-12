@@ -189,13 +189,13 @@ export default function DashboadLayout() {
                             user.type === 1 
                             &&
                             <>
-                                <li className={cdashboard ? 'tab-current' : ''}>
+                                {/* <li className={cdashboard ? 'tab-current' : ''}>
                                     <Link 
                                         to="/tableau-de-bord" 
                                         className="icon-home"
                                         onClick={titleOfDashboard}
                                     ><span>Tableau de bord</span></Link>
-                                </li>
+                                </li> */}
                                 <li className={cetablissement ? 'tab-current' : ''}>
                                     <Link 
                                         to="/mes-etablissements" 
@@ -209,12 +209,12 @@ export default function DashboadLayout() {
                                         className="icon-newspaper"
                                     ><span>Mes Evènements</span></Link>
                                 </li>
-                                <li className={corder ? 'tab-current' : ''}>
+                                {/* <li className={corder ? 'tab-current' : ''}>
                                     <Link 
                                         to="/mes-reservations" 
                                         className="icon-bag"
                                     ><span>Mes Réservations</span></Link>
-                                </li>
+                                </li> */}
                             </>
                         }
                         

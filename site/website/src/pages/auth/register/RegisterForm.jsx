@@ -1,14 +1,14 @@
 import React, {useState} from "react";
-import Input from "../../components/form/Input";
+import Input from "../../../components/form/Input";
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css'
 import { useForm } from "react-hook-form"
-import {useAuthStateProvider} from "../../contexts/AuthContextProvider";
+import {useAuthStateProvider} from "../../../contexts/AuthContextProvider";
 import {useNavigate} from "react-router";
 import toast from "react-hot-toast";
-import useHttp from "../../hooks/useHttp";
+import useHttp from "../../../hooks/useHttp";
 import { useMutation } from "@tanstack/react-query";
-import AlertMessage from "../../components/AlertMessage";
+import AlertMessage from "../../../components/AlertMessage";
 
 /**
  * Register for customer
@@ -46,7 +46,7 @@ export default function Form ({type}){
             setIsLoading(false)
             toast.remove()
             if(data.user.type === 0) navigate('/mon-profil')
-            else navigate('/')
+            else navigate('/mes-etablissements')
         },
         onError: (error) => {
             setIsLoading(false)

@@ -75,7 +75,7 @@ export default function EtablissementElement({etablissement, index}) {
             </div>
             <div className="col-lg-2 col-md-3">
                 <ul className="info_booking pt-3">
-                    <li><strong>Ajouté le</strong> Sat. 23 Dec. 2015</li>
+                    <li>{etablissement.created_at}</li>
                     <li className='mt-2'>
                         <strong>
                             {

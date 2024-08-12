@@ -1,13 +1,13 @@
 import React, {useState} from "react";
 import {Link} from "react-router-dom";
-import Input from "../../components/form/Input";
+import Input from "../../../components/form/Input";
 import {useForm} from "react-hook-form";
-import {useAuthStateProvider} from "../../contexts/AuthContextProvider";
+import {useAuthStateProvider} from "../../../contexts/AuthContextProvider";
 import {useNavigate} from "react-router";
 import {toast} from "react-hot-toast";
-import useHttp from "../../hooks/useHttp";
+import useHttp from "../../../hooks/useHttp";
 import { useMutation } from "@tanstack/react-query";
-import AlertMessage from "../../components/AlertMessage";
+import AlertMessage from "../../../components/AlertMessage";
 
 const Login = () => {
     const { setUser, setToken } = useAuthStateProvider()
@@ -41,7 +41,8 @@ const Login = () => {
             reset()
             toast.remove()
             toast.success('Heureux de vous revoir')
-            navigate('/mon-profil')
+            if(data.user.type === 0) navigate('/mon-profil')
+            else navigate('/mes-etablissements')
         },
         onError: (error) => {
             setIsLoading(false)

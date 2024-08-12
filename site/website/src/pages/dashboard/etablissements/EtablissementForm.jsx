@@ -202,7 +202,7 @@ export default function EtablissementForm() {
         }
 
         //Verification de l'image, s'il s'agit d'un ajout
-        if (params.id === null) {
+        if (params.id === null || params.id === undefined) {
             if (image === undefined || image === null || image === '') {
                 errors.image = {
                     message: 'Veuillez télécharger une image de l\'établissement'
@@ -260,7 +260,7 @@ export default function EtablissementForm() {
     
         //Soumission du formulaire
         const postUrl = params.id ? `/etablissements/update/${params.id}` : '/etablissements/store'
-        const postAlertSuccess = params.id ? 'Enregistrement modifié' : 'Enregistrement effectué'
+        const postAlertSuccess = params.id ? 'Établissement modifié' : 'Enregistrement effectué'
         submitEtablissement.mutate({postUrl, formData}, {
             onSuccess: () => {
                 toast.remove();
@@ -299,7 +299,6 @@ export default function EtablissementForm() {
             );
             setHours(updatedHours);
         } else {
-            // Si value est null ou invalide, vous pouvez gérer ce cas ici, par exemple en effaçant la valeur
             const updatedHours = hours.map(hour => 
                 hour.value === index ? { ...hour, checked: true, [type]: null } : hour
             );
