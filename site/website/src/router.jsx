@@ -103,6 +103,10 @@ const router = createBrowserRouter([
                             {
                                 path: 'ajouter',
                                 element: <EventForm />
+                            },
+                            {
+                                path: 'modification/:id/:slug',
+                                element: <EventForm />
                             }
                         ]
                     },

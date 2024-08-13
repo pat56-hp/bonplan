@@ -1,5 +1,5 @@
 import React from "react";
-import {NavLink} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 
 export default function NotFound (){
     return (
@@ -8,7 +8,7 @@ export default function NotFound (){
                 <div className="intro_title error">
                     <h1 className="animated fadeInDown">404</h1>
                     <p className="animated fadeInDown">Oups!! La page que vous rechercher est introuvable</p>
-                    <NavLink to="/" className="animated fadeInUp button_intro">Retourner à l'accueil</NavLink> <NavLink
+                    <Link to="/" className="animated fadeInUp button_intro"><span className="icon-right"></span>Retourner à l'accueil</Link> <NavLink
                     to={'/explorer'} className="animated fadeInUp button_intro outline">Explorer les bons plans</NavLink>
                 </div>
             </div>

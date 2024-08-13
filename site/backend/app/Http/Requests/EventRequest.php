@@ -22,7 +22,7 @@ class EventRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'title' => 'required|max:255',
+            'titre' => 'required|max:255',
             'category' => 'required|integer',
             'organisateur' => 'required|max:100',
             'adresse' => 'required|max:255',
@@ -40,7 +40,9 @@ class EventRequest extends FormRequest
         ];
 
         if (request()->method() === 'PUT' || request()->method() === 'PATCH') {
-            $rules['images'] = 'nullable|image|mimes:png,jpg,jpeg';
+            if (request()->hasFile('image')) {
+                $rules['image'] = 'nullable|image|mimes:png,jpg,jpeg';
+            }
         }else{
             $rules['image'] = 'required|image|mimes:png,jpg,jpeg';
         }

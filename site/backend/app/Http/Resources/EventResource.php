@@ -16,7 +16,7 @@ class EventResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'category' => $this->category,
+            'category' => $this->category?->title,
             'titre' => $this->titre,
             'organisateur' => $this->organisateur,
             'adresse' => $this->adresse,
@@ -32,6 +32,7 @@ class EventResource extends JsonResource
             'fin' => $this->fin,
             'description' => $this->description,
             'status' => $this->status,
+            'validate' => $this->validate,
             'total_gallerie' => $this->galleries->count(),
             'created_at' => $this->created_at->diffForHumans()
         ];

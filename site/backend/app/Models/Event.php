@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Event extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $hidden = [
         'created_at', 'updated_at'
@@ -16,7 +17,7 @@ class Event extends Model
     protected $fillable = [
         'clien_id', 'category_id', 'titre', 'organisateur', 'adresse', 
         'localisation_map', 'siteweb', 'debut', 'fin', 'contact', 'whatsapp', 
-        'email', 'description', 'facebook', 'instagram', 'status', 'validated', 'image'
+        'email', 'description', 'facebook', 'instagram', 'status', 'validated', 'image', 'client_id'
     ];
 
     public function client(){

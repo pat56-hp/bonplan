@@ -80,9 +80,10 @@ class EventController extends Controller
      * Modification d'un evenement
      */
     public function update(EventRequest $request, $id){
+
         try {
             $data = $request->only([
-                'titre', 'category', 'image', 'organisateur', 'adresse', 'localisation', 'site', 'debut', 'fin', 'contact',
+                'titre', 'category', 'organisateur', 'adresse', 'localisation', 'site', 'debut', 'fin', 'contact',
                 'whatsapp', 'email', 'description', 'facebook', 'instagram'
             ]);
 

@@ -36,6 +36,7 @@ class EventRepository{
     public function find($id){
         return $this->event
             ->where('client_id', auth('api')->id())
+            ->with(['galleries'])
             ->findOrFail($id);
     }
 
@@ -54,7 +55,7 @@ class EventRepository{
                     'organisateur' => $data['organisateur'],
                     'adresse' => $data['adresse'],
                     'localisation_map' => $data['localisation'],
-                    'siteweb' => $data['siteweb'] ?? null,
+                    'siteweb' => $data['site'] ?? null,
                     'debut' => Carbon::parse($data['debut']),
                     'fin' => Carbon::parse($data['fin']),
                     'contact' => $data['contact'],
@@ -74,7 +75,7 @@ class EventRepository{
                     'organisateur' => $data['organisateur'],
                     'adresse' => $data['adresse'],
                     'localisation_map' => $data['localisation'],
-                    'siteweb' => $data['siteweb'] ?? null,
+                    'siteweb' => $data['site'] ?? null,
                     'debut' => Carbon::parse($data['debut']),
                     'fin' => Carbon::parse($data['fin']),
                     'contact' => $data['contact'],
