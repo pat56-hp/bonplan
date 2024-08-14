@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Breadcrumbs from '../../../components/Breadcrumbs'
 import CarouselLoader from '../../../scripts/CarouselLoader'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import useHttp from '../../../hooks/useHttp'
 import toast from 'react-hot-toast'
 import { Placeholder } from 'rsuite'
 import Commodite from './Commodite'
-import { stripHtmlTags } from '../../../scripts/helper'
+import Gallery from '../../../components/Gallery'
 
 export default function Details() {
 
@@ -111,59 +111,11 @@ export default function Details() {
 						<div className='row'>
 							<div className="col-lg-8" id="single_tour_desc">
 								<Commodite commodites={bonplan.commodites}/>
+								{
+									bonplan.galleries &&
+									<Gallery gallery= {bonplan.galleries} alt={bonplan.libelle}/>
+								}
 								
-
-								{/* <div id="Img_carousel" className="slider-pro">
-									<div className="sp-slides">
-
-										<div className="sp-slide">
-											<img alt="Image" className="sp-image" src="/css/images/blank.gif" data-src="img/slider_single_tour/1_medium.jpg" data-small="img/slider_single_tour/1_small.jpg" data-medium="img/slider_single_tour/1_medium.jpg" data-large="img/slider_single_tour/1_large.jpg" data-retina="img/slider_single_tour/1_large.jpg"/>
-										</div>
-										<div className="sp-slide">
-											<img alt="Image" className="sp-image" src="/css/images/blank.gif" data-src="img/slider_single_tour/2_medium.jpg" data-small="img/slider_single_tour/2_small.jpg" data-medium="img/slider_single_tour/2_medium.jpg" data-large="img/slider_single_tour/2_large.jpg" data-retina="img/slider_single_tour/2_large.jpg"/>
-										</div>
-
-										<div className="sp-slide">
-											<img alt="Image" className="sp-image" src="/css/images/blank.gif" data-src="img/slider_single_tour/3_medium.jpg" data-small="img/slider_single_tour/3_small.jpg" data-medium="img/slider_single_tour/3_medium.jpg" data-large="img/slider_single_tour/3_large.jpg" data-retina="img/slider_single_tour/3_large.jpg"/>
-										</div>
-
-										<div className="sp-slide">
-											<img alt="Image" className="sp-image" src="/css/images/blank.gif" data-src="img/slider_single_tour/4_medium.jpg" data-small="img/slider_single_tour/4_small.jpg" data-medium="img/slider_single_tour/4_medium.jpg" data-large="img/slider_single_tour/4_large.jpg" data-retina="img/slider_single_tour/4_large.jpg"/>
-										</div>
-
-										<div className="sp-slide">
-											<img alt="Image" className="sp-image" src="/css/images/blank.gif" data-src="img/slider_single_tour/5_medium.jpg" data-small="img/slider_single_tour/5_small.jpg" data-medium="img/slider_single_tour/5_medium.jpg" data-large="img/slider_single_tour/5_large.jpg" data-retina="img/slider_single_tour/5_large.jpg"/>
-										</div>
-
-										<div className="sp-slide">
-											<img alt="Image" className="sp-image" src="/css/images/blank.gif" data-src="img/slider_single_tour/6_medium.jpg" data-small="img/slider_single_tour/6_small.jpg" data-medium="img/slider_single_tour/6_medium.jpg" data-large="img/slider_single_tour/6_large.jpg" data-retina="img/slider_single_tour/6_large.jpg"/>
-										</div>
-
-										<div className="sp-slide">
-											<img alt="Image" className="sp-image" src="/css/images/blank.gif" data-src="img/slider_single_tour/7_medium.jpg" data-small="img/slider_single_tour/7_small.jpg" data-medium="img/slider_single_tour/7_medium.jpg" data-large="img/slider_single_tour/7_large.jpg" data-retina="img/slider_single_tour/7_large.jpg"/>
-										</div>
-
-										<div className="sp-slide">
-											<img alt="Image" className="sp-image" src="/css/images/blank.gif" data-src="img/slider_single_tour/8_medium.jpg" data-small="img/slider_single_tour/8_small.jpg" data-medium="img/slider_single_tour/8_medium.jpg" data-large="img/slider_single_tour/8_large.jpg" data-retina="img/slider_single_tour/8_large.jpg"/>
-										</div>
-
-										<div className="sp-slide">
-											<img alt="Image" className="sp-image" src="/css/images/blank.gif" data-src="img/slider_single_tour/9_medium.jpg" data-small="img/slider_single_tour/9_small.jpg" data-medium="img/slider_single_tour/9_medium.jpg" data-large="img/slider_single_tour/9_large.jpg" data-retina="img/slider_single_tour/9_large.jpg"/>
-										</div>
-									</div>
-									<div className="sp-thumbnails">
-										<img alt="Image" className="sp-thumbnail" src="/img/slider_single_tour/1_medium.jpg"/>
-										<img alt="Image" className="sp-thumbnail" src="/img/slider_single_tour/2_medium.jpg"/>
-										<img alt="Image" className="sp-thumbnail" src="/img/slider_single_tour/3_medium.jpg"/>
-										<img alt="Image" className="sp-thumbnail" src="/img/slider_single_tour/4_medium.jpg"/>
-										<img alt="Image" className="sp-thumbnail" src="/img/slider_single_tour/5_medium.jpg"/>
-										<img alt="Image" className="sp-thumbnail" src="/img/slider_single_tour/6_medium.jpg"/>
-										<img alt="Image" className="sp-thumbnail" src="/img/slider_single_tour/7_medium.jpg"/>
-										<img alt="Image" className="sp-thumbnail" src="/img/slider_single_tour/8_medium.jpg"/>
-										<img alt="Image" className="sp-thumbnail" src="/img/slider_single_tour/9_medium.jpg"/>
-									</div>
-								</div> */}
-
 								<hr/>
 
 								<div className="row">

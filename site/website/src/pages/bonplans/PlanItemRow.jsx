@@ -9,7 +9,7 @@ export default function PlanItemRow({bonplan}) {
         <div className="strip_all_tour_list wow fadeIn" data-wow-delay="0.1s">
             <div className="row">
                 <div className="col-lg-4 col-md-4 position-relative">
-                    {/* <div className="ribbon_3 popular"><span>Popular</span></div> */}
+                    <div className={`ribbon_3 ${!bonplan.open && 'popular' }`}><span>{bonplan.open ? 'Ouvert' : 'Fermé'}</span></div>
                     <div className="wishlist">
                         <a className="tooltip_flip tooltip-effect-1" href="">+<span
                             className="tooltip-content-flip"><span className="tooltip-back">Ajouter aux favoris</span></span>
@@ -17,7 +17,7 @@ export default function PlanItemRow({bonplan}) {
                     </div>
                     <div className="img_list">
                         <Link to={`/explorer/${slug(bonplan.id + '-' +bonplan.libelle)}`}>
-                            <img src={apiUrl() + bonplan.image} alt="Image" />
+                            <img src={apiUrl() + bonplan.image} alt={bonplan.libelle} />
                             <div className="short_info"><i className={bonplan.category_icon}></i>{bonplan.category}</div>
                         </Link>
                     </div>

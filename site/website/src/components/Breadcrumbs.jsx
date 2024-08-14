@@ -7,6 +7,15 @@ export default function Breadcrumbs({breadcrumbs, info, isShow = false, data = {
 
     const showHeaderBreadcrumbs = () => {
         if (isShow) {
+            const styleOpen = {
+                color: '#79A70A',
+                fontSize: '30px'
+            }
+        
+            const styleClose = {
+                color: '#e04f67',
+                fontSize: '30px'
+            }
             return (
                 !data.libelle 
                     ? <Chargement /> 
@@ -23,7 +32,7 @@ export default function Breadcrumbs({breadcrumbs, info, isShow = false, data = {
                                 <div className="container">
                                     <div className="row">
                                         <div className="col-md-8">
-                                            <h1>{data?.libelle}</h1>
+                                            <h1 className="mb-2">{data?.libelle}</h1>
                                             <Link to={`/explorer?category=${data.category.id}`} className="text-white">
                                                 <span>{data?.category?.libelle}</span>
                                             </Link>
@@ -35,6 +44,7 @@ export default function Breadcrumbs({breadcrumbs, info, isShow = false, data = {
                                                 <i className="icon-smile"></i>
                                                 <small>(75)</small>
                                             </span>
+                                            <div className="" style={data.open ? styleOpen : styleClose}><span>{data.open ? 'Ouvert' : 'Fermé'}</span></div>
                                         </div>
                                     </div>
                                 </div>

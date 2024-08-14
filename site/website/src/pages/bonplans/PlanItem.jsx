@@ -13,7 +13,7 @@ export default function PlanItem({bonplan}){
     
     return (
         <div className="hotel_container">
-            {/* <div className="ribbon_3"><span>Top rated</span></div> */}
+            <div className={`ribbon_3 ${!bonplan.open && 'popular' }`}><span>{bonplan.open ? 'Ouvert' : 'Fermé'}</span></div>
             <div className="img_container">
                 <Link to={`/explorer/${slug(bonplan.id + '-' +bonplan.libelle)}`}>
                     <img 
@@ -21,7 +21,7 @@ export default function PlanItem({bonplan}){
                         width="800" 
                         height="533" 
                         className="img-fluid"
-                        alt="Image"
+                        alt={bonplan.libelle}
                     />
                     <div className="short_info">
                         <i className={bonplan.category_icon}></i>{bonplan.category}

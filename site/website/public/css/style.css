@@ -8787,3 +8787,12 @@ ul#top_tools li{
 .rs_info i, .contact_email i{
     font-size: 15px !important;
 }
+
+.image-gallery-content .image-gallery-slide .image-gallery-image{
+    max-height: 600px !important;
+}
+
+.image-gallery-thumbnail .image-gallery-thumbnail-image{
+    max-height: 92px !important;
+    object-fit: contain !important;
+}
