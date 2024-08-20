@@ -37,6 +37,10 @@ export default function EventForm() {
     const [isFetching, setIsFetching] = useState(false)
     const params = useParams()
 
+    const [suggestions, setSuggestions] = useState([]);
+    const [coordinates, setCoordinates] = useState({ lat: null, lon: null });
+    const [loadAdress, setLoadAdress] = useState(false)
+
     //Navigation retour
     const navigateBack = (e) => {
         e.preventDefault();
@@ -67,6 +71,7 @@ export default function EventForm() {
             const galleries = response.galleries?.map(gallery => import.meta.env.VITE_API_DOMAIN + gallery.image)
             setGalleryImageUrl(galleries)
             setEvent(response)
+            setCoordinates({ lat: response.latitude, lon: response.longitude });
             setImageUrl(import.meta.env.VITE_API_DOMAIN + response.image)
             setContact(response.contact)
             const debut = new Date(response.debut)
@@ -193,6 +198,8 @@ export default function EventForm() {
         formData.append('contact', contact)
         formData.append('whatsapp', whatsapp)
         formData.append('description', descriptionRef.current?.getContent())
+        formData.append('longitude', coordinates.lon)
+        formData.append('latitude', coordinates.lat)
 
         if (params.id) {
             formData.append('_method', 'PUT');
@@ -209,6 +216,27 @@ export default function EventForm() {
             }    
         })
     }
+
+    const handleInputChange = async (e) => {
+        const value = e.target.value;
+        setLoadAdress(true)
+        if (value.length > 2) { // Lancer la recherche après quelques caractères
+            const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${value}&format=json&addressdetails=1&limit=10`);
+            const data = await response.json();
+            setSuggestions(data);
+            setLoadAdress(false)
+        } else {
+            setSuggestions([]);
+            setLoadAdress(false)
+        }
+    };
+
+    const handleSelect = (suggestion) => {
+        setValue('adresse', suggestion.display_name)
+        setCoordinates({ lat: suggestion.lat, lon: suggestion.lon });
+        setSuggestions([]);
+    };
+
 
     //Observe input
     watch(element => {
@@ -232,7 +260,6 @@ export default function EventForm() {
             event.siteweb && setValue('site', event.siteweb)
             event.facebook && setValue('facebook', event.facebook)
             event.instagram && setValue('instagram', event.instagram)
-            event.localisation_map && setValue('localisation', event.localisation_map)
         }
     }, [event, params])
 
@@ -322,6 +349,7 @@ export default function EventForm() {
                                 <div className='form-group'>
                                     <Input 
                                         label= 'Adresse'
+                                        onChange={(e) => handleInputChange(e)}
                                         placeholder="Adresse de l'évènement"
                                         important={true}
                                         inputRegister={{...register('adresse', {
@@ -329,6 +357,18 @@ export default function EventForm() {
                                         })}}
                                     />
                                     {errors.adresse && <span className="text-danger"><i className="icon-info-circled"></i>{errors.adresse.message}</span>}
+                                    <ul className="list-group" id='geoloc_adress'>
+                                        {
+                                            loadAdress ?
+                                                <li className="list-group-item"><Loader /></li>
+                                                : suggestions.map((suggestion, index) => (
+                                                    <li key={index} className="list-group-item" onClick={() => handleSelect(suggestion)}>
+                                                        <i className='icon-location-outline'></i> {suggestion.display_name}
+                                                    </li>
+                                                ))
+                                        }
+                                        
+                                    </ul>
                                 </div>
                             </div>
                             <div className='col-md-6'>
@@ -426,15 +466,6 @@ export default function EventForm() {
                                         label= 'Instagram'
                                         placeholder="Instagram"
                                         inputRegister = {{...register('instagram')}}
-                                    />
-                                </div>
-                            </div>
-                            <div className='col-md-12'>
-                                <div className='form-group'>
-                                    <Input
-                                        label= 'Localisation map'
-                                        placeholder="Adresse map"
-                                        inputRegister = {{...register('localisation')}}
                                     />
                                 </div>
                             </div>

@@ -5,7 +5,6 @@ import EtablissementElement from './EtablissementElement'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Loader from '../../../components/Loader'
 import useHttp from '../../../hooks/useHttp'
-import { Pagination } from 'rsuite';
 import Paginate from '../../../components/Paginate'
 import toast from 'react-hot-toast'
 import ElementNotFound from '../../../components/ElementNotFound'

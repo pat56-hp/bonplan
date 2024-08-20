@@ -45,6 +45,11 @@ export default function EtablissementForm() {
     const [galleryImageUrl, setGalleryImageUrl] = useState([])
     const [isFetching, setIsFetching] = useState(false)
     const [oldCommodites, setOldCommodites] = useState([])
+
+    const [suggestions, setSuggestions] = useState([]);
+    const [coordinates, setCoordinates] = useState({ lat: null, lon: null });
+    const [loadAdress, setLoadAdress] = useState(false)
+
     const params = useParams()
 
     const {
@@ -84,7 +89,8 @@ export default function EtablissementForm() {
         mutationFn: async (id) => sendRequest(`/etablissements/show/${id}`),
         onSuccess: ({data}) => {
             setIsFetching(false)
-            const response = data.data 
+            const response = data.data
+            setCoordinates({ lat: response.latitude, lon: response.longitude });
             const oldCommoditesToUpdate = response.commodites?.map(commodite => commodite.id)
 
             //Recuperation des horaires depuis la reponse
@@ -253,6 +259,8 @@ export default function EtablissementForm() {
         formData.append('horaires', JSON.stringify(transformHours)); // Convertir en JSON
         formData.append('commodites', JSON.stringify(oldCommodites)); // Convertir en JSON
         formData.append('description', descriptionRef.current.getContent());
+        formData.append('longitude', coordinates.lon)
+        formData.append('latitude', coordinates.lat)
 
         if (params.id) {
             formData.append('_method', 'PUT');
@@ -312,6 +320,26 @@ export default function EtablissementForm() {
             getEtablissement.mutate(params.id)
         }
     }
+
+    const handleInputChange = async (e) => {
+        const value = e.target.value;
+        setLoadAdress(true)
+        if (value.length > 2) { // Lancer la recherche après quelques caractères
+            const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${value}&format=json&addressdetails=1&limit=10`);
+            const data = await response.json();
+            setSuggestions(data);
+            setLoadAdress(false)
+        } else {
+            setSuggestions([]);
+            setLoadAdress(false)
+        }
+    };
+
+    const handleSelect = (suggestion) => {
+        setValue('adresse', suggestion.display_name)
+        setCoordinates({ lat: suggestion.lat, lon: suggestion.lon });
+        setSuggestions([]);
+    };
 
     /************************************
      * USEEFFECTS
@@ -449,6 +477,7 @@ export default function EtablissementForm() {
                                 <div className='form-group'>
                                     <Input
                                         label='Adresse'
+                                        onChange={(e) => handleInputChange(e)}
                                         placeholder="Localisation de l'établissement"
                                         important={true}
                                         inputRegister={{...register('adresse', {
@@ -456,6 +485,18 @@ export default function EtablissementForm() {
                                         })}}
                                     />
                                     {errors.adresse && <span className="text-danger text-sm-start"><i className="icon-info-circled"></i>{errors.adresse.message}</span>}
+                                    <ul className="list-group" id='geoloc_adress'>
+                                        {
+                                            loadAdress ?
+                                                <li className="list-group-item"><Loader /></li>
+                                                : suggestions.map((suggestion, index) => (
+                                                    <li key={index} className="list-group-item" onClick={() => handleSelect(suggestion)}>
+                                                        <i className='icon-location-outline'></i> {suggestion.display_name}
+                                                    </li>
+                                                ))
+                                        }
+                                        
+                                    </ul>
                                 </div>
                             </div>
                             <div className='col-md-12'>

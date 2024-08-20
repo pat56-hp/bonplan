@@ -44,7 +44,7 @@
 
 .shop-item{
 	position:relative;
-	text-align:center;
+	/* text-align:center; */
 	margin-bottom:40px;	
 }
 
@@ -174,9 +174,9 @@
 }
 
 .shop-item .product_description .price{
-	font-size:16px;
+	font-size:15px;
 	font-weight:500;
-	color:#e04f67;
+	color:#999999;
 	line-height:20px;	
 }
 

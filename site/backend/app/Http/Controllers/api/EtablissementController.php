@@ -99,7 +99,8 @@ class EtablissementController extends Controller
     {
         try {
             $data = $request->only([
-                'libelle', 'adresse', 'facebook', 'instagram', 'phone', 'category', 'email', 'ville', 'facebook', 'instagram', 'description', 'horaires', 'commodites'
+                'libelle', 'adresse', 'facebook', 'instagram', 'phone', 'category', 'email', 'ville', 'facebook', 'instagram', 'description', 'horaires', 'commodites',
+                'longitude', 'latitude'
             ]);
 
             if ($request->hasFile('image')){
@@ -174,6 +175,24 @@ class EtablissementController extends Controller
                 'message' => 'Image supprimée avec succès'
             ]);
         } catch (\Exception $e) {
+            return response()->json([
+                'data' => $e->getMessage(),
+                'message' => 'Oups, une erreur s\'est produite'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Gestion des favoris d'un etablissement
+     */
+    public function favoris(Request $request){
+        try{
+            $favoris = $this->repository->addOrRemoveFavorite($request->id);
+            return response()->json([
+                'message' => 'Ajout ou suppression de la favoris',
+                'favoris' => $favoris
+            ]);
+        }catch(\Exception $e){
             return response()->json([
                 'data' => $e->getMessage(),
                 'message' => 'Oups, une erreur s\'est produite'

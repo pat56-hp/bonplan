@@ -1,18 +1,59 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { apiUrl, getShortDescription, slug } from "../../scripts/helper";
 import Rating from "../../components/Rating";
 import { Link } from "react-router-dom";
+import { useMutation } from '@tanstack/react-query'
+import useHttp from "../../hooks/useHttp";
+import toast from "react-hot-toast";
+
 
 export default function PlanItemRow({bonplan}) {
-    
+    const {sendRequest} = useHttp()
+    const [isFavorite, setIsFavorite] = useState(bonplan.favoris)
+    const [isLoading, setIsLoading] = useState(false)
+
+    const planMutate = useMutation({
+        mutationKey: ['addOrRemoveFavorite'],
+        mutationFn: (id) => sendRequest(`/etablissements/favoris/${id}`, 'POST'),
+        onMutate: () => setIsLoading(true)
+    })
+
+    const handleAddOrRemoveFavorite = (id, e) => {
+        e.preventDefault();
+        setIsLoading(true)
+        
+        setTimeout(() => {
+            planMutate.mutate(id, {
+                onSuccess: ({data}) => {
+                    setIsFavorite(data.favoris)
+                    data.favoris 
+                        ? toast.success('Plan ajouté aux favoris')
+                        : toast.success('Plan retiré des favoris')
+                        setIsLoading(false)
+                }
+            })
+        }, 600)
+    }
+
     return (
         <div className="strip_all_tour_list wow fadeIn" data-wow-delay="0.1s">
             <div className="row">
                 <div className="col-lg-4 col-md-4 position-relative">
                     <div className={`ribbon_3 ${!bonplan.open && 'popular' }`}><span>{bonplan.open ? 'Ouvert' : 'Fermé'}</span></div>
                     <div className="wishlist">
-                        <a className="tooltip_flip tooltip-effect-1" href="">+<span
-                            className="tooltip-content-flip"><span className="tooltip-back">Ajouter aux favoris</span></span>
+                        <a
+                            href="#"
+                            className={`tooltip_flip tooltip-effect-1 ${isFavorite ? 'is_favorite' : ''}`}
+                            onClick={e => handleAddOrRemoveFavorite(bonplan.id, e)}
+                        >
+                            {
+                                isLoading
+                                    ? <i className='icon-spin5 animate-spin'></i>
+                                    : <span className="icon-heart"></span>
+                            }
+                            <span className="tooltip-content-flip">
+                                <span className="tooltip-back">{isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}</span>
+                            </span>
                         </a>
                     </div>
                     <div className="img_list">

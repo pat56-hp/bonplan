@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,11 +17,14 @@ class EventResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'category_id' => $this->category_id,
             'category' => $this->category?->title,
+            'category_icon' => $this->category?->icon,
             'titre' => $this->titre,
             'organisateur' => $this->organisateur,
             'adresse' => $this->adresse,
-            'localisation_map' => $this->localisation_map,
+            'longitude' => $this->longitude,
+            'latitude' => $this->latitude,
             'image' => $this->image,
             'facebook' => $this->facebook,
             'instagram' => $this->instagram,

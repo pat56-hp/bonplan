@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\EtablissementController;
 use App\Http\Controllers\api\EventController;
+use App\Http\Controllers\api\FavoriteController;
 use App\Http\Controllers\api\FrontendController;
 use App\Http\Controllers\api\ImageController;
 use App\Http\Controllers\api\ProfileController;
@@ -58,6 +59,7 @@ Route::group(['prefix' => 'v1'], function (){
             Route::delete('/delete/{id}', 'destroy');
             Route::put('/status/{id}', 'updateStatus');
             Route::put('/delete/image/', 'deleteImage');
+            Route::post('/favoris/{id}', 'favoris');
         });
     });
 
@@ -78,6 +80,17 @@ Route::group(['prefix' => 'v1'], function (){
     });
 
     /**
+     * @Route of favorites
+     * @Controller FavoriteController
+     */
+    Route::controller(FavoriteController::class)->group(function(){
+        Route::group(['prefix' => 'favoris'], function(){
+            Route::get('/', 'index');
+            Route::delete('/delete/{id}', 'delete');
+        });
+    });
+
+    /**
      * @Route of get element of web site page
      * @Controller FrontendController
      */
@@ -88,6 +101,8 @@ Route::group(['prefix' => 'v1'], function (){
         Route::get('/home-datas', 'getDataToHome');
         Route::get('/explore-plans', 'explorePlan');
         Route::get('/details-plans/{etablissement}', 'showEtablissement');
+        Route::get('/events', 'getEvents');
+        Route::get('/events/{event}', 'showEvent');
     });
 
     /**

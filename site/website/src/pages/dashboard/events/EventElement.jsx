@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import ModalAlert from '../modals/ModalAlert'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { slug } from '../../../scripts/helper'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import useHttp from '../../../hooks/useHttp'
 
 export default function EventElement({event, index}) {
@@ -60,9 +60,9 @@ export default function EventElement({event, index}) {
         <div className="row">
             <div className="col-lg-2 col-md-2">
                 <div className="img_container">
-                    <a href="single_tour.html">
+                    <Link to={`/evenements/${slug(event.id + '-' + event.titre)}`}>
                         <img src={apiDomain + event.image} width="800" height="533" className="img-fluid" alt="image" />
-                    </a>
+                    </Link>
                 </div>
             </div>
             <div className="col-lg-6 col-md-5">

@@ -22,6 +22,8 @@ class EtablissementResource extends JsonResource
             'libelle' => $this->libelle,
             'ville' => $this->ville,
             'adresse' => $this->adresse,
+            'longitude' => $this->longitude,
+            'latitude' => $this->latitude,
             'phone' => $this->phone,
             'email' => $this->email,
             'facebook' => $this->facebook,
@@ -32,6 +34,7 @@ class EtablissementResource extends JsonResource
             'description' => $this->description,
             'total_image' => $this->galleries->count(),
             'open' => $this->open,
+            'favoris' => $this->isFavorite,
             'created_at' => $this->created_at->diffForHumans()
         ];
     }

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Http\Resources\EtablissementResource;
 use App\Models\Etablissement;
+use App\Models\Favoris;
 use App\Models\Gallerie;
 use App\Services\UploadFile;
 use Exception;
@@ -47,7 +48,9 @@ class EtablissementRepository {
                     'facebook' => $data['facebook'] ?? null,
                     'instagram' => $data['instagram'] ?? null,
                     'description' => $data['description'],
-                    'status' => 1
+                    'status' => 1,
+                    'longitude' => $data['logitude'] ?? null,
+                    'latitude' => $data['latitude'] ?? null,
                 ]);
             }else{
                 $etablissement = $this->find($id);
@@ -62,6 +65,8 @@ class EtablissementRepository {
                     'facebook' => $data['facebook'] ?? null,
                     'instagram' => $data['instagram'] ?? null,
                     'description' => $data['description'],
+                    'longitude' => $data['longitude'] ?? null,
+                    'latitude' => $data['latitude'] ?? null,
                 ]);
             }
 
@@ -155,5 +160,25 @@ class EtablissementRepository {
             $imageGallery->delete();
         }else 
             throw new Exception('Impossible de supprimer l\'image');
+    }
+
+    //Ajout ou suppression d'un plan dans les favoris
+    public function addOrRemoveFavorite($id){
+        $etablissement = $this->find($id);
+        $favoris = Favoris::where([
+                'etablissement_id' => $etablissement->id, 
+                'client_id' => auth('api')->id()
+            ])
+            ->first();
+        
+        if ($favoris) {
+            $favoris->delete();
+            $isFavorite = false;
+        }else {
+            Favoris::create(['etablissement_id' => $etablissement->id, 'client_id' => auth('api')->id()]);
+            $isFavorite = true;
+        }
+
+        return $isFavorite;
     }
 }

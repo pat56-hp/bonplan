@@ -11,7 +11,7 @@ import EventShow from "./pages/events/EventShow";
 import Register from "./pages/auth/register/Register";
 import DashboadLayout from "./layouts/DashboadLayout";
 import Dashboard from "./pages/dashboard/Dashboard";
-import Favoris from "./pages/dashboard/Favoris";
+import Favoris from "./pages/dashboard/favoris/Favoris";
 import Profile from "./pages/dashboard/Profile/Profile";
 import EtablissementForm from "./pages/dashboard/etablissements/EtablissementForm";
 import Product from "./pages/dashboard/products/Product";
@@ -47,11 +47,16 @@ const router = createBrowserRouter([
             },
             {
                 path: '/evenements',
-                element: <Event />
-            },
-            {
-                path: '/details-evenement',
-                element: <EventShow />,
+                children: [
+                    {
+                        path: '',
+                        element: <Event />
+                    },
+                    {
+                        path: ':slug',
+                        element: <EventShow />,
+                    }
+                ]
             },
             {
                 path: '/contact',

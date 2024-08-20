@@ -24,6 +24,10 @@ class Client extends Authenticatable implements JWTSubject
         return $this->hasMany(Etablissement::class, 'client_id');
     }
 
+    public function favoris(){
+        return $this->hasMany(Favoris::class, 'client_id');
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

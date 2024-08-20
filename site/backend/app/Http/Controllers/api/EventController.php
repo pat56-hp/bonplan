@@ -43,8 +43,8 @@ class EventController extends Controller
     {
        try {
             $data = $request->only([
-                'titre', 'category', 'image', 'organisateur', 'adresse', 'localisation', 'site', 'debut', 'fin', 'contact',
-                'whatsapp', 'email', 'description', 'facebook', 'instagram'
+                'titre', 'category', 'image', 'organisateur', 'adresse', 'site', 'debut', 'fin', 'contact',
+                'whatsapp', 'email', 'description', 'facebook', 'instagram', 'longitude', 'latitude'
             ]);
 
             $data['image'] = $this->uploadFile->run($request->image, 'events');
@@ -84,7 +84,7 @@ class EventController extends Controller
         try {
             $data = $request->only([
                 'titre', 'category', 'organisateur', 'adresse', 'localisation', 'site', 'debut', 'fin', 'contact',
-                'whatsapp', 'email', 'description', 'facebook', 'instagram'
+                'whatsapp', 'email', 'description', 'facebook', 'instagram','longitude', 'latitude'
             ]);
 
             if ($request->hasFile('image')){

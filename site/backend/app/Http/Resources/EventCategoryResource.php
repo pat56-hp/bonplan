@@ -14,6 +14,11 @@ class EventCategoryResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'icon' => $this->icon,
+            'title' => $this->title,
+            'total_event' => $this->events->count()
+        ];
     }
 }

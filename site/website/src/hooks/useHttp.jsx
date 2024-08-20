@@ -65,7 +65,7 @@ const useHttp = (props) => {
                 localStorage.removeItem('logU')
                 setToken(null)
                 setUser(null)
-                if (!props.isFrontend) {
+                if (!props || !props.isFrontend) {
                     toast.error('Oups, votre session a est interrompue. Veuillez vous reconnecter svp.')
                     navigate('/login')
                 }

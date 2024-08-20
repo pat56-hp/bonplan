@@ -1,27 +1,22 @@
-import React, { useState } from "react";
-import { apiUrl, slug } from "../../scripts/helper";
-import Rating from "../../components/Rating";
-import { Link } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
-import useHttp from "../../hooks/useHttp";
-import toast from "react-hot-toast";
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import React, { useState } from 'react'
+import useHttp from '../../../hooks/useHttp'
+import { Link } from 'react-router-dom'
+import { apiUrl, slug } from '../../../scripts/helper'
+import Rating from '../../../components/Rating'
+import toast from 'react-hot-toast'
 
-/**
- * Bon plan item
- * @returns {*}
- * @constructor
- */
-
-export default function PlanItem({bonplan}){
-
+export default function FavorisItem({item}) {
     const {sendRequest} = useHttp()
-    const [isFavorite, setIsFavorite] = useState(bonplan.favoris)
+    const clientQuery = useQueryClient()
+    const [isFavorite, setIsFavorite] = useState(item.isFavorite)
     const [isLoading, setIsLoading] = useState(false)
 
     const planMutate = useMutation({
         mutationKey: ['addOrRemoveFavorite'],
         mutationFn: (id) => sendRequest(`/etablissements/favoris/${id}`, 'POST'),
-        onMutate: () => setIsLoading(true)
+        onMutate: () => setIsLoading(true),
+        onSuccess: () => clientQuery.invalidateQueries('getFavoris')
     })
 
     const handleAddOrRemoveFavorite = (id, e) => {
@@ -41,15 +36,15 @@ export default function PlanItem({bonplan}){
         }, 600)
     }
 
-    
-    return (
+  return (
+    <div className="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.1s">
         <div className="hotel_container">
-            <div className={`ribbon_3 ${!bonplan.open && 'popular' }`}><span>{bonplan.open ? 'Ouvert' : 'Fermé'}</span></div>
+            <div className={`ribbon_3 ${!item.open && 'popular' }`}><span>{item.open ? 'Ouvert' : 'Fermé'}</span></div>
             <div className="wishlist">
                 <a
                     href="#"
                     className={`tooltip_flip text-white tooltip-effect-1 ${isFavorite ? 'is_favorite' : ''}`}
-                    onClick={e => handleAddOrRemoveFavorite(bonplan.id, e)}
+                    onClick={e => handleAddOrRemoveFavorite(item.id, e)}
                 >
                     {
                         isLoading
@@ -59,24 +54,25 @@ export default function PlanItem({bonplan}){
                 </a>
             </div>
             <div className="img_container">
-                <Link to={`/explorer/${slug(bonplan.id + '-' +bonplan.libelle)}`}>
+                <Link to={`/explorer/${slug(item.id + '-' +item.libelle)}`}>
                     <img 
-                        src={apiUrl() + bonplan.image} 
+                        src={apiUrl() + item.image} 
                         width="800" 
                         height="533" 
                         className="img-fluid"
-                        alt={bonplan.libelle}
+                        alt={item.libelle}
                     />
                     <div className="short_info">
-                        <i className={bonplan.category_icon}></i>{bonplan.category}
+                        <i className={item.category_icon}></i>{item.category}
                     </div>
                 </Link>
             </div>
             <div className="hotel_title">
-                <h3><strong>{bonplan.libelle}</strong></h3>
+                <h3><strong>{item.libelle}</strong></h3>
                 <Rating />
                 <div className="view_on_map">Voir l'emplacement</div>
             </div>
         </div>
-    )
+    </div>
+  )
 }

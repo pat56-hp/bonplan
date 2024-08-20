@@ -105,6 +105,23 @@ const getShortDescription = (html, length) => {
     return text.length > length ? text.substring(0, length) + '...' : text;
 };
 
+const getDate = (date) => {
+    const dateObj = new Date(date);
+
+    // Extraire les parties de la date
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Les mois sont 0-indexés
+    const year = dateObj.getFullYear();
+
+    const hours = String(dateObj.getHours()).padStart(2, '0');
+    const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+
+    // Formatter la date dans le format souhaité
+    const formattedDate = `${day}-${month}-${year} à ${hours}:${minutes}`;
+
+    return formattedDate
+}
+
 export { 
     weekPlanSlide, 
     partnerSlide, 
@@ -117,5 +134,6 @@ export {
     debounce,
     apiUrl,
     stripHtmlTags,
-    getShortDescription
+    getShortDescription,
+    getDate
 }

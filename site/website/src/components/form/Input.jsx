@@ -14,7 +14,17 @@ import React, {useEffect, useState} from "react";
  * @returns {*}
  * @constructor
  */
-export default function Input({label, important, type, placeholder, otherClass, isPassword = false, inputRegister, defaultValue = '', onChange = null}){
+export default function Input({
+    label, 
+    important, 
+    type, 
+    placeholder, 
+    otherClass, 
+    isPassword = false, 
+    inputRegister, 
+    defaultValue = '', 
+    onChange = () => {}
+}){
     const [passwordType, setPasswordType] = useState(type)
     const [showEye, setShowEye] = useState('icon-eye')
 
@@ -28,6 +38,7 @@ export default function Input({label, important, type, placeholder, otherClass, 
         }
     }
 
+
     return (
         <div className={`${isPassword ? 'input-div' : ''}`}>
             {
@@ -40,7 +51,7 @@ export default function Input({label, important, type, placeholder, otherClass, 
                 ></i>
             }
             <input
-                onChange={onChange}
+                onKeyUp={(e) => onChange(e)}
                 type={passwordType ? passwordType : 'text'}
                 className={`${otherClass ?? ''} form-control`}
                 placeholder={placeholder}

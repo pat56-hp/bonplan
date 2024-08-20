@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Chargement from './Chargement'
 import { useQuery } from '@tanstack/react-query'
 import useHttp from '../../../hooks/useHttp'
+import Chargement from '../../../components/Chargement'
 
 export default function CategoryFilter({category, onSetCategory}) {
     const {sendRequest} = useHttp()
     const [categories, setCategories] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const [visibleCount, setVisibleCount] = useState(5);
+    const [expanded, setExpanded] = useState(false);
     const timeoutRef = useRef(null)
 
     const {
@@ -42,6 +44,13 @@ export default function CategoryFilter({category, onSetCategory}) {
             onSetCategory(updatedCategories);
         }
     };
+
+    const toggleCategories = (e) => {
+        e.preventDefault();
+        
+        setExpanded(!expanded);
+        setVisibleCount(expanded ? 5 : categories.length);
+    };
     
     useEffect(() => {
         setData()
@@ -57,9 +66,10 @@ export default function CategoryFilter({category, onSetCategory}) {
             isLoading 
                 ? <Chargement />
                 : (
+                    <>
                     <ul>
                         {
-                            categories.map((cat, key) => (
+                            categories.slice(0, visibleCount).map((cat, key) => (
                                 <li key = {key}>
                                     <label className="container_check">
                                         {cat.libelle} ({cat.total_entreprise})
@@ -74,6 +84,14 @@ export default function CategoryFilter({category, onSetCategory}) {
                             ))
                         }
                     </ul>
+                    <a href="#" className="cat_button_expanded" onClick={toggleCategories}>
+                    {
+                        expanded
+                            ? <><span className="icon-minus"></span> Voir moins</>
+                            : <><span className="icon-plus"></span> Voir plus</>
+                    }
+                    </a>
+                </>
                 )
         }
     </div>

@@ -1,12 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
 import React, { useEffect, useRef, useState } from 'react'
 import useHttp from '../../../hooks/useHttp'
-import Chargement from './Chargement'
+import Chargement from '../../../components/Chargement'
 
 export default function CommoditeFilter({commodite, onSetCommodite}) {
     const {sendRequest} = useHttp()
     const [commodites, setCommodites] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const [visibleCount, setVisibleCount] = useState(5);
+    const [expanded, setExpanded] = useState(false);
     const timeoutRef = useRef(null)
 
     const {
@@ -43,6 +45,13 @@ export default function CommoditeFilter({commodite, onSetCommodite}) {
         }
     }
 
+    const toggleCategories = (e) => {
+        e.preventDefault();
+        
+        setExpanded(!expanded);
+        setVisibleCount(expanded ? 5 : commodites.length);
+    };
+
     useEffect(() => {
         setData()
         return () => {
@@ -57,23 +66,32 @@ export default function CommoditeFilter({commodite, onSetCommodite}) {
             isLoading 
                 ? <Chargement />
                 : (
-                    <ul>
+                    <>
+                        <ul>
+                            {
+                                commodites.slice(0, visibleCount).map((com, key) => (
+                                    <li key = {key}>
+                                        <label className="container_check">
+                                            {com.libelle} ({com.total_entreprise})
+                                            <input
+                                                type="checkbox"
+                                                checked={commodite.includes(com.id)}
+                                                onChange={e => handleChecked(com.id, e)}
+                                            />
+                                            <span className="checkmark"></span>
+                                        </label>
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                        <a href="#" className="cat_button_expanded" onClick={toggleCategories}>
                         {
-                            commodites.map((com, key) => (
-                                <li key = {key}>
-                                    <label className="container_check">
-                                        {com.libelle} ({com.total_entreprise})
-                                        <input
-                                            type="checkbox"
-                                            checked={commodite.includes(com.id)}
-                                            onChange={e => handleChecked(com.id, e)}
-                                        />
-                                        <span className="checkmark"></span>
-                                    </label>
-                                </li>
-                            ))
+                            expanded
+                                ? <><span className="icon-minus"></span> Voir moins</>
+                                : <><span className="icon-plus"></span> Voir plus</>
                         }
-                    </ul>
+                        </a>
+                    </>
                 )
         }
     </div>

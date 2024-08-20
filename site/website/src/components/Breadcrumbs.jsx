@@ -33,18 +33,13 @@ export default function Breadcrumbs({breadcrumbs, info, isShow = false, data = {
                                     <div className="row">
                                         <div className="col-md-8">
                                             <h1 className="mb-2">{data?.libelle}</h1>
-                                            <Link to={`/explorer?category=${data.category.id}`} className="text-white">
-                                                <span>{data?.category?.libelle}</span>
+                                            <Link to={data.url} className="text-white">
+                                                <span><i className={data.category_icon}></i>{data?.category}</span>
                                             </Link>
-                                            <span className="rating">
-                                                <i className="icon-smile voted"></i>
-                                                <i className="icon-smile voted"></i>
-                                                <i className="icon-smile voted"></i>
-                                                <i className="icon-smile voted"></i>
-                                                <i className="icon-smile"></i>
-                                                <small>(75)</small>
-                                            </span>
-                                            <div className="" style={data.open ? styleOpen : styleClose}><span>{data.open ? 'Ouvert' : 'Fermé'}</span></div>
+                                            {
+                                                data.type !== 'event' &&
+                                                <div className="" style={data.open ? styleOpen : styleClose}><span>{data.open ? 'Ouvert' : 'Fermé'}</span></div>
+                                            }
                                         </div>
                                     </div>
                                 </div>

@@ -5,18 +5,30 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import "react-image-gallery/styles/scss/image-gallery.scss"
 
 
-export default function Gallery({gallery, alt = ''}) {
+export default function Gallery({image, gallery, alt = ''}) {
 
-    const [images, setImages] = useState([])
+    const [images, setImages] = useState([
+      {
+        original: apiUrl() + image,
+        thumbnail: apiUrl() + image
+      }
+    ])
 
     useEffect(() => {
-        const images = gallery?.map(image => ({
-            ...image,
-            original: apiUrl() + image.image,
-            thumbnail: apiUrl() + image.image,
-        }))
+      if (gallery && gallery.length > 0) {
+          const newImages = gallery?.map(image => ({
+              original: apiUrl() + image.image,
+              thumbnail: apiUrl() + image.image,
+          }))
 
-        setImages(images)
+          setImages(prev => {
+            const existingUrls = prev.map(img => img.original);
+            const filteredNewImages = newImages.filter(img => !existingUrls.includes(img.original));
+            return [...prev, ...filteredNewImages];
+          });
+      }
+
+      
     }, [gallery])
 
   return (
@@ -24,6 +36,8 @@ export default function Gallery({gallery, alt = ''}) {
         items={images}
         autoPlay={true}
         loading='lazy'
+        showNav={false}
+        showPlayButton={false}
         originalClass='gallery_image'
         thumbnailClass='gallery_thumbnail'
         slideInterval={5000}

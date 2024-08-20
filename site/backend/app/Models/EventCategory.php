@@ -13,5 +13,7 @@ class EventCategory extends Model
         'created_at', 'updated_at'
     ];
 
-    
+    public function events(){
+        return $this->hasMany(Event::class, 'category_id');
+    }
 }

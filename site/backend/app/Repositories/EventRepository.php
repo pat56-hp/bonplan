@@ -54,7 +54,6 @@ class EventRepository{
                     'category_id' => $data['category'],
                     'organisateur' => $data['organisateur'],
                     'adresse' => $data['adresse'],
-                    'localisation_map' => $data['localisation'],
                     'siteweb' => $data['site'] ?? null,
                     'debut' => Carbon::parse($data['debut']),
                     'fin' => Carbon::parse($data['fin']),
@@ -65,7 +64,9 @@ class EventRepository{
                     'facebook' => $data['facebook'] ?? null,
                     'instagram' => $data['instagram'] ?? null,
                     'image' => $data['image'],
-                    'client_id' => auth('api')->id()
+                    'client_id' => auth('api')->id(),
+                    'longitude' => $data['longitude'] ?? null,
+                    'latitude' => $data['latitude'] ?? null,
                 ]);
             }else{//Modification
                 $event = $this->find($id);
@@ -74,7 +75,6 @@ class EventRepository{
                     'category_id' => $data['category'],
                     'organisateur' => $data['organisateur'],
                     'adresse' => $data['adresse'],
-                    'localisation_map' => $data['localisation'],
                     'siteweb' => $data['site'] ?? null,
                     'debut' => Carbon::parse($data['debut']),
                     'fin' => Carbon::parse($data['fin']),
@@ -84,7 +84,9 @@ class EventRepository{
                     'description' => $data['description'],
                     'facebook' => $data['facebook'] ?? null,
                     'instagram' => $data['instagram'] ?? null,
-                    'image' => $data['image'] ?? $event->image
+                    'image' => $data['image'] ?? $event->image,
+                    'longitude' => $data['longitude'] ?? null,
+                    'latitude' => $data['latitude'] ?? null,
                 ]);
             }
 
