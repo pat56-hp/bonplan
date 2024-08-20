@@ -1,14 +1,27 @@
 import React from 'react'
 
-export default function Rating() {
+export default function Rating({note = 0}) {
+
+  const filledStars = parseInt(note)
+  const emptyStars = 5 - filledStars
+
   return (
     <div className="rating mt-2">
-        {/* <i className="icon-star voted"></i> */}
-        <i className="icon-star-empty"></i>
-        <i className="icon-star-empty"></i>
-        <i className="icon-star-empty"></i>
-        <i className="icon-star-empty"></i>
-        <i className="icon-star-empty"></i>
+      {
+        <>
+          {
+            Array.from({length: filledStars}).map((_, i) => (
+              <i key={i} className="icon_set_1_icon-81 voted"></i>
+            ))
+          }
+
+          {
+            Array.from({length: emptyStars}).map((_, j) => (
+              <i key={j} className="icon_set_1_icon-81"></i>
+            ))
+          }
+        </>
+      }
     </div>
   )
 }

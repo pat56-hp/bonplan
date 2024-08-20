@@ -16,7 +16,7 @@ class Etablissement extends Model
         'libelle', 'ville', 'adresse', 'email', 'phone', 'image', 'client_id', 'category_id', 'facebook', 'instagram', 'status', 'description', 'longitude', 'latitude'
     ];
 
-    protected $appends = ['open', 'isFavorite'];
+    protected $appends = ['open', 'isFavorite', 'note'];
 
     protected $hidden = [
         'updated_at'
@@ -40,6 +40,10 @@ class Etablissement extends Model
 
     public function jours(){
         return $this->belongsToMany(Jour::class, 'horaires', 'etablissement_id', 'jour_id')->withPivot(['ouverture', 'fermeture']);
+    }
+
+    public function commentaires(){
+        return $this->hasMany(Commentaire::class, 'etablissement_id');
     }
 
     /**
@@ -77,5 +81,18 @@ class Etablissement extends Model
     public function getIsFavoriteAttribute(): bool{
         $favoris = Favoris::where(['etablissement_id' => $this->id, 'client_id' => auth('api')->id()])->first();
         return !empty($favoris) ? true : false;
+    }
+
+    public function getNoteAttribute(): int{
+        $note = 0;
+        $totalCommentaire = $this->commentaires->count();
+        $totalNote = $this->commentaires->sum('note');
+
+        if ($totalCommentaire > 0) {
+            $note =  $totalNote / (float) $totalCommentaire;
+            $note = number_format($note, 2, '.', ' ');
+        }
+
+        return $note;
     }
 }

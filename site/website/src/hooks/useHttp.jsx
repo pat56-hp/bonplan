@@ -76,7 +76,7 @@ const useHttp = (props) => {
                 console.log(error.response)
             }else{
                 console.log(error.message)
-                //toast.error('Oups, une erreur s\'est produite. Veuillez rééssayer svp.')
+                console.log(error.response)
             }
 
             throw error

@@ -9,7 +9,6 @@ import PlanItem from "../bonplans/PlanItem";
 
 const HomeWeekPlan = ({datas}) => {
     
-    console.log(datas)
     return (
         <>
         {

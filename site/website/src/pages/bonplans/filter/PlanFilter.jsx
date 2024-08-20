@@ -58,7 +58,7 @@ export default function PlanFilter ({getData, handleFilter}){
                             onChange = {handleChangeInput}
                         />
                     </div>
-                    <RatingFilter />
+                    {/* <RatingFilter /> */}
                     <CategoryFilter category = {category} onSetCategory = {setCategory} />
                     <CommoditeFilter commodite = {commodite} onSetCommodite = {setCommodite} />
                     {

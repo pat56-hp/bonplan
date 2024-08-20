@@ -9,6 +9,7 @@ use App\Http\Resources\EtablissementResource;
 use App\Http\Resources\EventCategoryResource;
 use App\Http\Resources\EventResource;
 use App\Models\Categories;
+use App\Models\Commentaire;
 use App\Models\Commodite;
 use App\Models\Etablissement;
 use App\Models\Event;
@@ -116,8 +117,33 @@ class FrontendController extends Controller
      * Recuperation des informations liees a un etablissement
      */
     public function showEtablissement(Etablissement $etablissement){
+        $commentaireQuery = Commentaire::where(['etablissement_id' => $etablissement->id]);
+        $commentaires = $commentaireQuery->clone()->with(['client'])->paginate(5);
+        $sommeAvis = $commentaireQuery->clone()->sum('note');
+        $ratingNote = [
+            1 => $commentaireQuery->clone()->where('note', 1)->count(),
+            2 => $commentaireQuery->clone()->where('note', 2)->count(),
+            3 => $commentaireQuery->clone()->where('note', 3)->count(),
+            4 => $commentaireQuery->clone()->where('note', 4)->count(),
+            5 => $commentaireQuery->clone()->where('note', 5)->count(),
+        ];
+
+        $note = 0;
+        if ($commentaires->total() > 0) {
+            $note =  $sommeAvis / (float) $commentaires->total();
+            $note = number_format($note, 2, '.', ' ');
+        }
+
         return response()->json([
             'data' => $etablissement->load(['category', 'galleries', 'commodites', 'jours']),
+            'commentaires' => $commentaires,
+            'commentaireMeta' => [
+                'current_page' => $commentaires->currentPage(),
+                'total' => $commentaires->total(),
+                'per_page' => $commentaires->perPage()
+            ],
+            'globalNote' => $note,
+            'noteByRating' => $ratingNote,
             'other' => EtablissementResource::collection(
                 Etablissement::where(['status' => 1, 'validate' => 1])
                     ->where('id', '!=', $etablissement->id)

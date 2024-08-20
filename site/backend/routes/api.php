@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\AuthController;
+use App\Http\Controllers\api\CommentaireController;
 use App\Http\Controllers\api\EtablissementController;
 use App\Http\Controllers\api\EventController;
 use App\Http\Controllers\api\FavoriteController;
@@ -89,6 +90,12 @@ Route::group(['prefix' => 'v1'], function (){
             Route::delete('/delete/{id}', 'delete');
         });
     });
+
+    /**
+     * @Route of store commentaire
+     * @Controller CommentaireController
+     */
+    Route::post('/commentaires/store', CommentaireController::class);
 
     /**
      * @Route of get element of web site page

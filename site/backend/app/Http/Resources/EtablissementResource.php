@@ -35,6 +35,7 @@ class EtablissementResource extends JsonResource
             'total_image' => $this->galleries->count(),
             'open' => $this->open,
             'favoris' => $this->isFavorite,
+            'note' => $this->note,
             'created_at' => $this->created_at->diffForHumans()
         ];
     }

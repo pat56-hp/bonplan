@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {Link, NavLink} from "react-router-dom";
 import { Placeholder } from "rsuite";
 import { apiUrl } from "../scripts/helper";
@@ -68,6 +68,12 @@ export default function Breadcrumbs({breadcrumbs, info, isShow = false, data = {
             )
         }
     }
+
+    
+
+    useEffect(() => {
+        showHeaderBreadcrumbs()
+    }, [data])
 
     return (
         <>

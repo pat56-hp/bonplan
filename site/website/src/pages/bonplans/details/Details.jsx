@@ -1,23 +1,36 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Breadcrumbs from '../../../components/Breadcrumbs'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import useHttp from '../../../hooks/useHttp'
 import toast from 'react-hot-toast'
-import { Placeholder } from 'rsuite'
+import { Message, Placeholder } from 'rsuite'
 import Gallery from '../../../components/Gallery'
 import { apiUrl, slug } from '../../../scripts/helper'
 import MapComponent from '../../../components/MapComponent'
 import Rating from '../../../components/Rating'
 import ElementNotFound from '../../../components/ElementNotFound'
+import CommentaireForm from './CommentaireForm'
+import PlanItemRow from '../PlanItemRow'
+import { useAuthStateProvider } from '../../../contexts/AuthContextProvider'
+import PlanRaiting from '../../../components/PlanRaiting'
+import Help from '../../../components/Help'
+import Paginate from '../../../components/Paginate'
 
 export default function Details() {
 
+	const {token} = useAuthStateProvider()
 	const params = useParams()
+	const navigate = useNavigate()
 	const {sendRequest} = useHttp()
 	const [isLoading, setIsLoading] = useState(false)
 	const [bonplan, setBonPlan] = useState({})
+	const [commentaires, setCommentaires] = useState([])
+	const [commentaireMeta, setCommentaireMeta] = useState({})
+	const [note, setNote] = useState(0)
+	const [ratingNote, setRatingNote] = useState({})
 	const [others, setOthers] = useState([])
+	const [open, setOpen] = useState(false)
 	const [horaires, setHoraires] = useState([
 		{id: 1, label: 'Lundi', ouverture: null, fermeture: null},
 		{id: 2, label: 'Mardi', ouverture: null, fermeture: null},
@@ -37,7 +50,7 @@ export default function Details() {
 		isFetching,
 		isSuccess,
 	} = useQuery({
-		queryKey: ['showEtablissement'],
+		queryKey: ['showEtablissement', params.slug],
 		queryFn: () => {
 			const explode = params.slug.split('-')
 			return sendRequest(`/details-plans/${explode[0]}`)
@@ -77,9 +90,15 @@ export default function Details() {
 		timeOutRef.current = setTimeout(() => {
 			if (isSuccess && getData) {
 				const {data} = getData
+				console.log(data)
 				setBonPlan(data.data)
 				setOthers(data.other)
+				setCommentaires(data.commentaires?.data)
+				setCommentaireMeta(data.commentaireMeta)
+				setNote(data.globalNote)
+				setRatingNote(data.noteByRating)
 				setDatas({
+					open: data?.data.open,
 					libelle: data?.data.libelle,
                     category: data?.data?.category.libelle,
                     category_icon: data?.data?.category.icon,
@@ -112,8 +131,13 @@ export default function Details() {
 		}, 800)
 	}
 
-	const handleOpenModal = () => {
+	const handleOpenModal = (e) => {
+		e.preventDefault()
+		if (!token) {
+			navigate('/login')
+		}
 
+		setOpen(true)
 	}
 
 
@@ -122,7 +146,7 @@ export default function Details() {
 		return () => {
 			clearInterval(timeOutRef.current)
 		}
-	}, [getData])
+	}, [getData, params.slug])
 
 
     const breadcrumbs = [
@@ -155,15 +179,16 @@ export default function Details() {
 								<div className='plan_side'>
 									<h3>Avis et commodités</h3>
 									<div className='plan_element'>
-										<div className='section_avis'>
-											<span className='avis'>4,5</span>
-											<Rating />
-											<span className='total_avis'>0 avis</span>
-										</div>
-										<div className='cat'>
-											<Link to={`/explorer?category=${bonplan.category_id}`}>
-                                                <span><i className={bonplan?.category?.icon}></i>{bonplan?.category?.libelle}</span>
-                                            </Link>
+										<div className='section_avis d-flex'>
+											<div id="score_detail" className='flex-grow-1'>
+												<span>{note}</span> <small>{note > 0 ? `Basé sur ${commentaireMeta?.total} avis` : 'Aucune note'}</small>
+												<Rating note={bonplan.note}/>
+											</div>
+											<div className='cat flex-grow-1'>
+												<Link to={`/explorer?category=${bonplan.category_id}`}>
+													<span><i className={bonplan?.category?.icon}></i>{bonplan?.category?.libelle}</span>
+												</Link>
+											</div>
 										</div>
 										<div className='separator'>
 											<hr/>
@@ -264,91 +289,87 @@ export default function Details() {
 										<span>Cet etablissement vous appartient ? <Link to='/contact'>Contactez-nous</Link></span>
 									</div>
 								</div>
+								<Help />
 							</div>
 							<div className='col-md-8'>
 								<div className='box_style_1 sidebar'>
+									<h4 className='plan_title'>Description</h4>
 									<div dangerouslySetInnerHTML={{ __html: bonplan.description}}></div>
 									<div className='commentaire_avis'>
 										<div className='row'>
 											<div className='col-md-3'>
-												<span className='title'>Avis <span>(0)</span></span>
+												<div className='d-flex justify-content-between gap-10 flex-wrap'>
+													<div><span className='title'>Notes </span></div>
+												
+												</div>
 												<div className='position mb-3'>
-													<a href="#" class="btn_1 add_bottom_30" onClick={handleOpenModal}>Ajouter un avis</a>
+													<PlanRaiting notes = {ratingNote} />
 												</div>
 											</div>
 											<div className='col-md-9'>
+											<div id="score_detail">
+												<span>{note}</span> <small>{note > 0 ? `Basé sur ${commentaireMeta?.total} avis` : 'Aucune note'}</small>
+												<a href="#" className="btn_1 add_bottom_30 mb-0 float-end ms-2" onClick={handleOpenModal}>Ajouter</a>
+											</div>
 												{
-													bonplan.commentaires?.length > 0
-														? bonplan.commentaire?.map((commentaire, key) => (
-															<div className="review_strip_single" key={key}>
-																<small> - 10 March 2015 -</small>
-																<h4>Jhon Doe</h4>
-																<p>
-																	"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed a lorem quis neque interdum consequat ut sed sem. Duis quis tempor nunc. Interdum et malesuada fames ac ante ipsum primis in faucibus."
-																</p>
-																<div className="rating">
-																	<i className="icon-smile voted"></i><i className="icon-smile voted"></i><i className="icon-smile voted"></i><i className="icon-smile"></i><i className="icon-smile"></i>
-																</div>
-															</div>
-														))
+													commentaires?.length > 0
+														? <>
+															{
+																commentaires?.map((data, key) => (
+																	<div className="review_strip_single" key={key}>
+																		<small> - {data.date} -</small>
+																		<h4 className='mb-0'>{data.client?.name} {data.client?.lastname}</h4>
+																		<div className="rating mb-2">
+																			<Rating note={data.note}/>
+																		</div>
+																		<p className='mb-0'>
+																			{data.commentaire}
+																		</p>
+																	</div>
+																))
+															}
 
-														: <h6 className='empty-data'>
-															<i className='icon-info-circled-1'></i> Aucun commentaire trouvé
-														</h6>
-															
-															
+															<Paginate 
+																meta = {commentaireMeta}
+																onSetMeta = {setCommentaireMeta}
+																onSetData = {setCommentaires}
+																pageUrl = {`/details-plans/${bonplan.id}?page=`}
+															/>
+														</>
 
+														: <Message showIcon type="warning">
+															Aucun commentaire disponible
+														</Message>
+														
 												}
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-						{/* <div className='row'>
-							
-							<aside className="col-lg-4">
-								
 								{
 									others.length > 0 &&
-									<div className="box_style_1 expose sidebar">
-										<h3 className="inner">- Autre(s) Evènement(s) -</h3>
-										<div className='widget related-products'>
-											{
-												others.map((element, key) => (
-													<div className="post" key={key}>
-														<figure className="post-thumb">
-															<a href={`/explorer/${slug(element.id + '-' + element.libelle)}`}>
-																<img src={apiUrl() + element.image} alt={element.libelle}/>
-															</a>
-														</figure>
-														<h5 className='d-flex justify-content-between gap-10'>
-															<a href={`/explorer/${slug(element.id + '-' + element.libelle)}`}>{element.libelle}</a>
-															<span className={element.open ? 'text-success' : 'text-danger'}>{element.open ? 'Ouvert' : 'Fermé'}</span>
-														</h5>
-														<div className="price mt-1">
-															<Link to={`/evenements?category=${element.category_id}`}>
-																<i className={element.category_icon}></i>{element.category}
-															</Link>
-														</div>
-														<div className="product_description mt-2">
-															<div className="event_begin">
-																<span><i className='icon-phone'></i>{element.phone}</span> <br/>
-																<span><i className='icon-location-outline'></i>{element.ville}</span>
-															</div>
-														</div>
-													</div>
-												))
-											}
-										</div>
+									<div className=' sidebar'>
+										<h4 className='plan_title'>Le meilleur dans les environs</h4>
+										{
+											others.map((bonplan, key) => (
+												<PlanItemRow bonplan= {bonplan} key={key} descLength = {100} />
+											))
+										}
 									</div>
+
 								}
-								
-							</aside>
-						</div> */}
+							</div>
+						</div>
 					</div>
+					<CommentaireForm
+						open = {open}
+						onSetOpen={setOpen}
+						etablissementId= {bonplan.id}
+					/>
 				</>
 		}
+
+		
     </>
   )
 }

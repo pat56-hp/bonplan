@@ -7,7 +7,7 @@ import useHttp from "../../hooks/useHttp";
 import toast from "react-hot-toast";
 
 
-export default function PlanItemRow({bonplan}) {
+export default function PlanItemRow({bonplan, descLength = null}) {
     const {sendRequest} = useHttp()
     const [isFavorite, setIsFavorite] = useState(bonplan.favoris)
     const [isLoading, setIsLoading] = useState(false)
@@ -65,11 +65,14 @@ export default function PlanItemRow({bonplan}) {
                 </div>
                 <div className="col-lg-8 col-md-8">
                     <div className="tour_list_desc">
-                        {/* <div className="score">Superb<span>9.0</span></div> */}
+                        {
+                            bonplan.note > 4 &&
+                            <div className="score"><span>{bonplan.note}</span></div>
+                        }
                         <h3 className="mt-2"><strong>{bonplan.libelle}</strong></h3>
-                        <Rating />
+                        <Rating note={bonplan.note}/>
                         <p className="mt-3 mb-3">
-                            {getShortDescription(bonplan.description, 200)}
+                            {getShortDescription(bonplan.description, descLength ? descLength : 200)}
                         </p>
                         
                         <span><i className='icon-location-outline'></i>{bonplan.ville}</span>

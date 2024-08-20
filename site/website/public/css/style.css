@@ -9034,3 +9034,14 @@ ul#geoloc_adress li:hover{
 .commentaire_avis .title span{
     font-weight: initial !important;
 }
+
+.rating_comment{
+    margin: 0;
+    padding: 0;
+    list-style: none
+}
+
+.plan_title{
+    font-weight: 600;
+    margin-bottom: 20px;
+}
