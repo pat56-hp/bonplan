@@ -6,7 +6,7 @@ import CommoditeFilter from "./CommoditeFilter";
 import Help from "../../../components/Help";
 import Input from "../../../components/form/Input";
 
-export default function PlanFilter ({getData, handleFilter}){
+export default function PlanFilter ({getData, handleFilter, onSetOpenMap, openMap}){
     const [inputSearch, setInputSearch] = useState(null)
     const [category, setCategory] = useState([])
     const [commodite, setCommodite] = useState([])
@@ -21,6 +21,12 @@ export default function PlanFilter ({getData, handleFilter}){
         setInputSearch(null)
         setCategory([])
         setCommodite([])
+    }
+
+    const handleOpenMap = (e) => {
+        e.preventDefault();
+        onSetOpenMap(!openMap)
+        console.log(openMap)
     }
 
     useEffect(() => {
@@ -41,8 +47,10 @@ export default function PlanFilter ({getData, handleFilter}){
     return (
         <aside className="col-lg-3">
             <p>
-                <a className="btn_map" data-bs-toggle="collapse" href="#collapseMap" aria-expanded="false"
-                   aria-controls="collapseMap" data-text-swap="Hide map" data-text-original="View on map">Afficher la map
+                <a onClick={handleOpenMap} className={`btn_map ${openMap && 'bg-black'} `} data-text-original="Afficher la map">
+                    {
+                        openMap ? "Cacher la map" : "Afficher la map"
+                    } 
                 </a>
             </p>
 

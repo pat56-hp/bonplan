@@ -3,17 +3,19 @@ import Breadcrumbs from "../../components/Breadcrumbs";
 import Paginate from "../../components/Paginate";
 import PlanFilter from "./filter/PlanFilter";
 import { useMutation } from "@tanstack/react-query";
-import { Placeholder } from 'rsuite';
+import { Loader, Placeholder } from 'rsuite';
 import useHttp from "../../hooks/useHttp";
 import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
 import PlanItemRow from "./PlanItemRow";
 import ElementNotFound from "../../components/ElementNotFound";
+import MapPlan from "../../components/map/MapPlan";
 
 export default function Explore (){
     const {sendRequest} = useHttp()
     const [bonplans, setBonPlans] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const [openMap, setOpenMap] = useState(true)
     const [meta, setMeta] = useState({})
     const location = useSearchParams()
     const timeOutRef = useRef(null)    
@@ -93,14 +95,21 @@ export default function Explore (){
                 info = {info}
             />
 
-            <div className="collapse" id="collapseMap">
-                <div id="map" className="map"></div>
+            <div className={`collapse ${openMap && 'show'}`} id="collapseMap">
+                <div id="map" className="map">
+                    <MapPlan bonplans={bonplans} />
+                </div>
             </div>
 
             <div className="container margin_60">
 
                 <div className="row">
-                    <PlanFilter getData = {getData} handleFilter = {handleFilter} />
+                    <PlanFilter 
+                        getData = {getData} 
+                        handleFilter = {handleFilter} 
+                        onSetOpenMap = {setOpenMap}
+                        openMap = {openMap}
+                    />
 
                     <div className="col-lg-9">
 

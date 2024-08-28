@@ -46,6 +46,7 @@ export default function CommentaireForm({open, onSetOpen, etablissementId}) {
 
             //S'il existe une erreur dans le formulaire lors de la soumission
             if (Object.keys(errors).length > 0) {
+                toast.remove()
                 toast.error('Oups...')
                 setFormErrors(errors);
                 setIsLoading(false)

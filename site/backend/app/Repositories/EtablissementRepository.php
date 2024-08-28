@@ -7,6 +7,7 @@ use App\Models\Etablissement;
 use App\Models\Favoris;
 use App\Models\Gallerie;
 use App\Services\UploadFile;
+use DateTime;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -49,7 +50,7 @@ class EtablissementRepository {
                     'instagram' => $data['instagram'] ?? null,
                     'description' => $data['description'],
                     'status' => 1,
-                    'longitude' => $data['logitude'] ?? null,
+                    'longitude' => $data['longitude'] ?? null,
                     'latitude' => $data['latitude'] ?? null,
                 ]);
             }else{
@@ -78,10 +79,14 @@ class EtablissementRepository {
             if (isset($data['horaires'])) {
                 $horaires = json_decode($data['horaires']);
                 $etablissement->jours()->detach();
+
                 foreach ($horaires as $horaire) {
+                    $ouverture = DateTime::createFromFormat('d/m/Y H:i:s', $horaire->ouverture);
+                    $fermeture = DateTime::createFromFormat('d/m/Y H:i:s', $horaire->fermeture);
+
                     $etablissement->jours()->attach($horaire->value+1, [
-                        'ouverture' => date('H:i', strtotime($horaire->ouverture)),
-                        'fermeture' => date('H:i', strtotime($horaire->fermeture))
+                        'ouverture' => $ouverture->format('H:i'),
+                        'fermeture' => $fermeture->format('H:i')
                     ]);
                 }
             }

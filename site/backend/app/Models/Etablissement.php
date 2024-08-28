@@ -63,7 +63,9 @@ class Etablissement extends Model
                 $horaire = $jour->pivot;
                 $currentHour = $now->format('H:i:s');
 
-                if ($horaire['ouverture'] <= $currentHour && $horaire['fermeture'] >= $currentHour) {
+                if($horaire['ouverture'] == '00:00:00' && $horaire['fermeture'] == '00:00:00') {
+                    return true;
+                }elseif ($horaire['ouverture'] <= $currentHour && $horaire['fermeture'] >= $currentHour) {
                     return true;
                 } elseif ($horaire['ouverture'] <= $currentHour && $horaire['fermeture'] < $horaire['ouverture']) {
                     return true;

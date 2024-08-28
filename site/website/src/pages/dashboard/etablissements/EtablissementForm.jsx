@@ -171,7 +171,6 @@ export default function EtablissementForm() {
         }
     }
 
-
     //Initialisation des catégories
     const onSetCategories = ({data}) => {
         if (data && Array.isArray(data.data)) {
@@ -215,7 +214,6 @@ export default function EtablissementForm() {
                 };
             }
         }
-        
 
         /**
          * Verification des heures d'ouverture et de fermeture

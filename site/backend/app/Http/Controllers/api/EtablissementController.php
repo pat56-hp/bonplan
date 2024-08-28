@@ -9,6 +9,7 @@ use App\Models\Etablissement;
 use App\Models\Gallerie;
 use App\Repositories\EtablissementRepository;
 use App\Services\UploadFile;
+use DateTime;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -58,7 +59,7 @@ class EtablissementController extends Controller
     {
         try {
             $data = $request->only([
-                'libelle', 'adresse', 'facebook', 'instagram', 'phone', 'category', 'email', 'ville', 'facebook', 'instagram', 'description', 'horaires', 'commodites'
+                'libelle', 'adresse', 'facebook', 'instagram', 'phone', 'category', 'email', 'ville', 'facebook', 'instagram', 'description', 'horaires', 'commodites', 'longitude', 'latitude'
             ]);
 
             //return $data;

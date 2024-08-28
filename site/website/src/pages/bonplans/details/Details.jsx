@@ -7,7 +7,7 @@ import toast from 'react-hot-toast'
 import { Message, Placeholder } from 'rsuite'
 import Gallery from '../../../components/Gallery'
 import { apiUrl, slug } from '../../../scripts/helper'
-import MapComponent from '../../../components/MapComponent'
+import MapComponent from '../../../components/map/MapComponent'
 import Rating from '../../../components/Rating'
 import ElementNotFound from '../../../components/ElementNotFound'
 import CommentaireForm from './CommentaireForm'
@@ -90,7 +90,6 @@ export default function Details() {
 		timeOutRef.current = setTimeout(() => {
 			if (isSuccess && getData) {
 				const {data} = getData
-				console.log(data)
 				setBonPlan(data.data)
 				setOthers(data.other)
 				setCommentaires(data.commentaires?.data)

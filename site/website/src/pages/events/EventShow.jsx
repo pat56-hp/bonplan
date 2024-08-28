@@ -8,7 +8,7 @@ import Gallery from "../../components/Gallery";
 import { Placeholder } from "rsuite";
 import EventItem from "./EventItem";
 import { apiUrl, getDate, slug } from "../../scripts/helper";
-import MapComponent from "../../components/MapComponent";
+import MapComponent from "../../components/map/MapComponent";
 
 export default function EventShow () {
     const {sendRequest} = useHttp()
@@ -83,16 +83,16 @@ export default function EventShow () {
                 data= {datas}
             />
             <div className="container margin_60">
-                <div className="row">
-                    {
-                        isLoading
-                            ? <Chargement />
-                            : <>
-                                <div className="col-md-12 space_element">
+                {
+                    isLoading
+                        ? <Chargement />
+                        : <>
+                            <div className="row">
+                                <div className="col-md-12 space_element p-0">
                                     <div className="info-column ">
                                         <h2 className="">{event.titre}</h2>
                                         <hr className="divider"/>
-                                        <div className="details-header">
+                                        <div className="details-header details-header box_style_1">
                                             <div className="product_description d-flex justify-content-center">
                                                 <div className="price row">
                                                     <div className="col-md-6">
@@ -135,6 +135,8 @@ export default function EventShow () {
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div className="box_style_1 row">
                                 <div className="col-md-12 space_element">
                                     <div className="row">
                                         <div className="col-lg-6">
@@ -166,7 +168,7 @@ export default function EventShow () {
                                 </div>
                                 {
                                     event.longitude && event.latitude && 
-                                    <div className="col-md-6 mb-4">
+                                    <div className="col-md-8 mb-4">
                                         <h4>Localisation</h4>
                                         <MapComponent
                                             longitude={event.longitude}
@@ -174,13 +176,14 @@ export default function EventShow () {
                                             image = {apiUrl() + event.image}
                                             libelle = {event.titre}
                                             contact = {event.contact}
+                                            isEvent = {true}
                                         />
                                         <p className="d-none d-xl-block d-lg-block mt-2 mb-0">
                                             <a className="btn_map" target='_blank' href={`https://www.google.com/maps/dir/?api=1&destination=${event.adresse}`} aria-expanded="false" aria-controls="collapseMap" data-text-swap="Hide map" data-text-original="View on map"><i className="icon-map"></i> Itinéraire</a>
                                         </p>
                                     </div>
                                 }
-                                <div className="col-md-6 sidebar">
+                                <div className="col-md-4 sidebar">
                                     {
                                         other.length > 0  &&
                                         <div className="widget related-products">
@@ -215,9 +218,9 @@ export default function EventShow () {
                                         </div>
                                     }
                                 </div>
-                            </>
-                    }
-                </div>
+                            </div>
+                        </>
+                }
             </div>
         </>
     )
