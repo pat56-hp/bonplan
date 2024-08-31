@@ -37,13 +37,12 @@ const Categories = ({datas}) => {
                     </div>
                 ))}
                 </div>
-
                 <div className="banner colored">
-                    <h4>Discover our Top tours <span>from $34</span></h4>
+                    <h4>Plans de divertissement</h4>
                     <p>
-                        Lorem ipsum dolor sit amet, vix erat audiam ei. Cum doctus civibus efficiantur in.
-                    </p>
-                    <a href="single_tour.html" className="btn_1 white">Read more</a>
+                        Découvrez une sélection des meilleurs plans de divertissement à proximité. Trouvez l'option idéale pour vous divertir, sans avoir besoin de vous déplacer.
+                    </p>                
+                    <Link to="/explorer" className="btn_1 white">Explorer</Link>
                 </div>
             </div>
         </div>

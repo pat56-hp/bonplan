@@ -1,5 +1,4 @@
 import {createContext, useContext, useEffect, useState} from "react";
-import {postRequest} from "../queries/sendRequest";
 
 //Create du AuthContext avec les valeurs par defaut
 const AuthStateContext = createContext({

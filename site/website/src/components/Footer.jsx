@@ -19,16 +19,15 @@ const Footer = () => {
                                 <li><a href="#">FAQ</a></li>
                                 <li><a href="#">Qui sommes-nous</a></li>
                                 <li><a href="#">Termes et conditions</a></li>
-                                <li><a href="#">Plan du site</a></li>
+                                <li><a href="#">Nous contacter</a></li>
                             </ul>
                         </div>
                         <div className="col-md-3">
                             <h3>Explorer</h3>
                             <ul>
                                 <li><a href="#">Les bons plans</a></li>
-                                <li><a href="#">Tourisme</a></li>
-                                <li><a href="#">Devenir prestataire</a></li>
-                                <li><a href="#">Nos partenaires</a></li>
+                                <li><a href="#">Evènements</a></li>
+                                <li><a href="#">Prestataires</a></li>
                             </ul>
                         </div>
                         <div className="col-md-2">

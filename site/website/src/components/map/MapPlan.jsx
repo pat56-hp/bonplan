@@ -42,9 +42,24 @@ export default function MapPlan({bonplans}) {
         
         {bonplans.length > 0 && bonplans.map(bonplan => {
             const position = [bonplan.latitude, bonplan.longitude]
-            const customDivIcon = L.divIcon({
+            /* const customDivIcon = L.divIcon({
                 html: `<img src=${apiUrl() + bonplan.image} alt=${bonplan.libelle} style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover" />`,
                 iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [0, -41],
+                className: 'custom-div-icon' // Classe CSS optionnelle
+              }); */
+
+              const customDivIcon = L.divIcon({
+                html: `
+                  <div style="position: relative; display: inline-block;">
+                    <div style="background-color: #fff; border-radius: 50%; padding: 5px; box-shadow: -1px 3px 17px 4px #828282;">
+                      <img src=${apiUrl() + bonplan.image} alt=${bonplan.libelle} style="width: 26px; height: 26px; border-radius: 50%; object-fit: cover" />
+                    </div>
+                    <div style="position: absolute; top: 90%; left: 50%; width: 23px; height: 0; transform: translateX(-50%); border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid #ffffff;"></div>
+                  </div>
+                `,
+                iconSize: [25, 41], // Ajuste la taille si nécessaire
                 iconAnchor: [12, 41],
                 popupAnchor: [0, -41],
                 className: 'custom-div-icon' // Classe CSS optionnelle

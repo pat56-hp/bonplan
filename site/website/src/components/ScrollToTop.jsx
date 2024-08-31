@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useMenuStateProvider } from '../contexts/MenuContextProvide';
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
+    const {setMenuMobileActive} = useMenuStateProvider()
 
     useEffect(() => {
         window.scrollTo({
@@ -10,6 +12,8 @@ const ScrollToTop = () => {
             left: 0,
             behavior: 'instant'
         });
+
+        setMenuMobileActive(false)
     }, [pathname]);
 
     return null;

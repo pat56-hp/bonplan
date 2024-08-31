@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import {Link, NavLink} from "react-router-dom";
 import {useAuthStateProvider} from "../../contexts/AuthContextProvider";
 import Input from "../form/Input";
 import UserLoged from "./UserLoged";
+import { useMenuStateProvider } from "../../contexts/MenuContextProvide";
 
 const Header = () => {
 
     const { token } = useAuthStateProvider()
+    const {menuMobileActive, setMenuMobileActive} = useMenuStateProvider()
+
+    const handleMobileMenu = (e) => {
+        e.preventDefault();
+        setMenuMobileActive(!menuMobileActive)
+    }
 
     return (
         <>
@@ -47,12 +54,12 @@ const Header = () => {
                             </div>
                         </div>
                         <nav className="col-8">
-                            <a className="cmn-toggle-switch cmn-toggle-switch__htx open_close" href="#"><span>Menu mobile</span></a>
-                            <div className="main-menu">
+                            <a className={`cmn-toggle-switch cmn-toggle-switch__htx open_close ${menuMobileActive && 'active'}`} href="#" onClick={handleMobileMenu}><span>Menu mobile</span></a>
+                            <div className={`main-menu ${menuMobileActive && 'show'}`}>
                                 <div id="header_menu">
                                     <img src="img/logo_sticky.png" width="160" height="34" alt="Les bons plans" />
                                 </div>
-                                <a href="#" className="open_close" id="close_in"><i className="icon_set_1_icon-77"></i></a>
+                                <a href="#" className="open_close" id="close_in" onClick={handleMobileMenu}><i className="icon_set_1_icon-77"></i></a>
                                 <ul>
                                     <li className="submenu">
                                         <NavLink to={'/'} className="show-submenu">Accueil</NavLink>

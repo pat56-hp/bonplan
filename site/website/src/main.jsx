@@ -10,6 +10,7 @@ import {
 } from '@tanstack/react-query'
 import {Toaster} from "react-hot-toast";
 import ScrollToTop from './components/ScrollToTop';
+import { MenuContextProvider } from './contexts/MenuContextProvide';
 
 
 const queryClient = new QueryClient();
@@ -17,6 +18,7 @@ const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById('root')).render(            
   <React.StrictMode>
       <QueryClientProvider client={queryClient}>
+        <MenuContextProvider>
           <AuthContextProvider>
               <RouterProvider router = {router}>
                 <ScriptLoader />
@@ -41,6 +43,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                     }}
                 />
           </AuthContextProvider>
+        </MenuContextProvider>
       </QueryClientProvider>
   </React.StrictMode>,
 )

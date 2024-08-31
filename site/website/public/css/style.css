@@ -8899,7 +8899,7 @@ ul#geoloc_adress li:hover{
 
 .leaflet-popup-content .popup_element{
     width: 110px;
-    height: 140px;
+    height: auto;
 }
 
 .leaflet-popup-content .popup_img{
@@ -9074,4 +9074,29 @@ ul#geoloc_adress li:hover{
     padding: 20px 30px;
     background: #fff;
     border-radius: 20px;
+}
+
+@media (max-width: 767px) {
+    .categories_grid a {
+        height: 180px !important;
+        margin-bottom: 10px;
+    }
+}
+
+.categories_grid .first_data{
+    height: 550px;
+}
+
+.categories_grid .second_data{
+    height: 270px;
+}
+
+.categories_grid .last_data{
+    height: 274px;
+}
+
+.categories_grid img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }

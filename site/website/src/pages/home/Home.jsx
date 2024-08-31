@@ -14,6 +14,7 @@ const Home = () => {
     const {sendRequest} = useHttp()
     const [categories, setCategories] =  useState([])
     const [bonPlans, setBonPlans] = useState([])
+    const [events, setEvents] = useState([])
     const [recommandes, setRecommandes] = useState([])
     const [total, setTotal] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
@@ -40,6 +41,7 @@ const Home = () => {
                 setCategories(data.categories);
                 setBonPlans(data.bonPlans);
                 setRecommandes(data.recommandes);
+                setEvents(data.events)
                 setTotal(data.total)
                 setIsLoading(false);
                 toast.remove();
@@ -60,7 +62,7 @@ const Home = () => {
             {
                 isLoading ? <Chargement />
                 : <>
-                    <HomeEvent/>
+                    <HomeEvent datas = {events} />
                     <Categories datas = {categories}/>
                     <HomeWeekPlan datas = {recommandes} />
                     <HomeOther datas = {bonPlans} total = {total}/>
