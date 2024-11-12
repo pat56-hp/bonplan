@@ -77,6 +77,9 @@ export default function MapPlan({bonplans}) {
                             </div>
                             <h5 className='text-center'>
                             <Link to={`/explorer/${slug(bonplan.id + '-' +bonplan.libelle)}`}>{bonplan.libelle}</Link></h5>
+                            <p className='text-center text-black mt-0'>
+                              <a href={`tel:00${bonplan.phone}`}>{bonplan.phone}</a>
+                            </p>
                         </div>
                     </Popup>
                 </Marker>

@@ -75,7 +75,9 @@ export default function PlanItem({bonplan}){
             <div className="hotel_title">
                 <h3><strong>{bonplan.libelle}</strong></h3>
                 <Rating note={bonplan.note}/>
-                <div className="view_on_map">Voir l'emplacement</div>
+                <div className="view_on_map">
+                    <Link to={`/explorer/${slug(bonplan.id + '-' +bonplan.libelle)}`}>Voir l'emplacement</Link>
+                </div>
             </div>
         </div>
     )

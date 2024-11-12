@@ -90,6 +90,7 @@ export default function Details() {
 		timeOutRef.current = setTimeout(() => {
 			if (isSuccess && getData) {
 				const {data} = getData
+				console.log(data.data)
 				setBonPlan(data.data)
 				setOthers(data.other)
 				setCommentaires(data.commentaires?.data)

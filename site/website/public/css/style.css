@@ -8897,14 +8897,18 @@ ul#geoloc_adress li:hover{
     margin-bottom: 35px;
 }
 
+.leaflet-popup-content{
+    margin: 13px 14px !important;
+}
+
 .leaflet-popup-content .popup_element{
-    width: 110px;
+    width: 120px;
     height: auto;
 }
 
 .leaflet-popup-content .popup_img{
     width: auto;
-    height: 80px;
+    height: 100px;
 }
 
 .leaflet-popup-content img{
