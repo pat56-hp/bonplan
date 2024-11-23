@@ -44,6 +44,7 @@ Route::group(['prefix' => 'v1'], function (){
      */
     Route::controller(ProfileController::class)->group(function(){
         Route::post('/profile/update', 'updateProfile');
+        Route::post('/profile/update/image', 'updateImage');
         Route::post('/profile/update/password', 'updatePassword');
     });
 
@@ -87,6 +88,7 @@ Route::group(['prefix' => 'v1'], function (){
     Route::controller(FavoriteController::class)->group(function(){
         Route::group(['prefix' => 'favoris'], function(){
             Route::get('/', 'index');
+            Route::get('/etablissement', 'getEtablissementFavorite');
             Route::delete('/delete/{id}', 'delete');
         });
     });
@@ -110,6 +112,9 @@ Route::group(['prefix' => 'v1'], function (){
         Route::get('/details-plans/{etablissement}', 'showEtablissement');
         Route::get('/events', 'getEvents');
         Route::get('/events/{event}', 'showEvent');
+
+        Route::get('/homeData', 'getMobleDataHome');
+        Route::get('/etablissements/{category}', 'getPlanOfCategory');
     });
 
     /**

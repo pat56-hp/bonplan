@@ -26,8 +26,12 @@ class Etablissement extends Model
         return $this->belongsTo(Client::class, 'client_id');
     }
 
+    public function favoris(){
+        return $this->hasMany(Favoris::class, 'etablissement_id');
+    }
+
     public function category(){
-        return $this->belongsTo(Categories::class, 'category_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     public function galleries(){
@@ -43,7 +47,7 @@ class Etablissement extends Model
     }
 
     public function commentaires(){
-        return $this->hasMany(Commentaire::class, 'etablissement_id');
+        return $this->hasMany(Commentaire::class, 'etablissement_id')->with('client')->latest();
     }
 
     /**
@@ -53,7 +57,8 @@ class Etablissement extends Model
         $now = Carbon::now();
         $jours = $this->jours;
 
-        $dayOfWeek = $now->dayOfWeek + 1;
+        $dayOfWeek = $now->dayOfWeek;
+        //return $dayOfWeek;
 
         //Verifie si le jour fait parti des horaires
         if (in_array($dayOfWeek, $jours->pluck('id')->toArray())) {

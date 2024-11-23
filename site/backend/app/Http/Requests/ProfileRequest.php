@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProfileRequest extends FormRequest
 {
@@ -24,7 +28,22 @@ class ProfileRequest extends FormRequest
         return [
             'name' => 'required|min:3|max:100',
             'lastname' => 'required|min:3|max:100',
-            'phone' => 'required|min:4|max:25'
+            'phone' => ['required', 'min:4', 'max:25', Rule::unique('clients', 'phone')->ignore(auth('api')->id())]
         ];
+    }
+
+    public function wantsJson()
+    {
+        return true;
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'message' => 'Les données fournies sont invalides.',
+                'data' => $validator->errors()
+            ], Response::HTTP_UNPROCESSABLE_ENTITY)
+        );
     }
 }

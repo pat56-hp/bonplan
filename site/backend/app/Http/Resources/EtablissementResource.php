@@ -17,6 +17,7 @@ class EtablissementResource extends JsonResource
         return [
             'id' => $this->id,
             'category' => $this->category?->libelle,
+            'category_id' => $this->category_id,
             'category_icon' => $this->category?->icon,
             'commodites' => $this->commodites,
             'libelle' => $this->libelle,
@@ -29,6 +30,7 @@ class EtablissementResource extends JsonResource
             'facebook' => $this->facebook,
             'instagram' => $this->instagram,
             'image' => $this->image,
+            'gallery' => $this->galleries,
             'status' => $this->status,
             'validate' => $this->validate,
             'description' => $this->description,
@@ -36,6 +38,8 @@ class EtablissementResource extends JsonResource
             'open' => $this->open,
             'favoris' => $this->isFavorite,
             'note' => $this->note,
+            'commentaires' => $this->commentaires,
+            'horaire' => $this->jours,
             'created_at' => $this->created_at->diffForHumans()
         ];
     }

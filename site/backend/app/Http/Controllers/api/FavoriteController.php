@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\EtablissementResource;
+use App\Models\Etablissement;
 use App\Repositories\FavoriteRepository;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +25,15 @@ class FavoriteController extends Controller
     {
         return response()->json([
             'data' => $this->respository->getAll(),
+            'message' => 'Liste des favoris'
+        ]);
+    }
+
+    public function getEtablissementFavorite(){
+        $etablissements = Etablissement::whereHas('favoris', fn($q) => $q->where('client_id', auth('api')->id()))->get();
+
+        return response()->json([
+            'data' => EtablissementResource::collection($etablissements),
             'message' => 'Liste des favoris'
         ]);
     }

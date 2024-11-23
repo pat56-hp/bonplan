@@ -8,7 +8,7 @@ use App\Http\Resources\CommoditeResource;
 use App\Http\Resources\EtablissementResource;
 use App\Http\Resources\EventCategoryResource;
 use App\Http\Resources\EventResource;
-use App\Models\Categories;
+use App\Models\Category;
 use App\Models\Commentaire;
 use App\Models\Commodite;
 use App\Models\Etablissement;
@@ -26,7 +26,7 @@ class FrontendController extends Controller
      */
     public function getCategories(): JsonResource{
         return CategoryResource::collection(
-            Categories::whereStatus(1)->orderBy('libelle')->get()
+            Category::whereStatus(1)->orderBy('libelle')->get()
         );
     }
 
@@ -66,7 +66,7 @@ class FrontendController extends Controller
         );
 
         $categories = CategoryResource::collection(
-            Categories::whereStatus(1)->orderBy('libelle')->get()
+            Category::whereStatus(1)->orderBy('libelle')->get()
         );
 
         $recommandes = EtablissementResource::collection(
@@ -99,7 +99,7 @@ class FrontendController extends Controller
             ->when(!empty($request->category), fn($q) => $q->whereIn('category_id', explode(',', $request->category)))
             ->when(!empty($request->commodite), fn($q) => $q->whereHas('commodites', fn($q) => $q->whereIn('commodite_id', explode(',', $request->commodite))))
             ->latest()
-            ->paginate(30);
+            ->paginate(10);
         //return explode(',',$request->category);
         $etablissementResource = EtablissementResource::collection($etablissements);
 
@@ -193,4 +193,29 @@ class FrontendController extends Controller
             'message' => 'Details de L\'evenement'
         ]);
     }
+
+    /**
+     * Recuperation des elements de la pages d'accueil du mobile
+     */
+
+     public function getMobleDataHome(){
+        $planOfWeek = EtablissementResource::collection(
+            Etablissement::where(['status' => 1, 'validate' => 1])->inRandomOrder()->take(9)->get()
+        );
+
+        $planByCategory = EtablissementResource::collection(
+            Etablissement::where(['status' => 1, 'validate' => 1])->inRandomOrder()->take(10)->get()
+        );
+
+        $categories = CategoryResource::collection(
+            Category::whereStatus(1)->orderBy('libelle')->get()
+        );
+
+        return response()->json([
+            'planOfWeek' => $planOfWeek,
+            'categories' => $categories,
+            'planByCategory' => $planByCategory
+        ]);
+     }
+
 }
