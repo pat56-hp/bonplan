@@ -1,41 +1,21 @@
 import { View, Text, StyleSheet, ScrollView, FlatList, SafeAreaView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useThemeColor } from '@/hooks/useThemeColor'
 import { size } from '@/constants/FontSize'
 import VoirPlus from '@/components/VoirPlus'
 import WeekItem from '@/components/plans/WeekItem'
-import ButtonComponent from '@/components/ButtonComponent'
-import { categories, items } from '@/constants/data'
 import PlanItem from '@/components/plans/PlanItem'
 import { useNavigation } from 'expo-router'
+import PlanByCategory from '@/components/plans/PlanByCategory'
+import { useAuthStateContext } from '@/contexts/AuthContextProvider'
 
 export default function Home() {
   const colors = useThemeColor()
   const navigation = useNavigation()
-
-  const [selectedCategory, setSelectedCategory] = useState(categories[0].id);
-  const [categoryItems, setCategryItems] = useState([])
-  
-  useEffect(() => {
-    setCategryItems(items.filter(item => item.category_id == selectedCategory))
-  }, [selectedCategory, items])
-
-  {/* Afficher les items par categorie */}
-  const showDataPerCategory = () => {
-    if (categoryItems.length > 0) {
-      return categoryItems.map((item, key) => <PlanItem key={key} item={item} />)
-    }else{
-      return (
-        <View style={styles.categoryItem}>
-          <Text style={{color: colors.text, textAlign: 'center', fontWeight: 'bold', fontSize: size.headerTitle}}>Aucun établissement trouvé</Text>
-        </View>
-      )
-    }
-  }
   
   return (
     <>
-      <SafeAreaView style={{ marginTop: 200,backgroundColor: colors.background, flex: 1}}>
+      <SafeAreaView style={{ marginTop: 200, backgroundColor: colors.background, flex: 1}}>
         <ScrollView contentContainerStyle={{paddingTop: 20, paddingBottom: 70}} showsVerticalScrollIndicator={false}>
           <View style={styles.container}>
             <View style={styles.weekPlanContainer}>
@@ -62,34 +42,8 @@ export default function Home() {
                   pathname={{pathname: '#'}}
                 />
               </View>
-              <View style={styles.categoriesContainer}>
-                <ScrollView contentContainerStyle={{paddingVertical: 5, paddingHorizontal: 5}} horizontal showsHorizontalScrollIndicator={false}>
-                  {
-                    categories.map((category, key) => (
-                      <ButtonComponent 
-                        key={key} 
-                        style={[
-                          styles.categoryButton,
-                          {
-                            backgroundColor: selectedCategory == category.id ? colors.tint : colors.textDefault, 
-                          }]
-                        }
-                        onPress={() => setSelectedCategory(category.id)}
-                      >
-                        <Text style={[
-                          styles.categoriesText,
-                          {
-                            color: selectedCategory == category.id ? colors.textDefault : colors.text,
-                            fontWeight: 'bold'
-                          }
-                        ]}>{category.name}</Text>
-                      </ButtonComponent>
-                    ))
-                  }
-                </ScrollView>
-                <View style={{gap: 8}}>
-                  {showDataPerCategory()}
-                </View>
+              <View style={{ paddingHorizontal: 18}}>
+                <PlanByCategory />
               </View>
             </View>
           </View>
@@ -128,33 +82,6 @@ const styles = StyleSheet.create({
   },
   planBycategoryContainer:{
     gap: 20,
-  },
-  categoriesContainer:{
-    paddingHorizontal: 18,
-    gap: 20
-  },
-  categoryButton:{
-    borderRadius: 100, 
-    marginRight: 10,
-    shadowColor: 'rgba(0, 0, 0, 0.25)',
-    shadowOffset: 1,
-    shadowOpacity: 4,
-    elevation: 4,
-  },
-  categoriesText: {
-    fontSize: size.text,
-    textAlign: 'center'
-  },
-  categoryItem: {
-    padding: 10,
-    flexDirection: 'row',
-    backgroundColor: '#ffffff',
-    height: 87,
-    borderRadius: 20,
-    gap: 10,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   imageContent:{
     width: 82,
