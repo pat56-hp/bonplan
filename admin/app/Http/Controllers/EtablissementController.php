@@ -149,6 +149,9 @@ class EtablissementController extends Controller
     public function destroy(Etablissement $etablissement)
     {
         $this->etablissementRepository->delete($etablissement);
+        $module = 'Etablissements';
+        $action = 'Suppression de l\'etablissement ' . $etablissement->libelle;
+        $this->activityService->createActivity($module, $action);
         alert('success', 'Etablissement supprimé avec succès');
         return back();
     }
@@ -163,6 +166,9 @@ class EtablissementController extends Controller
     {
         // Basculer le statut (toggle)
         $etablissement->update(['status' => !$etablissement->status]);
+        $module = 'Etablissements';
+        $action = 'Modification du statut de l\'etablissement ' . $etablissement->libelle;
+        $this->activityService->createActivity($module, $action);
         session()->flash('success', 'Statut modifié avec succès');
         return back();
     }
@@ -175,6 +181,9 @@ class EtablissementController extends Controller
      */
     public function validation(Etablissement $etablissement){
         $etablissement->update(['validate' => !$etablissement->validate]);
+        $module = 'Etablissements';
+        $action = 'Validation de l\'etablissement ' . $etablissement->libelle;
+        $this->activityService->createActivity($module, $action);
         alert('success', 'Etablissement validé avec succès');
         return back();
     }

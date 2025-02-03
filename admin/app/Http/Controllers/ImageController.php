@@ -2,36 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\UploadFileService;
 use Illuminate\Http\Request;
 
 class ImageController extends Controller
 {
+
+    private UploadFileService $uploadFile;
+
+    public function __construct(UploadFileService $uploadFile){
+        $this->uploadFile = $uploadFile;
+    }
     public function __invoke(Request $request)
     {
         $request->validate([
             'file' => ['required']
         ]);
 
-        if ($request->hasFile('file')){
-
-            if (!verifyImageExtension($request->file)) {
-                return response()->json([
-                    'message' => 'Les images doivent avoir l\'extension png, jpeg, jpg ou ico'
-                 ], 415);
-            }
-
-
-            $fileName = 'bonplan-'. time() . '-img.'.$request->file->extension();
-            $path = 'assets/bonplans/';
-            $filePath = storeFile($request->file, $path, $fileName);
-
+        try {
             return response()->json([
-                'file' => $filePath
+                'file' => $this->uploadFile->execute($request->file)
             ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage()
+             ], 415);
         }
-
-        return response()->json([
-           'message' => 'Une erreur s\'est produite, image incorrecte ou corrompue'
-        ], 415);
     }
 }

@@ -49,7 +49,7 @@ class SettingController extends Controller
         $pays = Pays::where('iso', $request->country_code)->firstOrFail();
         $data['pays_id'] = $pays->id;
 
-        if (Auth::user()->update($data)) {
+        if (auth()->user()->update($data)) {
             session()->flash('type', 'alert-success');
             session()->flash('message', 'Informations modifiees avec succes.');
             $module = 'Profil';

@@ -9,13 +9,13 @@
 
             <li class="nav-label">Inscriptions</li>
 
-            <li class="{{ $menu == 'user' ? 'active' : '' }}">
+            <li class="{{ $menu == 'client' ? 'active' : '' }}">
                 <a class="has-arrow" href="#" aria-expanded="false"><i class="icon-user-7"></i> <span class="nav-text">Inscriptions</span></a>
                 <ul aria-expanded="false">
-                    <li><a href="{{ route('user.create') }}" class="{{ request()->routeIs('user.create') ? 'active' : '' }}"><i class=" icon-plus-outline"></i> Ajouter un compte</a>
+                    <li><a href="{{ route('clients.create') }}" class="{{ request()->routeIs('clients.create') ? 'active' : '' }}"><i class=" icon-plus-outline"></i> Ajouter un compte</a>
                     </li>
                     <li>
-                        <a href="{{ route('user.index') }}" class="{{ request()->routeIs('user.index') ? 'active' : '' }}"><i class=" icon-database-2"></i>Liste des inscriptions</a>
+                        <a href="{{ route('clients.index') }}" class="{{ request()->routeIs('clients.index') ? 'active' : '' }}"><i class=" icon-database-2"></i>Liste des comptes</a>
                     </li>
                 </ul>
             </li>

@@ -14,5 +14,7 @@ class Client extends Model
         'name', 'lastname', 'email', 'phone', 'password', 'status', 'validate', 'adresse', 'type', 'image'
     ];
 
+    protected $paginate = 100;
+
 
 }

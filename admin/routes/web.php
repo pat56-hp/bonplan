@@ -27,8 +27,6 @@ Route::prefix('settings')->group(function(){
     Route::get('/profile/password', [App\Http\Controllers\SettingController::class, 'profile'])->name('password');
     Route::post('/profile/password', [App\Http\Controllers\SettingController::class, 'editpassword'])->name('password.update');
 });
-
-Route::post('/imageusersotre', [\App\Http\Controllers\UserController::class, 'storeImg'])->name('imageUserStorage');
 Route::post('/imagestore', \App\Http\Controllers\ImageController::class)->name('imageStorage');
 
 //Route::get('/test/{email}/{password}', function (\Illuminate\Http\Request $request){

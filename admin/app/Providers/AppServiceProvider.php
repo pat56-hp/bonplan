@@ -8,10 +8,12 @@ use Illuminate\Support\ServiceProvider;
 use App\Domain\{
     ActivityRepositoryInterface,
     EtablissementRepositoryInterface,
+    ClientRepositoryInterface,
 };
 use App\Repositories\{
     ActivityRepository,
-    EtablissementRepository
+    EtablissementRepository,
+    ClientRepository
 };
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(ActivityRepositoryInterface::class, ActivityRepository::class);
         $this->app->bind(EtablissementRepositoryInterface::class, EtablissementRepository::class);
+        $this->app->bind(ClientRepositoryInterface::class, ClientRepository::class);
     }
 
     /**
