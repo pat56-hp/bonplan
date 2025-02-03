@@ -58,7 +58,10 @@ class EtablissementController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Sauvgarde d'un etablissement
+     *
+     * @param EtablissementRequest $request
+     * @return  \Illuminate\Http\RedirectResponse
      */
     public function store(EtablissementRequest $request)
     {
@@ -67,7 +70,18 @@ class EtablissementController extends Controller
             'image', 'galerie', 'description', 'jour', 'ouverture', 'fermeture', 'commodite'
         );
 
-        dd($data);
+        $data['id'] = null;
+        try {
+            $etablissement = $this->etablissementRepository->save($data);
+            $module = 'Etablissements';
+            $action = 'Création de l\'etablissement ' . $etablissement->libelle;
+            $this->activityService->createActivity($module, $action);
+            alert('success', 'Etablissement créé avec succès');
+            return to_route('etablissements.index');
+        } catch (\Throwable $th) {
+            alert('danger', 'Echec de la création de l\'établissement : ' . $th->getMessage());
+            return back()->withInput();
+        }
     }
 
     /**
@@ -79,26 +93,90 @@ class EtablissementController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Edition d'un etablissement
+     *
+     * @param Etablissement $etablissement
+     * @return  \Illuminate\Http\RedirectResponse
      */
-    public function edit(string $id)
+    public function edit(Etablissement $etablissement)
     {
-        //
+        $data['sub_title'] = 'Cette page est destinée à la modification des établissements';
+        $module = 'Etablissements';
+        $action = 'Affichage de la page de modification d\'un établissements';
+        $this->activityService->createActivity($module, $action);
+        $data = array_merge($data, $this->etablissementRepository->getElementToFront($etablissement));
+        $data['etablissement'] = $etablissement;
+
+        return view('pages.etablissements.edit', $data);
+    }
+
+   /**
+    * Sauvegarde de l'edition d'un etablissement
+    *
+    * @param EtablissementRequest $request
+    * @param string $id
+    * @return  \Illuminate\Http\RedirectResponse
+    */
+    public function update(EtablissementRequest $request, string $id)
+    {
+        $data = $request->only(
+            'libelle', 'client', 'categorie', 'email', 'phone', 'ville', 'adresse', 'facebook', 'instagram', 
+            'image', 'galerie', 'description', 'jour', 'ouverture', 'fermeture', 'commodite', 'validate', 'status'
+        );
+        $data['id'] = $id;
+
+        //dd($data);
+
+        try {
+            $etablissement = $this->etablissementRepository->save($data);
+            $module = 'Etablissements';
+            $action = 'Modification de l\'etablissement ' . $etablissement->libelle;
+            $this->activityService->createActivity($module, $action);
+            alert('success', 'Etablissement modifié avec succès');
+            return to_route('etablissements.index');
+        } catch (\Throwable $th) {
+            alert('danger', 'Echec de la modification de l\'établissement : ' . $th->getMessage());
+            return back()->withInput();
+        }
     }
 
     /**
-     * Update the specified resource in storage.
+     * Suppression d'un etablissement
+     *
+     * @param Etablissement $etablissement
+     * @return  \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, string $id)
+    public function destroy(Etablissement $etablissement)
     {
-        //
+        $this->etablissementRepository->delete($etablissement);
+        alert('success', 'Etablissement supprimé avec succès');
+        return back();
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Mise à jour du statut d'un établissement.
+     *
+     * @param Etablissement $etablissement
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(string $id)
+    public function editStatus(Etablissement $etablissement)
     {
-        //
+        // Basculer le statut (toggle)
+        $etablissement->update(['status' => !$etablissement->status]);
+        session()->flash('success', 'Statut modifié avec succès');
+        return back();
     }
+
+    /**
+     * Validation d'un établissement
+     *
+     * @param Etablissement $etablissement
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function validation(Etablissement $etablissement){
+        $etablissement->update(['validate' => !$etablissement->validate]);
+        alert('success', 'Etablissement validé avec succès');
+        return back();
+    }
+
 }

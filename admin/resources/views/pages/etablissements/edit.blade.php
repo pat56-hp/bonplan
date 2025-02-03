@@ -12,23 +12,13 @@
     </style>
 @endpush
 @section('content')
-    <div class="row page-titles">
-        <div class="col p-0">
-            <h4>Hello, <span>{{ ucfirst(auth()->user()->name).' '.ucfirst(auth()->user()->lastname) }}</span></h4>
-        </div>
-        <div class="col p-0">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="{{ route('dashboard')}}">Tableau de bord</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="{{ route('bonplan.index')}}">Endroits</a>
-                </li>
-                <li class="breadcrumb-item active">Création</li>
-            </ol>
-        </div>
-    </div>
-    @include('parts.flashmessage')
+    @include('parts.breadcrumb', [
+        'data' => [
+            ['label' => 'Tableau de bord', 'link' => route('dashboard')],
+            ['label' => 'Etablissements', 'link' => route('etablissements.index')],
+            ['label' => 'Edition']
+        ]
+    ])
     <!-- row -->
     <div class="row">
         <div class="col-lg-12">
@@ -37,7 +27,7 @@
                     <div class="d-flex justify-content-between">
                         <h1>{{ $title}}</h1>
                         <div class="buttons">
-                            <a href="{{ route('bonplan.index') }}" class="btn btn-primary btn-rounded p-2"><i class="fas fa-list"></i> Liste des endroits</a>
+                            <a href="{{ route('etablissements.index') }}" class="btn btn-primary btn-rounded p-2"><i class="fas fa-list"></i> Liste des endroits</a>
                             <a href="#" class="btn btn-dark btn-rounded p-2"><i class="fas fa-search"></i> Rechercher</a>
                         </div>
                     </div>
@@ -46,27 +36,28 @@
                         <div class="alert alert-warning text-center mb-4">
                             <span class="mt-0 d-inline">Tous les champs marqués par ( <i class="red">*</i> ) sont obligatoire !</span>
                         </div>
-                        <form action="{{ route('bonplan.update', $bonplan->id)}}" method="post" enctype="multipart/form-data">
+                        <form action="{{ route('etablissements.update', ['id' => $etablissement->id])}}" method="post" enctype="multipart/form-data">
                             @csrf
+                            <h4 class="mb-3">INFORMATIONS DE BASES</h4>
                             <div class="row m-t-xxl">
                                 <div class="col-md-6">
-                                    <label for="name" class="form-label">Nom <span class="red">*</span></label>
-                                    <input type="text" name="name" value="{{ old('name', $bonplan->name) }}" class="form-control  @error('name') is-invalid @enderror" id="name" placeholder="Les délices de Jeanne">
-                                    @error('name')
+                                    <label for="libelle" class="form-label">Libéllé <span class="red">*</span></label>
+                                    <input type="text" name="libelle" value="{{ old('libelle', $etablissement->libelle) }}" class="form-control  @error('libelle') is-invalid @enderror" id="libelle" placeholder="Les délices de Jeanne">
+                                    @error('libelle')
                                     <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
                                     <label for="responsable" class="form-label">Responsable <span class="red">*</span></label>
-                                    <select class="js-states form-control @error('user_id') is-invalid @enderror" id="responsable" tabindex="-1" style="display: none; width: 100%" readonly name="user_id">
+                                    <select class="js-states form-control @error('client') is-invalid @enderror" id="responsable" tabindex="-1" style="display: none; width: 100%" readonly name="client">
                                         <option value="">Sélectionnez le responsable</option>
-                                        @foreach($users as $user)
-                                            <option value="{{ $user->id }}" {{ old('user_id', $bonplan->user_id) == $user->id ? 'selected' : ''}}>{{ ucfirst($user->name).' '.ucfirst($user->lastname) }}</option>
+                                        @foreach($clients as $client)
+                                            <option value="{{ $client->id }}" {{ old('client', $etablissement->client_id) == $client->id ? 'selected' : ''}}>{{ ucfirst($client->name).' '.ucfirst($client->lastname) }}</option>
                                         @endforeach
                                     </select>
-                                    @error('user_id')
+                                    @error('client')
                                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -76,13 +67,13 @@
                             <div class="row m-t-xxl">
                                 <div class="col-md-6">
                                     <label for="categorie" class="form-label">Catégorie <span class="red">*</span></label>
-                                    <select class="js-states form-control @error('categorie_id') is-invalid @enderror" id="categorie" tabindex="-1" style="display: none; width: 100%" readonly name="categorie_id">
+                                    <select class="js-states form-control @error('categorie') is-invalid @enderror" id="categorie" tabindex="-1" style="display: none; width: 100%" name="categorie">
                                         <option value="">Sélectionnez la catégorie</option>
                                         @foreach($categories as $categorie)
-                                            <option value="{{ $categorie->id }}" {{ old('categorie_id', $bonplan->categorie_id) == $categorie->id ? 'selected' : ''}}>{{ ucfirst($categorie->libelle) }}</option>
+                                            <option value="{{ $categorie->id }}" {{ old('categorie', $etablissement->category_id) == $categorie->id ? 'selected' : ''}}>{{ html_entity_decode(ucfirst($categorie->libelle)) }}</option>
                                         @endforeach
                                     </select>
-                                    @error('categorie_id')
+                                    @error('categorie')
                                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -90,7 +81,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="settingsInputEmail" class="form-label">Adresse email</label>
-                                    <input type="email" name="email" value="{{old('email', $bonplan->email)}}" class="form-control @error('email') is-invalid @enderror" id="settingsInputEmail" aria-describedby="settingsEmailHelp" placeholder="example@neptune.com">
+                                    <input type="email" name="email" value="{{old('email', $etablissement->email)}}" class="form-control @error('email') is-invalid @enderror" id="settingsInputEmail" aria-describedby="settingsEmailHelp" placeholder="example@neptune.com">
                                     <div id="settingsCurrentPassword" class="form-text"></div>
                                     @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -101,47 +92,20 @@
                             </div>
 
                             <div class="row m-t-lg">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label for="phone" class="form-label">Contact <span class="red">*</span></label>
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <select class="js-states form-control @error('countrie_id') is-invalid @enderror" id="phone" tabindex="-1" style="display: none; width: 100%" readonly name="countrie_id">
-                                                @foreach($countries as $countrie)
-                                                    <option value="{{ $countrie->id }}" {{ old('countrie_id', $bonplan->country_id) == $countrie->id ? 'selected' : ''}}>+{{ $countrie->phonecode }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('countrie_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                        <div class="col-md-9">
-                                            <input type="text" name="phone" value="{{old('phone', $bonplan->phone)}}" class="form-control @error('phone') is-invalid @enderror" id="settingsPhoneNumber" placeholder="xxx-xxx-xxxx">
-                                            @error('phone')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="settingsState" class="form-label">Ville <span class="red">*</span></label>
-                                    <input type="text" name="ville" value="{{old('ville', $bonplan->ville)}}" class="form-control @error('ville') is-invalid @enderror" id="" placeholder="Abidjan">
-                                    @error('ville')
+                                    <input type="hidden" name="country_code" value="{{old('country_code')}}" required>
+                                    <input type="tel" name="phone" value="{{ old('phone', $etablissement->phone) }}" class="form-control @error('phone') is-invalid @enderror" id="phone" placeholder="">
+                                    @error('phone')
                                     <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                     @enderror
                                 </div>
-                            </div>
-                            <div class="row m-t-xxl">
                                 <div class="col-md-4">
-                                    <label for="settingsState" class="form-label">Commune <span class="red">*</span></label>
-                                    <input type="text" name="commune" value="{{old('commune', $bonplan->commune)}}" class="form-control @error('commune') is-invalid @enderror" id="" placeholder="Cocody">
-                                    @error('commune')
+                                    <label for="settingsState" class="form-label">Ville <span class="red">*</span></label>
+                                    <input type="text" name="ville" value="{{old('ville', $etablissement->ville)}}" class="form-control @error('ville') is-invalid @enderror" id="" placeholder="Abidjan">
+                                    @error('ville')
                                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -149,17 +113,28 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="adresse" class="form-label">Adresse <span class="red">*</span></label>
-                                    <input type="text" name="adresse" required value="{{old('adresse', $bonplan->adresse)}}" class="form-control @error('adresse') is-invalid @enderror" id="adresse" placeholder="Abidjan Cocody angré">
+                                    <input type="text" name="adresse" required value="{{old('adresse', $etablissement->adresse)}}" class="form-control @error('adresse') is-invalid @enderror" id="adresse" placeholder="Abidjan Cocody angré">
                                     @error('adresse')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row m-t-xxl">
+                                <div class="col-md-6">
+                                    <label for="facebook" class="form-label">Facebook</label>
+                                    <input type="url" name="facebook" value="{{old('facebook', $etablissement->facebook)}}" class="form-control @error('facebook') is-invalid @enderror" id="facebook" placeholder="https://www.monfacebook.com">
+                                    @error('facebook')
                                     <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                     @enderror
                                 </div>
-                                <div class="col-md-4">
-                                    <label for="map" class="form-label">Lien map</label>
-                                    <input type="url" name="map" value="{{old('map', $bonplan->map)}}" class="form-control @error('map') is-invalid @enderror" id="map" placeholder="https://">
-                                    @error('map')
+                                <div class="col-md-6">
+                                    <label for="instagram" class="form-label">Instagram</label>
+                                    <input type="url" name="instagram" value="{{old('instagram', $etablissement->instagram)}}" class="form-control @error('instagram') is-invalid @enderror" id="instagram" placeholder="https://www.moninstagram.com">
+                                    @error('instagram')
                                     <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -170,29 +145,29 @@
                                 <div class="col-md-6">
                                     <label for="photo" class="form-label">Image en avant (.png, .jpeg, .jpg) <span class="red">*</span></label><br>
                                     <span class="errorPhoto" style="color: red"></span>
-                                    <input type="text" id="photos" name="photo" data-fileuploader="photo-uploader">
+                                    <input type="text" id="photos" name="image" value="{{old('image')}}" data-fileuploader="photo-uploader">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="recto" class="form-label">Galerie (.png, .jpeg, .jpg)</label><br>
                                     <span class="errorGalerie" style="color: red"></span>
-                                    <input type="text" id="galerie" name="galerie" data-fileuploader="photo-uploader">
+                                    <input type="text" id="galerie" name="galerie" value="{{old('galerie')}}" data-fileuploader="photo-uploader">
                                 </div>
                             </div>
                             <div class="row m-t-xxl">
                                 <div class="col-md-12">
-                                    <label for="password" class="form-label">Description <span class="red">*</span></label>
-                                    <textarea name="description" id="summernote" class="form-control @error('description') is-invalid @enderror">{{ old('description', html_entity_decode($bonplan->description)) }}</textarea>
+                                    <label for="description" class="form-label">Description <span class="red">*</span></label>
+                                    <textarea name="description" cols="4" rows="4" id="summernote" class="form-control @error('description') is-invalid @enderror" >{{ old('description', $etablissement->description) }}</textarea>
                                     @error('description')
-                                    <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
                             </div>
 
                             <hr>
 
-                            <h4 class="mb-3">HORAIRES</h4>
+                            <h4 class="mb-3">HORAIRES <span class="red">*</span></h4>
 
                             <div class="row m-t-lg mb-4">
                                 <div class="col-md-2"></div>
@@ -208,87 +183,42 @@
                             </div>
 
                             @foreach($jours as $jour)
-                                <div class="row m-t-lg">
-                                    <div class="col-md-2">
-                                        <div class="checkbox col-sm-3">
-                                            <label>
-                                                <input value="{{$jour->id}}" type="checkbox" name="jour[]" {{ $bonplan->horaires->where('jour_id', $jour->id)->first() ? 'checked' : '' }}>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label for="">{{ ucfirst($jour->libelle) }}</label>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input type="time" class="form-control" name="ouverture[{{$jour->id}}]" value="{{ $bonplan->horaires->where('jour_id', $jour->id)->first()->ouverture ?? '' }}">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input type="time" class="form-control" name="fermeture[{{$jour->id}}]" value="{{ $bonplan->horaires->where('jour_id', $jour->id)->first()->fermeture ?? '' }}">
+                            <div class="row m-t-lg">
+                                <div class="col-md-2">
+                                    <div class="checkbox col-sm-3">
+                                        <label>
+                                            <input 
+                                                class="{{$jour->id}}" 
+                                                id="switch-{{$jour->id}}" 
+                                                value="{{$jour->id}}" 
+                                                type="checkbox" 
+                                                name="jour[]"
+                                                {{ in_array($jour->id, old('jour', $etablissement->jours()->pluck('jour_id')->toArray())) ? "checked" : ""}}
+                                            >
+                                        </label>
                                     </div>
                                 </div>
+                                <div class="col-md-3">
+                                    <label for="">{{ ucfirst($jour->libelle) }}</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="time" class="form-control" name="ouverture[{{$jour->id}}]" value="{{ $etablissement->getOuverture($jour->id) }}">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="time" class="form-control" name="fermeture[{{$jour->id}}]" value="{{ $etablissement->getFermeture($jour->id) }}">
+                                </div>
+                            </div>
                             @endforeach
 
                             <hr>
 
-                            <h4 class="mb-3">SPECIALITES / MENU</h4>
-
-                            <div class="row m-t-lg mb-4">
-                                <div class="col-md-3">
-                                    <label for="">Libéllé <span class="red">*</span></label>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="">Prix <span class="red">*</span></label>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="">Image (.png, .jpeg, .jpg) <span class="red">*</span></label>
-                                </div>
-                                <div class="col-md-3"></div>
-                            </div>
-
-                            @forelse($bonplan->offers as $offers)
-                                <div class="row m-t-lg">
-                                    <div class="col-md-3">
-                                        <input type="text" class="form-control" name="specialite[{{$offers->id}}][libelle]" value="{{ html_entity_decode(ucfirst($offers->name)) }}">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input type="number" class="form-control" name="specialite[{{$offers->id}}][prix]" value="{{ $offers->price }}">
-                                    </div>
-                                    <div class="col-md-3 specialite">
-                                        <input type="text" class="specialitephoto" name="specialite[{{$offers->id}}][photo]" data-fileuploader="photo-uploader" value="{{ $offers->image->name }}">
-                                    </div>
-                                    <div class="col-md-3 specialite">
-                                        <button class="btn btn-danger btn-sm deletespecialite"><i class="fas fa-trash"></i></button>
-                                    </div>
-                                </div>
-                            @empty
-                                <div class="row m-t-lg">
-                                    <div class="col-md-3">
-                                        <input type="text" class="form-control" name="specialite[0][libelle]">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input type="number" class="form-control" name="specialite[0][prix]">
-                                    </div>
-                                    <div class="col-md-3 specialite">
-                                        <input type="text" class="specialitephoto" name="specialite[0][photo]" data-fileuploader="photo-uploader">
-                                    </div>
-                                </div>
-                            @endforelse
-
-                            <div class="sectionAddSpecialite">
-
-                            </div>
-
-                            <button class="btn btn-secondary btn-sm addspecialite"><i class="fas fa-plus-circle ms-2"></i> Ajouter</button>
-
-                            <hr>
-
-                            <h4 class="mb-3">COMMODITES</h4>
+                            <h4 class="mb-3">COMMODITES <span class="red">*</span></h4>
                             <div class="row m-t-lg">
                                 <div class="col-md-12">
-                                    <label for="commodite" class="form-label">Veuillez sélectionnez les commodités <span class="red">*</span></label>
-                                    <select class="js-states form-control @error('commodite') is-invalid @enderror" multiple id="categorie" tabindex="-1" style="display: none; width: 100%" name="commodite[]">
+                                    <label for="commodite" class="form-label">Veuillez sélectionnez les commodités </label>
+                                    <select class="js-states form-control @error('commodite') is-invalid @enderror" multiple id="commodite" tabindex="-1" style="display: none; width: 100%" name="commodite[]">
                                         @foreach($commodites as $commodite)
-                                            <option value="{{ $commodite->id }}" {{ in_array($commodite->id, $bonplan->commodites()->pluck('commodite_id')->toArray()) ? 'selected' : ''  }}>{{ ucfirst($commodite->libelle) }}</option>
+                                            <option value="{{ $commodite->id }}" {{ in_array($commodite->id, old('commodite', $etablissement->commodites()->pluck('commodite_id')->toArray())) ? 'selected' : '' }}>{{ ucfirst($commodite->libelle) }}</option>
                                         @endforeach
                                     </select>
                                     @error('commodite')
@@ -298,6 +228,7 @@
                                     @enderror
                                 </div>
                             </div>
+
 
                             <div class="row m-t-lg mt-4">
                                 <div class="col">
@@ -316,10 +247,10 @@
         $("#galerie").uploader({
             multiple: true,
             defaultValue: [
-                @foreach($bonplan->images as $image)
+                @foreach($etablissement->galleries as $image)
                 {
                     name: "jQuery",
-                    url: "{{$image->name}}"
+                    url: "{{$image->image}}"
                 },
                 @endforeach
             ],
@@ -378,7 +309,7 @@
 
                 {
                     name: "jQuery",
-                    url: "{{$bonplan->photo->name ?? ''}}"
+                    url: "{{$etablissement->image ?? ''}}"
                 },
 
             ],
@@ -430,139 +361,5 @@
                 },
             },
         })
-    </script>
-    <script>
-        let count = {{$bonplan->offers->count() + 1}};
-        $('.specialitephoto').uploader({
-            ajaxConfig: {
-                url: "{{ route('imageStorage') }}",
-                method: "post",
-                paramsBuilder: function (uploaderFile) {
-                    let form = new FormData();
-                    form.append("file", uploaderFile.file)
-                    form.append("_token", "{{ csrf_token() }}")
-                    console.log(form)
-                    return form
-                },
-                ajaxRequester: function (config, uploaderFile, progressCallback, successCallback, errorCallback) {
-                    $.ajax({
-                        url: config.url,
-                        contentType: false,
-                        processData: false,
-                        method: config.method,
-                        data: config.paramsBuilder(uploaderFile),
-                        success: function (response) {
-                            successCallback(response)
-                            $('.errorPhoto').text('')
-                        },
-                        error: function (response) {
-                            console.error("Error", response)
-                            errorCallback("Error")
-
-                            let msg = response.responseJSON.message
-                            console.log(msg)
-                            $('.errorPhoto').text('Erreur: ' +msg)
-                        },
-                        xhr: function () {
-                            let xhr = new XMLHttpRequest();
-                            xhr.upload.addEventListener('progress', function (e) {
-                                let progressRate = (e.loaded / e.total) * 100;
-                                progressCallback(progressRate)
-                            })
-                            return xhr;
-                        }
-                    })
-                },
-                responseConverter: function (uploaderFile, response) {
-                    console.log(response)
-                    return {
-                        url: response.file,
-                        name: null,
-                    }
-                },
-            },
-        })
-
-        $('.addspecialite').click(function(e){
-            e.preventDefault()
-
-            let newSpecialite = '<div class="row m-t-lg">\n' +
-                '<div class="col-md-3">\n' +
-                '<input type="text" class="form-control" name="specialite['+count+'][libelle]">\n' +
-                '</div>\n' +
-                '<div class="col-md-3">\n' +
-                '<input type="number" class="form-control" name="specialite['+count+'][prix]">\n' +
-                '</div>\n' +
-                '<div class="col-md-3 specialite">\n' +
-                '<input type="text" class="specialitephoto" name="specialite['+count+'][photo]" data-fileuploader="photo-uploader">\n' +
-                '</div>\n' +
-                '<div class="col-md-3 specialite">\n' +
-                '<button class="btn btn-danger btn-sm deletespecialite"><i class="fas fa-trash"></i></button>\n' +
-                '</div>\n' +
-                '</div>';
-
-            $('.sectionAddSpecialite').append(newSpecialite);
-
-            $('.specialitephoto').uploader({
-                ajaxConfig: {
-                    url: "{{ route('imageStorage') }}",
-                    method: "post",
-                    paramsBuilder: function (uploaderFile) {
-                        let form = new FormData();
-                        form.append("file", uploaderFile.file)
-                        form.append("_token", "{{ csrf_token() }}")
-                        console.log(form)
-                        return form
-                    },
-                    ajaxRequester: function (config, uploaderFile, progressCallback, successCallback, errorCallback) {
-                        $.ajax({
-                            url: config.url,
-                            contentType: false,
-                            processData: false,
-                            method: config.method,
-                            data: config.paramsBuilder(uploaderFile),
-                            success: function (response) {
-                                successCallback(response)
-                                $('.errorPhoto').text('')
-                            },
-                            error: function (response) {
-                                console.error("Error", response)
-                                errorCallback("Error")
-
-                                let msg = response.responseJSON.message
-                                console.log(msg)
-                                $('.errorPhoto').text('Erreur: ' +msg)
-                            },
-                            xhr: function () {
-                                let xhr = new XMLHttpRequest();
-                                xhr.upload.addEventListener('progress', function (e) {
-                                    let progressRate = (e.loaded / e.total) * 100;
-                                    progressCallback(progressRate)
-                                })
-                                return xhr;
-                            }
-                        })
-                    },
-                    responseConverter: function (uploaderFile, response) {
-                        console.log(response)
-                        return {
-                            url: response.file,
-                            name: null,
-                        }
-                    },
-                },
-            })
-
-            count++
-
-        })
-
-        $(document).on('click', '.deletespecialite', function(e){
-            e.preventDefault()
-
-            $(this).parent().parent().remove()
-        })
-
-
     </script>
 @endpush

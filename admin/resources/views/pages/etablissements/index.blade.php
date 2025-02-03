@@ -16,7 +16,7 @@
                     <div class="d-flex justify-content-between">
                         <h1>{{ $title}}</h1>
                         <div class="buttons">
-                            <a href="{{ route('etablissements.create')}}" class="btn btn-primary btn-rounded p-2"><i class="fas fa-plus-circle"></i> Ajouter un endroit</a>
+                            <a href="{{ route('etablissements.create')}}" class="btn btn-primary btn-rounded p-2"><i class="fas fa-plus-circle"></i> Ajouter</a>
                             <a href="#" class="btn btn-dark btn-rounded p-2"><i class="fas fa-search"></i> Recherche</a>
                         </div>
                     </div>
@@ -45,12 +45,18 @@
                                         <td>{{ html_entity_decode(ucfirst($etablissement->libelle)) }}</td>
                                         <td>{{ ucfirst($etablissement->client_name) }}</td>
                                         <td>{{ html_entity_decode($etablissement->category_label) }}</td>
-                                        <td>{{ $etablissement->email }} <br> {{ $etablissement->phone }}</td>
+                                        <td>@if(!empty($etablissement->email)){{ $etablissement->email }} <br>@endif {{ $etablissement->phone }}</td>
                                         <td>
                                             @if($etablissement->status == 0)
                                                 <span class="badge rounded-pill badge-danger">Inactif</span>
                                             @else
                                                 <span class="badge rounded-pill badge-success">Actif</span>
+                                            @endif
+                                            <br>
+                                            @if($etablissement->validate == 0)
+                                                <span class="badge rounded-pill badge-warning">En attente</span>
+                                            @elseif($etablissement->validate == 1)
+                                                <span class="badge rounded-pill badge-primary">Validé</span>
                                             @endif
                                         </td>
                                         <td>Le {{ date('d/m/Y à H:i', strtotime($etablissement->created_at)) }}</td>
@@ -60,6 +66,17 @@
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item" href="{{ route('etablissements.show', $etablissement->id) }}"><i class="fas fa-eye"></i> Détails</a>
                                                     <a class="dropdown-item" href="{{ route('etablissements.edit', $etablissement->id) }}"><i class="fas fa-edit"></i> Modifier</a>
+                                                    @if ($etablissement->validate == 0)
+                                                    <a class="dropdown-item" href="{{ route('etablissements.validation', $etablissement->id) }}" onclick="return confirm('Ête-vous sûre de vouloir valider cet établissement ?')"><i class="fas fa-check"></i> Valider</a>
+                                                    @endif
+                                                    <a class="dropdown-item" href="{{ route('etablissements.status', $etablissement->id) }}" onclick="return confirm('Ête-vous sûre de vouloir {{$etablissement->status == 0 ? 'activer' : 'désactiver'}} cet établissement ?')">
+                                                        @if ($etablissement->status == 0)
+                                                        <i class="fas fa-toggle-on"></i> Activer
+                                                        @else
+                                                        <i class="fas fa-toggle-off"></i> Désactiver
+                                                        @endif
+                                                        
+                                                    </a>
                                                     <a class="dropdown-item" href="{{ route('etablissements.delete', $etablissement->id) }}" onclick="return confirm('Ête-vous sûre de vouloir supprimer cet établissement ?')"><i class="fas fa-trash"></i> Supprimer</a>
                                                 </div>
                                             </div>                                        

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('horaires', function (Blueprint $table) {
             $table->id();
-            $table->integer('endroit_id');
+            $table->integer('etablissement_id');
             $table->integer('jour_id');
             $table->time('ouverture');
             $table->time('fermeture');

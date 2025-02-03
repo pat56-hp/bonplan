@@ -9,12 +9,12 @@ use App\Http\Controllers\DealController;
 Route::get('/', [EtablissementController::class, 'index'])->name('etablissements.index');
 Route::get('/create', [EtablissementController::class, 'create'])->name('etablissements.create');
 Route::post('/store', [EtablissementController::class, 'store'])->name('etablissements.store');
-Route::get('/edit/{id}', [EtablissementController::class, 'edit'])->name('etablissements.edit');
+Route::get('/show/{etablissement}', [EtablissementController::class, 'show'])->name('etablissements.show');
+Route::get('/edit/{etablissement}', [EtablissementController::class, 'edit'])->name('etablissements.edit');
 Route::post('/update/{id}', [EtablissementController::class, 'update'])->name('etablissements.update');
-Route::get('/delete/{id}', [EtablissementController::class, 'destroy'])->name('etablissements.delete');
-Route::get('/state/{id}', [EtablissementController::class, 'editStatus'])->name('etablissements.status');
-Route::get('/{id}/offres', [EtablissementController::class, 'offres'])->name('etablissements.offre');
-Route::get('/{id}/show', [EtablissementController::class, 'show'])->name('etablissements.show');
+Route::get('/delete/{etablissement}', [EtablissementController::class, 'destroy'])->name('etablissements.delete');
+Route::get('/state/{etablissement}', [EtablissementController::class, 'editStatus'])->name('etablissements.status');
+Route::get('/validate/{etablissement}', [EtablissementController::class, 'validation'])->name('etablissements.validation');
 
 Route::prefix('categories')->group(function (){
     Route::get('/', [CategorieController::class, 'index'])->name('etablissements.categorie.index');

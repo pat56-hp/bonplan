@@ -27,7 +27,7 @@
                     <div class="d-flex justify-content-between">
                         <h1>{{ $title}}</h1>
                         <div class="buttons">
-                            <a href="{{ route('etablissements.index') }}" class="btn btn-primary btn-rounded p-2"><i class="fas fa-list"></i> Liste des etablissements</a>
+                            <a href="{{ route('etablissements.index') }}" class="btn btn-primary btn-rounded p-2"><i class="fas fa-list"></i> Afficher la liste</a>
                             <a href="#" class="btn btn-dark btn-rounded p-2"><i class="fas fa-search"></i> Rechercher</a>
                         </div>
                     </div>
@@ -51,13 +51,13 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="responsable" class="form-label">Responsable <span class="red">*</span></label>
-                                    <select class="js-states form-control @error('client_id') is-invalid @enderror" id="responsable" tabindex="-1" style="display: none; width: 100%" readonly name="client">
+                                    <select class="js-states form-control @error('client') is-invalid @enderror" id="responsable" tabindex="-1" style="display: none; width: 100%" readonly name="client">
                                         <option value="">Sélectionnez le responsable</option>
                                         @foreach($clients as $client)
-                                            <option value="{{ $client->id }}" {{ old('client_id') == $client->id ? 'selected' : ''}}>{{ ucfirst($client->name).' '.ucfirst($client->lastname) }}</option>
+                                            <option value="{{ $client->id }}" {{ old('client') == $client->id ? 'selected' : ''}}>{{ ucfirst($client->name).' '.ucfirst($client->lastname) }}</option>
                                         @endforeach
                                     </select>
-                                    @error('client_id')
+                                    @error('client')
                                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -67,13 +67,13 @@
                             <div class="row m-t-xxl">
                                 <div class="col-md-6">
                                     <label for="categorie" class="form-label">Catégorie <span class="red">*</span></label>
-                                    <select class="js-states form-control @error('categorie_id') is-invalid @enderror" id="categorie" tabindex="-1" style="display: none; width: 100%" name="categorie">
+                                    <select class="js-states form-control @error('categorie') is-invalid @enderror" id="categorie" tabindex="-1" style="display: none; width: 100%" name="categorie">
                                         <option value="">Sélectionnez la catégorie</option>
                                         @foreach($categories as $categorie)
-                                            <option value="{{ $categorie->id }}" {{ old('categorie_id') == $categorie->id ? 'selected' : ''}}>{{ html_entity_decode(ucfirst($categorie->libelle)) }}</option>
+                                            <option value="{{ $categorie->id }}" {{ old('categorie') == $categorie->id ? 'selected' : ''}}>{{ html_entity_decode(ucfirst($categorie->libelle)) }}</option>
                                         @endforeach
                                     </select>
-                                    @error('categorie_id')
+                                    @error('categorie')
                                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -156,7 +156,7 @@
                             <div class="row m-t-xxl">
                                 <div class="col-md-12">
                                     <label for="description" class="form-label">Description <span class="red">*</span></label>
-                                    <textarea name="description" cols="4" rows="4" class="form-control @error('description') is-invalid @enderror" >{{ old('description') }}</textarea>
+                                    <textarea name="description" cols="4" rows="4" id="summernote" class="form-control @error('description') is-invalid @enderror" >{{ old('description') }}</textarea>
                                     @error('description')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -187,7 +187,7 @@
                                 <div class="col-md-2">
                                     <div class="checkbox col-sm-3">
                                         <label>
-                                            <input class="{{$jour->id}}" id="switch-{{$jour->id}}" value="{{$jour->id}}" type="checkbox" name="jour[]" value="{{ old('jour[]') }}">
+                                            <input class="{{$jour->id}}" id="switch-{{$jour->id}}" value="{{$jour->id}}" type="checkbox" name="jour[]" {{in_array($jour->id, old('jour') ?? []) ? 'checked' : ''}}>
                                         </label>
                                     </div>
                                 </div>
@@ -211,7 +211,7 @@
                                     <label for="commodite" class="form-label">Veuillez sélectionnez les commodités </label>
                                     <select class="js-states form-control @error('commodite') is-invalid @enderror" multiple id="commodite" tabindex="-1" style="display: none; width: 100%" name="commodite[]">
                                         @foreach($commodites as $commodite)
-                                            <option value="{{ $commodite->id }}" {{ old('commodite') == $commodite->id ? 'selected' : ''}}>{{ ucfirst($commodite->libelle) }}</option>
+                                            <option value="{{ $commodite->id }}" {{ in_array($commodite->id, old('commodite') ?? []) ? 'selected' : ''}}>{{ ucfirst($commodite->libelle) }}</option>
                                         @endforeach
                                     </select>
                                     @error('commodite')

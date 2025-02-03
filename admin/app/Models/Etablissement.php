@@ -13,7 +13,7 @@ class Etablissement extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'libelle', 'ville', 'adresse', 'email', 'phone', 'image', 'client_id', 'category_id', 'facebook', 'instagram', 'status', 'description', 'longitude', 'latitude'
+        'libelle', 'ville', 'adresse', 'email', 'phone', 'image', 'client_id', 'category_id', 'facebook', 'instagram', 'status', 'description', 'longitude', 'latitude', 'validate'
     ];
 
     protected $appends = ['open', 'isFavorite', 'note'];
@@ -31,7 +31,7 @@ class Etablissement extends Model
     }
 
     public function category(){
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Categoriesplan::class, 'category_id');
     }
 
     public function galleries(){
@@ -60,7 +60,7 @@ class Etablissement extends Model
     /**
      * Renvoie le libelle de la categorie
      */
-    public function getCategoryLabelAttribyte(){
+    public function getCategoryLabelAttribute(){
         return ucfirst($this->category->libelle ?? 'Introuvable');
     }
 
@@ -115,5 +115,15 @@ class Etablissement extends Model
         }
 
         return $note;
+    }
+
+    //Renvoie l'heure d'ouverture pour le jour donné
+    public function getOuverture(string $jourId){
+        return $this->jours()->where('jour_id', $jourId)->first()?->pivot?->ouverture;
+    }
+
+    //Renvoie l'heure de fermeture pour le jour donné
+    public function getFermeture(string $jourId){
+        return $this->jours()->where('jour_id', $jourId)->first()?->pivot?->fermeture;
     }
 }

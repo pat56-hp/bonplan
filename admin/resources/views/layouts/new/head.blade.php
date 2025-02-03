@@ -27,6 +27,7 @@
     <link href="{{ asset('plugins/clockpicker/dist/jquery-clockpicker.min.css') }}" rel="stylesheet">
     <!-- Toastr -->
     <link href="{{ asset('plugins/toastr/css/toastr.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/plugins/summernote/summernote-lite.min.css') }}" rel="stylesheet">
 
 
 

@@ -2,8 +2,15 @@
 
 function storeFile($file, $path, $fileName){
     $file->move($path, $fileName);
-    $fileUrl = \Illuminate\Support\Facades\URL::to($path.$fileName);
-    return $fileUrl;
+    $filePath = '/'.$path.$fileName;
+    return $filePath;
+}
+
+function deleteFile($file){
+    $path = public_path($file);
+    if (file_exists($path)){
+        unlink($path);
+    }
 }
 
 function verifyImageExtension($imgUrl){
@@ -13,4 +20,9 @@ function verifyImageExtension($imgUrl){
     }
 
     return true;
+}
+
+function alert($type, $message){
+    session()->flash('type', 'alert-'.$type);
+    session()->flash('message', $message);
 }

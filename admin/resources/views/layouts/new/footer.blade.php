@@ -34,6 +34,8 @@
 <script src="{{ asset('plugins/clockpicker/dist/jquery-clockpicker.min.js')}}"></script>
 <!-- Toastr -->
 <script src="{{ asset('plugins/toastr/js/toastr.min.js')}}"></script>
+<script src="{{ asset('assets/plugins/summernote/summernote-lite.min.js')}}"></script>
+<script src="{{ asset('assets/js/pages/text-editor.js')}}"></script>
 
 @stack('js')
 
@@ -295,9 +297,6 @@
             },
         })
     });
-
-
-
 
 
     @if(Session::has('type') )

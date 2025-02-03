@@ -709,10 +709,10 @@ class BonplanController extends Controller
 
             $fileName = 'bonplan-'. time() . '-img.'.$request->file->extension();
             $path = 'assets/bonplans/';
-            $imgUrl = storeFile($request->file, $path, $fileName);
+            $filePath = storeFile($request->file, $path, $fileName);
 
             return response()->json([
-                'file' => $imgUrl
+                'file' => $filePath
             ], 200);
         }
 

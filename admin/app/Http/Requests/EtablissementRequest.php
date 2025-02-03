@@ -25,18 +25,18 @@ class EtablissementRequest extends FormRequest
             'libelle' => 'required|max:150',
             'client' => 'required|integer',
             'categorie' => 'required|integer',
-            'email' => 'sometimes|email|max:50',
+            'email' => 'nullable|email|max:50',
             'phone' => 'required|max:50',
             'ville' => 'required|max:150',
             'adresse' => 'required|max:150',
-            'facebook' => 'sometimes|max:150',
-            'instagram' => 'sometimes|max:150',
+            'facebook' => 'nullable|max:150',
+            'instagram' => 'nullable|max:150',
             'image' => 'required',
             'description' => 'required',
             'jour.*' => 'required',
-            'ouverture.*' => 'required',
+            /* 'ouverture.*' => 'required',
             'fermeture.*' => 'required',
-            'commodite.*' => 'required',
+            'commodite.*' => 'required', */
         ];
     }
 }

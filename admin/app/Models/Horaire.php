@@ -9,10 +9,10 @@ class Horaire extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['jour_id', 'endroit_id', 'ouverture', 'fermeture', 'created_by'];
+    protected $fillable = ['jour_id', 'etablissement_id', 'ouverture', 'fermeture', 'created_by'];
 
-    public function endroit(){
-        return $this->belongsTo(Endroit::class, 'endroit_id');
+    public function etablissement(){
+        return $this->belongsTo(Etablissement::class, 'etablissement_id');
     }
 
     public function jour(){
