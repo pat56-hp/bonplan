@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('slogan')->nullable();
             $table->string('email');
             $table->string('phone')->nullable();
+            $table->string('auteur')->nullable();
+            $table->string('lien')->nullable();
+            $table->string('logo_black')->nullable();
+            $table->text('mot_cle')->nullable();
             $table->string('logo')->nullable();
             $table->string('favicon')->nullable();
             $table->string('facebook')->nullable();

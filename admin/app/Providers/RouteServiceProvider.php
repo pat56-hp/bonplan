@@ -49,8 +49,8 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/commune.php'));
 
             Route::middleware('web')
-                ->prefix('bons-plans')
-                ->group(base_path('routes/bonplan.php'));
+                ->prefix('etablissements')
+                ->group(base_path('routes/etablissement.php'));
 
             Route::middleware('web')
                 ->prefix('evenements')

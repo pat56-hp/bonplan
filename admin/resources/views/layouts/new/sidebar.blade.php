@@ -26,10 +26,10 @@
                 <a class="has-arrow" href="#" aria-expanded="false"><i class=" icon-tag-6"></i> <span class="nav-text">Catégories</span></a>
                 <ul aria-expanded="false">
                     <li>
-                        <a href="#" data-toggle="modal" data-target="#modalAddCategorie" class="{{ request()->routeIs('bonplan.categorie.create') ? 'active' : '' }}"><i class=" icon-plus-outline"></i> Ajouter une catégorie</a>
+                        <a href="#" data-toggle="modal" data-target="#modalAddCategorie" class="{{ request()->routeIs('etablissements.categorie.create') ? 'active' : '' }}"><i class=" icon-plus-outline"></i> Ajouter une catégorie</a>
                     </li>
                     <li>
-                        <a href="{{ route('bonplan.categorie.index') }}" class="{{ request()->routeIs('bonplan.categorie.index') ? 'active' : '' }}"><i class=" icon-database-2"></i> Liste des catégories</a>
+                        <a href="{{ route('etablissements.categorie.index') }}" class="{{ request()->routeIs('etablissements.categorie.index') ? 'active' : '' }}"><i class=" icon-database-2"></i> Liste des catégories</a>
                     </li>
                 </ul>
             </li>
@@ -37,21 +37,21 @@
                 <a class="has-arrow" href="#" aria-expanded="false"><i class=" icon-attach-6"></i> <span class="nav-text">Commodités</span></a>
                 <ul aria-expanded="false">
                     <li>
-                        <a href="#" data-toggle="modal" data-target="#modalAddCommodite" class="{{ request()->routeIs('bonplan.commodites.create') ? 'active' : '' }}"><i class=" icon-plus-outline"></i> Ajouter une commodité</a>
+                        <a href="#" data-toggle="modal" data-target="#modalAddCommodite" class="{{ request()->routeIs('etablissements.commodites.create') ? 'active' : '' }}"><i class=" icon-plus-outline"></i> Ajouter une commodité</a>
                     </li>
                     <li>
-                        <a href="{{ route('bonplan.commodite.index') }}" class="{{ request()->routeIs('bonplan.commodites.index') ? 'active' : '' }}"><i class=" icon-database-2"></i> Liste des commodités</a>
+                        <a href="{{ route('etablissements.commodite.index') }}" class="{{ request()->routeIs('etablissements.commodites.index') ? 'active' : '' }}"><i class=" icon-database-2"></i> Liste des commodités</a>
                     </li>
                 </ul>
             </li>
             <li class="{{ $menu == 'bonplan' ? 'active' : '' }}">
-                <a class="has-arrow" href="#" aria-expanded="false"><i class=" icon-location-6"></i> <span class="nav-text">Endroits</span></a>
+                <a class="has-arrow" href="#" aria-expanded="false"><i class=" icon-location-6"></i> <span class="nav-text">Etablissements</span></a>
                 <ul aria-expanded="false">
                     <li>
-                        <a href="{{ route('bonplan.create') }}" class="{{ request()->routeIs('bonplan.create') ? 'active' : '' }}"><i class=" icon-plus-outline"></i> Ajouter un endroit</a>
+                        <a href="{{ route('etablissements.create') }}" class="{{ request()->routeIs('etablissements.create') ? 'active' : '' }}"><i class=" icon-plus-outline"></i> Ajouter un établissement</a>
                     </li>
                     <li>
-                        <a href="{{ route('bonplan.index') }}" class="{{ request()->routeIs('bonplan.index') ? 'active' : '' }}"><i class=" icon-database-2"></i> Liste des endroits</a>
+                        <a href="{{ route('etablissements.index') }}" class="{{ request()->routeIs('etablissements.index') ? 'active' : '' }}"><i class=" icon-database-2"></i> Liste des établissements</a>
                     </li>
                     <li>
                         <a href="{{ route('deal.index') }}" class="{{ request()->routeIs('deal.index') ? 'active' : '' }}"><i class=" icon-database-2"></i> Prémiums</a>
@@ -115,5 +115,5 @@
     <!-- #/ nk nav scroll -->
 </div>
 <!-- #/ sidebar -->
-@include('pages.bonplan.categorie.modal')
-@include('pages.bonplan.commodite.modal')
+@include('pages.etablissements.categorie.modal')
+@include('pages.etablissements.commodite.modal')

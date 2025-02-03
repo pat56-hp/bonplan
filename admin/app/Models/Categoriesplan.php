@@ -14,7 +14,7 @@ class Categoriesplan extends Model
     ];
 
     public function bonplans(){
-        return $this->hasMany(Endroit::class, 'categorie_id');
+        return $this->hasMany(Etablissement::class, 'categorie_id');
     }
 
 

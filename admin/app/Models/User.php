@@ -24,6 +24,7 @@ class User extends Model
         'status',
         'validation_status',
         'validation_date',
+        'type',
         'created_by',
         'type'
     ];

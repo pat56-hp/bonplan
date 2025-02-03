@@ -13,7 +13,7 @@ class Commodite extends Model
         'libelle', 'created_by', 'status', 'icon'
     ];
 
-    public function endroits(){
-        return $this->belongsToMany(Endroit::class, 'endroit_commodites')->withPivot('id', 'statut', 'created_by');
+    public function etablissements(){
+        return $this->belongsToMany(Etablissement::class, 'etablissement_commodites', 'commodite_id', 'etablissement_id');
     }
 }

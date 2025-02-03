@@ -139,7 +139,11 @@ class AdminController extends Controller
             return back();
         }
 
-        $data['password'] = !empty($request->password) ? $admin->password : Hash::make($request->password);
+        //dd($request->password);
+        if(!empty($request->password))
+            $data['password'] = Hash::make($request->password);
+        else
+            unset($data['password']);
 
         if ($admin->update($data)){
             $module = 'Utilisateur';

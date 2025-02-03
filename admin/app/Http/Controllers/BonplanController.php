@@ -13,10 +13,10 @@ use App\Models\Offer;
 use App\Models\Pays;
 use App\Models\Picture;
 use App\Models\User;
+use App\Models\Etablissement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Str;
 
 class BonplanController extends Controller
 {
@@ -27,11 +27,11 @@ class BonplanController extends Controller
         View::share('page_title', 'Bons plans de divertissement');
         View::share('title', 'Bons plans de divertissement');
         View::share('categories', Categoriesplan::where('status', 1)->get());
-        View::share('communes', Commune::where('status', 1)->get());
-        View::share('users', User::where(['type' => 1, 'status' => 1, 'validation_status' => 1])->get());
+        //View::share('communes', Commune::where('status', 1)->get());
+       // View::share('users', User::where(['type' => 1, 'status' => 1, 'validation_status' => 1])->get());
         View::share('commodites', Commodite::orderBy('libelle')->where(['status' => 1])->get());
-        View::share('plans', Endroit::where('status', 1)->get());
-        View::share('countries', Pays::all());
+        View::share('plans', Etablissement::where('status', 1)->get());
+        //View::share('countries', Pays::all());
         View::share('jours', Jour::all());
         View::share('menu', 'bonplan');
     }
@@ -45,12 +45,12 @@ class BonplanController extends Controller
         $action = 'Affichage de la liste des bons plans';
         Activity::saveActivity($module, $action);
         $data['sub_title'] = 'Cette page est destinée à l\'affichage de la liste des bons plans';
-        $data['bonplans'] = Endroit::orderByDesc('created_at')->paginate(100);
+        $data['bonplans'] = Etablissement::orderByDesc('created_at')->paginate(100);
         return view('pages.bonplan.index', $data);
     }
 
     public function offres(Request $request){
-        if (!$bonplan = Endroit::find($request->id)){
+        if (!$bonplan = Etablissement::find($request->id)){
             session()->flash('type', 'alert-danger');
             session()->flash('message', 'Aucun plan de divertissement trouvé');
             return back();
@@ -158,7 +158,7 @@ class BonplanController extends Controller
             'created_by' => Auth::user()->name.' '.Auth::user()->lastname
         ];
 
-        if ($bonplan = Endroit::create($data)){
+        if ($bonplan = Etablissement::create($data)){
             /**
              * Sauvegarde des images du bon plan*
              */
@@ -246,7 +246,7 @@ class BonplanController extends Controller
      */
     public function show(Request $request)
     {
-        if (!$endroit = Endroit::find($request->id)){
+        if (!$endroit = Etablissement::find($request->id)){
             session()->flash('type', 'alert-danger');
             session()->flash('message', 'Aucun plan de divertissement trouvé.');
             return back();
@@ -265,7 +265,7 @@ class BonplanController extends Controller
      */
     public function edit(Request $request)
     {
-        if (!$endroit = Endroit::find($request->id)){
+        if (!$endroit = Etablissement::find($request->id)){
             session()->flash('type', 'alert-danger');
             session()->flash('message', 'Aucun plan de divertissement trouvé.');
             return back();
@@ -306,7 +306,7 @@ class BonplanController extends Controller
             'specialite.*.photo' => 'La photo de la specialte est requise',
         ]);
 
-        if(!$bonplan = Endroit::find($request->id)){
+        if(!$bonplan = Etablissement::find($request->id)){
             session()->flash('type', 'alert-danger');
             session()->flash('message', 'Le plan de divertissement à modifier est introuvable.');
             return back();
@@ -454,7 +454,7 @@ class BonplanController extends Controller
      */
     public function destroy(Request $request)
     {
-        if (!$endroit = Endroit::find($request->id)){
+        if (!$endroit = Etablissement::find($request->id)){
             session()->flash('type', 'alert-danger');
             session()->flash('message', 'Aucun plan de divertissement trouvé.');
             return back();
@@ -481,7 +481,7 @@ class BonplanController extends Controller
     }
 
     public function editStatus(Request $request){
-        if($bonplan = Endroit::find($request->id)){
+        if($bonplan = Etablissement::find($request->id)){
             $bonplan->status == 1 ? $newStatus = 0 : $newStatus = 1;
             $newStatus == 1 ? $statusMsg = 'activé' : $statusMsg = 'désactivé';
 
@@ -534,7 +534,7 @@ class BonplanController extends Controller
         ]);
 
         //Verification du divertissement sélectionné
-        if (!$endroit = Endroit::find($request->endroit_id)){
+        if (!$endroit = Etablissement::find($request->endroit_id)){
             session()->flash('type', 'alert-danger');
             session()->flash('message', 'Le plan de divertissement sélectionné est introuvable.');
             return back();
