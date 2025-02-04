@@ -13,8 +13,8 @@ class Categoriesplan extends Model
         'libelle', 'created_by', 'status', 'image', 'icon'
     ];
 
-    public function bonplans(){
-        return $this->hasMany(Etablissement::class, 'categorie_id');
+    public function etablissements(){
+        return $this->hasMany(Etablissement::class, 'category_id');
     }
 
 

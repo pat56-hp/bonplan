@@ -112,8 +112,13 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="adresse" class="form-label">Adresse <span class="red">*</span></label>
-                                    <input type="text" name="adresse" required value="{{old('adresse')}}" class="form-control @error('adresse') is-invalid @enderror" id="adresse" placeholder="Abidjan Cocody angré">
+                                    <label for="adresse_input" class="form-label">Adresse <span class="red">*</span></label>
+                                    <input type="text" name="adresse" required value="{{old('adresse')}}" class="form-control @error('adresse') is-invalid @enderror" id="adresse_input" placeholder="Abidjan Cocody angré">
+                                    <input type="hidden" name="latitude" id="latitude_input" value="{{old('latitude')}}">
+                                    <input type="hidden" name="longitude" id="longitude_input" value="{{old('latitude')}}">
+                                    <ul class="list-group" id="geoloc_adress">
+                                        <li class="list-group-item"></li>
+                                    </ul>
                                     @error('adresse')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -263,4 +268,6 @@
         })
 
     </script>
+
+    <script src="{{ asset('assets/js/script.js') }}"></script>
 @endpush

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Activity;
 use App\Models\Categoriesplan;
 use App\Models\Endroit;
+use App\Models\Etablissement;
+use App\Services\ActivityService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,13 +14,18 @@ use Illuminate\Support\Facades\View;
 
 class CategorieController extends Controller
 {
-    public function __construct()
+    private $module;
+    private ActivityService $activityService;
+
+    public function __construct(ActivityService $activityService)
     {
         $this->middleware('auth');
         $this->middleware('status');
+        $this->activityService = $activityService;
+        $this->module = "Categories d'établissement";
         View::share('page_title', 'Categories de plan');
         View::share('title', 'Categories de plan');
-        View::share('categories', Categoriesplan::all());
+        View::share('categories', Categoriesplan::withCount('etablissements')->get());
         View::share('menu', 'categorieplan');
     }
 
@@ -27,27 +34,25 @@ class CategorieController extends Controller
      */
     public function index()
     {
-        $module = 'Categories de plan';
         $action = 'Affichage de la liste des Categories de plan';
-        Activity::saveActivity($module, $action);
+        $this->activityService->createActivity($this->module, $action);
         $data['sub_title'] = 'Cette page est destinée à l\'affichage de la liste des Categories de plan';
-        return view('pages.bonplan.categorie.index', $data);
+        return view('pages.etablissements.categorie.index', $data);
     }
 
-    public function bonplan(Request $request){
+    public function etablissement(Request $request){
         if(!$categorie = Categoriesplan::find($request->id)){
             session()->flash('type', 'alert-danger');
             session()->flash('message', 'Aucune categorie trouvée');
             return back();
         }
 
-        $module = 'Bons plans de divertissement';
         $action = 'Affichage de la liste des bons plans';
-        Activity::saveActivity($module, $action);
+        $this->activityService->createActivity($this->module, $action);
         $data['title'] = $categorie->libelle;
         $data['sub_title'] = 'Cette page est destinée à l\'affichage de la liste des des bons plans de  '.$categorie->libelle;
-        $data['bonplans'] = Endroit::where('categorie_id', $categorie->id)->orderByDesc('created_at')->paginate(100);
-        return view('pages.bonplan.index', $data);
+        $data['etablissements'] = Etablissement::where('category_id', $categorie->id)->orderByDesc('created_at')->paginate(100);
+        return view('pages.etablissements.index', $data);
     }
 
     /**
@@ -76,16 +81,11 @@ class CategorieController extends Controller
         ];
 
         if (Categoriesplan::create($data)){
-            $module = 'Categories de plan';
             $action = 'Enregistrement des informations de la Categories de plan  '.ucfirst($request->libelle);
-            Activity::saveActivity($module, $action);
-            session()->flash('type', 'alert-success');
-            session()->flash('message', 'Les informations de la Categorie de plan ont bien été enregistrées avec succès.');
-            return to_route('bonplan.categorie.index');
-
+            $this->activityService->createActivity($this->module, $action);
+            alert('success', 'Les informations de la Categories de plan ont bien été enregistrées avec succès.');
         }else{
-            session()->flash('type', 'alert-danger');
-            session()->flash('message', 'Oups, une erreur s\'est produite pendant l\'enregistrement.');
+            alert('danger', 'Oups, une erreur s\'est produite pendant l\'enregistrement.');
             return back();
         }
     }
@@ -104,15 +104,13 @@ class CategorieController extends Controller
     public function edit(Request $request)
     {
         if ($categorie = Categoriesplan::find($request->id)){
-            $module = 'Categories de plan';
             $action = 'Affichage de la page de modification de la Categories de plan '.$categorie->libelle;
-            Activity::saveActivity($module, $action);
+            $this->activityService->createActivity($this->module, $action);
             $data['category'] = $categorie;
             $data['sub_title'] = 'Cette page est destinée à la modification des informations de la Categories de plan '.$categorie->libelle;
-            return view('pages.bonplan.categorie.edit', $data);
+            return view('pages.etablissements.categorie.edit', $data);
         }else{
-            session()->flash('type', 'alert-danger');
-            session()->flash('message', 'Oups, une erreur s\'est produite, aucune Categories de plan n\'a pu être trouvée.');
+            alert('danger', 'Oups, une erreur s\'est produite, aucune Categories de plan n\'a pu être trouvée.');
             return back();
         }
     }
@@ -128,8 +126,7 @@ class CategorieController extends Controller
         ]);
 
         if(!$categorie = Categoriesplan::find($request->id)){
-            session()->flash('type', 'alert-danger');
-            session()->flash('message', 'Oups, une erreur s\'est produite pendant l\'enregistrement.');
+            alert('danger', 'Oups, une erreur s\'est produite, aucune Categories de plan n\'a pu être trouvée.');
             return back();
         }
 
@@ -140,16 +137,12 @@ class CategorieController extends Controller
         ];
 
         if ($categorie->update($data)){
-            $module = 'Categories de plan';
             $action = 'Enregistrement des informations de la Categories de plan  '.ucfirst($request->libelle);
-            Activity::saveActivity($module, $action);
-            session()->flash('type', 'alert-success');
-            session()->flash('message', 'Les informations de la Categories de plan ont bien été enregistrées avec succès.');
-            return to_route('bonplan.categorie.index');
-
+            $this->activityService->createActivity($this->module, $action);
+            alert('success', 'Les informations de la Categories de plan ont bien été enregistrées avec succès.');
+            return to_route('etablissements.categorie.index');
         }else{
-            session()->flash('type', 'alert-danger');
-            session()->flash('message', 'Oups, une erreur s\'est produite pendant l\'enregistrement.');
+            alert('danger', 'Oups, une erreur s\'est produite pendant l\'enregistrement.');
             return back();
         }
     }
@@ -162,15 +155,13 @@ class CategorieController extends Controller
         if($categorie = Categoriesplan::find($request->id)){
             $categorie->delete();
 
-            $module = 'Categories de plan';
             $action = 'Suppression de la Categories de plan '.$categorie->libelle;
-            Activity::saveActivity($module, $action);
-            session()->flash('type', 'alert-success');
-            session()->flash('message', 'La Categories de plan a bien été supprimée.');
+            $this->activityService->createActivity($this->module, $action);
+            alert('success', 'La Categories de plan a bien été supprimée');
             return back();
         }else{
             session()->flash('type', 'alert-danger');
-            session()->flash('message', 'Oups, une erreur s\'est produite, aucune Categories de plan n\'a pu être trouvée.');
+            alert('danger', 'Oups, une erreur s\'est produite, aucune Categories de plan n\'a pu être trouvée.');
             return back();
         }
     }
@@ -181,16 +172,12 @@ class CategorieController extends Controller
             $newStatus == 1 ? $statusMsg = 'activée' : $statusMsg = 'désactivée';
 
             $categorie->update(['status' => $newStatus]);
-            $module = 'Categories de plan';
             $action = 'a '.$statusMsg.' la Categories de plan '.$categorie->libelle;
-            Activity::saveActivity($module, $action);
-
-            session()->flash('type', 'alert-success');
-            session()->flash('message', 'La Categories de plan a bien été '.$statusMsg);
+            $this->activityService->createActivity($this->module, $action);
+            alert('success', 'La Categories de plan a bien été '.$statusMsg);
             return back();
         }else{
-            session()->flash('type', 'alert-danger');
-            session()->flash('message', 'Oups, une erreur s\'est produite, aucune Categories de plan n\'a pu être trouvée.');
+            alert('danger', 'Oups, une erreur s\'est produite, aucune Categories de plan n\'a pu être trouvée.');
             return back();
         }
     }

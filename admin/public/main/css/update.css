@@ -1,0 +1,15 @@
+ul#geoloc_adress {
+  z-index: 9999999999999;
+  position: absolute;
+  top: 75px;
+  width: 100%;
+  border-radius: 0px 0px 7px 7px;
+  max-height: 290px;
+  overflow: auto;
+  display: none;
+}
+
+ul#geoloc_adress li:hover {
+  background-color: #fff8f2;
+  cursor: pointer;
+}

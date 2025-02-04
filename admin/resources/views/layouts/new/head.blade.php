@@ -18,6 +18,7 @@
     <link href="{{ asset('plugins/switchery/switchery.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/plugins/tables/css/datatable/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     <link href="{{ asset('main/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('main/css/update.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/fontawesome.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('build/css/intlTelInput.css') }}">
     <link rel="stylesheet" href="{{asset('assets/css/file-uploader.css')}}">

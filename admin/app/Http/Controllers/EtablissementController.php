@@ -67,7 +67,7 @@ class EtablissementController extends Controller
     {
         $data = $request->only(
             'libelle', 'client', 'categorie', 'email', 'phone', 'ville', 'adresse', 'facebook', 'instagram', 
-            'image', 'galerie', 'description', 'jour', 'ouverture', 'fermeture', 'commodite'
+            'image', 'galerie', 'description', 'jour', 'ouverture', 'fermeture', 'commodite', 'longitude', 'latitude'
         );
 
         $data['id'] = null;
@@ -119,7 +119,7 @@ class EtablissementController extends Controller
     {
         $data = $request->only(
             'libelle', 'client', 'categorie', 'email', 'phone', 'ville', 'adresse', 'facebook', 'instagram', 
-            'image', 'galerie', 'description', 'jour', 'ouverture', 'fermeture', 'commodite', 'validate', 'status'
+            'image', 'galerie', 'description', 'jour', 'ouverture', 'fermeture', 'commodite', 'validate', 'status', 'latitude', 'longitude'
         );
         $data['id'] = $id;
 

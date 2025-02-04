@@ -64,6 +64,8 @@ class EtablissementRepository implements EtablissementRepositoryInterface{
                 'category_id' => $data['categorie'],
                 'status' => $data['status'] ?? 1,
                 'validate' => $data['validate'] ?? 1,
+                'longitude' => $data['longitude'],
+                'latitude' => $data['latitude'],
             ]);
     
             // Sauvegarde de la gallerie

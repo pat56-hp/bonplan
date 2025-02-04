@@ -1,20 +1,11 @@
 @extends('layouts.new.template')
 @section('content')
-    <div class="row page-titles">
-        <div class="col p-0">
-            <h4>Hello, <span>{{ ucfirst(auth()->user()->name).' '.ucfirst(auth()->user()->lastname) }}</span></h4>
-        </div>
-        <div class="col p-0">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="{{ route('dashboard')}}">Tableau de bord</a>
-                </li>
-                <li class="breadcrumb-item active">{{ $title}}</li>
-            
-            </ol>
-        </div>
-    </div>
-    @include('parts.flashmessage')
+    @include('parts.breadcrumb', [
+        'data' => [
+            ['label' => 'Tableau de bord', 'link' => route('dashboard')],
+            ['label' => 'Catégories']
+        ]
+    ])
     <!-- row -->
     <div class="row">
         <div class="col-lg-12">
@@ -35,7 +26,7 @@
                                 <tr>
                                     <th>Icon</th>
                                     <th>Libéllé</th>
-                                    <th>Divertissement</th>
+                                    <th>Etablissements</th>
                                     <th>Statut</th>
                                     <th>Création</th>
                                     <th>Actions</th>
@@ -48,7 +39,7 @@
                                             <i class="{{ $categorie->icon }}" style="font-size: 25px"></i>
                                         </td>
                                         <td>{{ ucfirst(html_entity_decode($categorie->libelle)) }}</td>
-                                        <td>0</td>
+                                        <td>{{ $categorie->etablissements_count }}</td>
                                         <td>
                                             @if($categorie->status == 0)
                                                 <span class="badge rounded-pill badge-danger">Inactif</span>
