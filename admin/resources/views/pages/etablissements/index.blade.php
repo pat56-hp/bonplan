@@ -67,7 +67,13 @@
                                                     <a class="dropdown-item" href="{{ route('etablissements.show', $etablissement->id) }}"><i class="fas fa-eye"></i> Détails</a>
                                                     <a class="dropdown-item" href="{{ route('etablissements.edit', $etablissement->id) }}"><i class="fas fa-edit"></i> Modifier</a>
                                                     @if ($etablissement->validate == 0)
-                                                    <a class="dropdown-item" href="{{ route('etablissements.validation', $etablissement->id) }}" onclick="return confirm('Ête-vous sûre de vouloir valider cet établissement ?')"><i class="fas fa-check"></i> Valider</a>
+                                                    <a class="dropdown-item" href="{{ route('etablissements.validation', ['etablissement' => $etablissement->id, 'status' => 1]) }}" onclick="return confirm('Ête-vous sûre de vouloir valider cet établissement ?')">
+                                                        <i class="fas fa-check-circle"></i> Valider
+                                                    </a>
+                                                
+                                                    <a class="dropdown-item" href="{{ route('etablissements.validation', ['etablissement' => $etablissement->id, 'status' => 2]) }}" onclick="return confirm('Ête-vous sûre de vouloir refuser cet établissement ?')">
+                                                        <i class="fas fa-times-circle"></i> Refuser
+                                                    </a>
                                                     @endif
                                                     <a class="dropdown-item" href="{{ route('etablissements.status', $etablissement->id) }}" onclick="return confirm('Ête-vous sûre de vouloir {{$etablissement->status == 0 ? 'activer' : 'désactiver'}} cet établissement ?')">
                                                         @if ($etablissement->status == 0)

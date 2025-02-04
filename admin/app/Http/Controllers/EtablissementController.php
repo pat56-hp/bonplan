@@ -19,12 +19,14 @@ class EtablissementController extends Controller
 {
     private ActivityService $activityService;
     private EtablissementRepositoryInterface $etablissementRepository;
+    private $module;
 
     public function __construct(EtablissementRepositoryInterface $etablissementRepository, ActivityService $activityService){
         $this->middleware('auth');
         $this->middleware('status');
         $this->activityService = $activityService;
         $this->etablissementRepository = $etablissementRepository;
+        $this->module = "Etablissements";
         View::share('page_title', 'Bons plans de divertissement');
         View::share('title', 'Etablissements');
         View::share('menu', 'bonplan');
@@ -35,9 +37,8 @@ class EtablissementController extends Controller
     public function index()
     {
         $data['sub_title'] = 'Cette page est destinée à l\'affichage de la liste des établissements';
-        $module = 'Etablissements';
         $action = 'Affichage de la liste des établissements';
-        $this->activityService->createActivity($module, $action);
+        $this->activityService->createActivity($this->module, $action);
         $data['etablissements'] = $this->etablissementRepository->getAll();
 
         return view('pages.etablissements.index', $data);
@@ -49,9 +50,8 @@ class EtablissementController extends Controller
     public function create()
     {
         $data['sub_title'] = 'Cette page est destinée à la creation des établissements';
-        $module = 'Etablissements';
         $action = 'Affichage de la page de creation d\'un établissements';
-        $this->activityService->createActivity($module, $action);
+        $this->activityService->createActivity($this->module, $action);
         $data = array_merge($data, $this->etablissementRepository->getElementToFront());
 
         return view('pages.etablissements.create', $data);
@@ -73,9 +73,8 @@ class EtablissementController extends Controller
         $data['id'] = null;
         try {
             $etablissement = $this->etablissementRepository->save($data);
-            $module = 'Etablissements';
             $action = 'Création de l\'etablissement ' . $etablissement->libelle;
-            $this->activityService->createActivity($module, $action);
+            $this->activityService->createActivity($this->module, $action);
             alert('success', 'Etablissement créé avec succès');
             return to_route('etablissements.index');
         } catch (\Throwable $th) {
@@ -101,9 +100,8 @@ class EtablissementController extends Controller
     public function edit(Etablissement $etablissement)
     {
         $data['sub_title'] = 'Cette page est destinée à la modification des établissements';
-        $module = 'Etablissements';
         $action = 'Affichage de la page de modification d\'un établissements';
-        $this->activityService->createActivity($module, $action);
+        $this->activityService->createActivity($this->module, $action);
         $data = array_merge($data, $this->etablissementRepository->getElementToFront($etablissement));
         $data['etablissement'] = $etablissement;
 
@@ -129,9 +127,8 @@ class EtablissementController extends Controller
 
         try {
             $etablissement = $this->etablissementRepository->save($data);
-            $module = 'Etablissements';
             $action = 'Modification de l\'etablissement ' . $etablissement->libelle;
-            $this->activityService->createActivity($module, $action);
+            $this->activityService->createActivity($this->module, $action);
             alert('success', 'Etablissement modifié avec succès');
             return to_route('etablissements.index');
         } catch (\Throwable $th) {
@@ -149,9 +146,8 @@ class EtablissementController extends Controller
     public function destroy(Etablissement $etablissement)
     {
         $this->etablissementRepository->delete($etablissement);
-        $module = 'Etablissements';
         $action = 'Suppression de l\'etablissement ' . $etablissement->libelle;
-        $this->activityService->createActivity($module, $action);
+        $this->activityService->createActivity($this->module, $action);
         alert('success', 'Etablissement supprimé avec succès');
         return back();
     }
@@ -166,9 +162,8 @@ class EtablissementController extends Controller
     {
         // Basculer le statut (toggle)
         $etablissement->update(['status' => !$etablissement->status]);
-        $module = 'Etablissements';
         $action = 'Modification du statut de l\'etablissement ' . $etablissement->libelle;
-        $this->activityService->createActivity($module, $action);
+        $this->activityService->createActivity($this->module, $action);
         session()->flash('success', 'Statut modifié avec succès');
         return back();
     }
@@ -176,16 +171,20 @@ class EtablissementController extends Controller
     /**
      * Validation d'un établissement
      *
+     * @param Request $request
      * @param Etablissement $etablissement
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function validation(Etablissement $etablissement){
-        $etablissement->update(['validate' => !$etablissement->validate]);
-        $module = 'Etablissements';
+    public function validation(Request $request, Etablissement $etablissement){
+        $status = in_array($request->status, ['1', '2']) ? $request->status : 0;
+        if ($status === 0) {
+            alert('danger', 'Une erreur s\'est produite, rééssayez svp.');
+            return back();
+        }
+        $etablissement->update(['validate' => $status]);
         $action = 'Validation de l\'etablissement ' . $etablissement->libelle;
-        $this->activityService->createActivity($module, $action);
+        $this->activityService->createActivity($this->module, $action);
         alert('success', 'Etablissement validé avec succès');
         return back();
     }
-
 }

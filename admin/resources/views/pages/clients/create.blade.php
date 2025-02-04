@@ -1,22 +1,12 @@
 @extends('layouts.new.template')
 @section('content')
-    <div class="row page-titles">
-        <div class="col p-0">
-            <h4>Hello, <span>{{ ucfirst(auth()->user()->name).' '.ucfirst(auth()->user()->lastname) }}</span></h4>
-        </div>
-        <div class="col p-0">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="{{ route('dashboard')}}">Tableau de bord</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="{{ route('user.index')}}">Comptes</a>
-                </li>
-                <li class="breadcrumb-item active">Création</li>
-            </ol>
-        </div>
-    </div>
-    @include('parts.flashmessage')
+    @include('parts.breadcrumb', [
+        'data' => [
+            ['label' => 'tableau de bord', 'link' => route('dashboard')],
+            ['label' => 'Inscription clients', 'link' => route('clients.index')],
+            ['label' => 'Ajouter un compte']
+        ]
+    ])
     <!-- row -->
     <div class="row">
         <div class="col-lg-12">
@@ -25,8 +15,7 @@
                     <div class="d-flex justify-content-between">
                         <h1>{{ $title}}</h1>
                         <div class="buttons">
-                            <a href="{{ route('user.index') }}" class="btn btn-primary btn-rounded p-2"><i class="fas fa-list"></i> Liste des comptes</a>
-                            <a href="#" class="btn btn-dark btn-rounded p-2"><i class="fas fa-search"></i> Rechercher</a>
+                            <a href="{{ route('clients.index') }}" class="btn btn-primary btn-rounded p-2"><i class="fas fa-list"></i> Liste des comptes</a>
                         </div>
                     </div>
                     <p>{{ $sub_title }}</p>
@@ -34,7 +23,7 @@
                         <div class="alert alert-warning text-center mb-4">
                             <span class="mt-0 d-inline">Tous les champs marqués par ( <i class="red">*</i> ) sont obligatoire !</span>
                         </div>
-                        <form action="{{ route('user.store')}}" method="post" enctype="multipart/form-data">
+                        <form action="{{ route('clients.store')}}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="row m-t-xxl">
                                 <div class="col-md-12">
@@ -48,7 +37,7 @@
                                         <div class="form-check ">
                                             <input class="form-check-input" type="radio" name="type" id="responsable" value="1" {{ old('type') == '1' ? 'checked' : '' }}>
                                             <label class="form-check-label" for="responsable">
-                                                Responsable
+                                                Responsable d'établissement
                                             </label>
                                         </div>
                                     </div>
@@ -96,35 +85,14 @@
                                     @enderror
                                 </div>
                             </div>
-
-                            <div class="row m-t-lg">
-                                <div class="col-md-6">
-                                    <label for="city" class="form-label">Ville <span class="red">*</span></label>
-                                    <input type="text" name="city" value="{{old('city')}}" class="form-control @error('city') is-invalid @enderror" id="city" aria-describedby="settingsEmailHelp" placeholder="Abidjan">
-                                    @error('city')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="state" class="form-label">Commune <span class="red">*</span></label>
-                                    <input type="text" name="state" value="{{old('state')}}" class="form-control @error('state') is-invalid @enderror" id="state" placeholder="Cocody">
-                                    @error('state')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
                             <div class="row m-t-xxl">
                                 <div class="col-md-6">
                                     <label for="adresse" class="form-label">Adresse</label>
                                     <input type="text" name="adresse" value="{{old('adresse')}}" class="form-control @error('adresse') is-invalid @enderror" id="adresse" placeholder="Abidjan Cocody angré">
                                     @error('adresse')
-                                    <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
@@ -138,27 +106,10 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="row m-t-xxl">
-                                <div class="col-md-6">
-                                    <label for="status" class="form-label">Statut du compte <span class="red">*</span></label>
-                                    <select class="js-states form-control" id="status" name="status" tabindex="-1" style="display: none; width: 100%" readonly>
-                                        <option value="1" {{ old('status') == 1 ? 'selected' : ''}}>Actif</option>
-                                        <option value="0" {{ old('status') == 0 ? 'selected' : ''}}>Inactif</option>
-                                    </select>
-                                </div>
-                            </div>
                             <div class="row m-t-xxl mt-4" id="identity-section">
                                 <div class="col-md-4">
                                     <label for="photo" class="form-label">Photo de profil (.png, .jpeg, .jpg) <span class="red">*</span></label><br>
-                                    <input type="text" class="photo_profile" name="picture" data-fileuploader="photo-uploader" value="{{ old('picture') }}">
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="recto" class="form-label">Photo d'identité recto</label>
-                                    <input type="text" class="photo_profile" name="recto" data-fileuploader="photo-uploader" value="{{ old('recto') }}">
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="verso" class="form-label">Photo d'identité verso</label>
-                                    <input type="text" class="photo_profile" name="verso" data-fileuploader="photo-uploader" value="{{ old('verso') }}">
+                                    <input type="text" class="photo_profile" name="image" data-fileuploader="photo-uploader" value="{{ old('image') }}">
                                 </div>
                             </div>
 

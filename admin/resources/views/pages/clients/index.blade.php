@@ -27,7 +27,6 @@
                                     <th>Type</th>
                                     <th>Nom & prénom(s)</th>
                                     <th>Contact</th>
-                                    <th>Etat</th>
                                     <th>Statut</th>
                                     <th>Date Enreg.</th>
                                     <th>Actions</th>
@@ -37,10 +36,10 @@
                                 @foreach($clients as $client)
                                     <tr>
                                         <td>
-                                            <b>{{ $client->type == 0 ? 'Client' : 'Responsable' }}</b>
                                             @if($client->image)
-                                                <img src="{{ $client->image->name ?? '' }}" alt="Bon plan profile" width="80px">
-                                            @endif
+                                                <img src="{{ $client->image ?? '/assets/images/avatars/avatar2.png' }}" alt="Bon plan profile" width="80px">
+                                            @endif<br>
+                                            <b>{{ $client->type == 0 ? 'Client' : 'Responsable' }}</b> 
                                         </td>
                                         <td>{{ ucfirst($client->name).' '.ucfirst($client->lastname) }}</td>
                                         <td>
@@ -48,19 +47,18 @@
                                             <i class="fa fa-phone"></i> {{ $client->phone ?? 'Aucun contact' }}
                                         </td>
                                         <td>
+                                            @if($client->status == 0)
+                                            <span class="badge rounded-pill badge-danger">Inactif</span>
+                                            @else
+                                            <span class="badge rounded-pill badge-success">Actif</span>
+                                            @endif <br>
+
                                             @if($client->validate == 0)
                                                 <span class="badge rounded-pill badge-warning">En attente</span>
                                             @elseif($client->validate == 1)
-                                                <span class="badge rounded-pill badge-success">Validé le {{ date('d/m/Y', strtotime($client->validation_date)) }}</span>
+                                                <span class="badge rounded-pill badge-success">Validé</span>
                                             @else
-                                                <span class="badge rounded-pill badge-danger">Refusé le {{ date('d/m/Y', strtotime($client->validation_date)) }}</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($client->status == 0)
-                                                <span class="badge rounded-pill badge-danger">Inactif</span>
-                                            @else
-                                                <span class="badge rounded-pill badge-success">Actif</span>
+                                                <span class="badge rounded-pill badge-danger">Refusé</span>
                                             @endif
                                         </td>
                                         <td>Le {{ date('d/m/Y', strtotime($client->created_at)) }}</td>
@@ -81,11 +79,11 @@
                                                     </a>
                                                     
                                                     @if($client->validate == 0)
-                                                        <a class="dropdown-item" href="{{ route('clients.validation', ['id' => $client->id, 'status' => 1]) }}" onclick="return confirm('Ête-vous sûre de vouloir valider cette inscription ?')">
+                                                        <a class="dropdown-item" href="{{ route('clients.validation', ['client' => $client->id, 'status' => 1]) }}" onclick="return confirm('Ête-vous sûre de vouloir valider cette inscription ?')">
                                                             <i class="fas fa-check-circle"></i> Valider le compte
                                                         </a>
                                                     
-                                                        <a class="dropdown-item" href="{{ route('clients.validation', ['id' => $client->id, 'status' => 2]) }}" onclick="return confirm('Ête-vous sûre de vouloir refuser cette inscription ?')">
+                                                        <a class="dropdown-item" href="{{ route('clients.validation', ['client' => $client->id, 'status' => 2]) }}" onclick="return confirm('Ête-vous sûre de vouloir refuser cette inscription ?')">
                                                             <i class="fas fa-times-circle"></i> Refuser le compte
                                                         </a>
                                                     @endif

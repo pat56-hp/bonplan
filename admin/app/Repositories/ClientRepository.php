@@ -17,7 +17,7 @@ class ClientRepository implements ClientRepositoryInterface{
     }
 
     public function findById(string $id): Client{
-        return $this->client->findById($id);
+        return $this->client->findOrFail($id);
     }
 
     public function save(array $data): mixed{
@@ -39,7 +39,7 @@ class ClientRepository implements ClientRepositoryInterface{
                 'status' => $data['status'] ?? 1,
                 'validate' => $data['validate'] ?? 1,
                 'type' => $data['type'],
-                'password' => $oldclient->$oldclient ?? bcrypt($data['password']),
+                'password' => $oldclient?->$oldclient ?? bcrypt($data['password']),
                 'image' => $data['image'] ?? '/assets/images/avatars/avatar2.png'
             ]);
 
@@ -51,6 +51,7 @@ class ClientRepository implements ClientRepositoryInterface{
     }
 
     public function delete(Client $client): void{
-        
+        $client->etablissements()->delete();
+        $client->delete();
     }
 }

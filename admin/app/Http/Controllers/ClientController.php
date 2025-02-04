@@ -64,6 +64,9 @@ class clientController extends Controller
         $data = $request->only('name', 'lastname', 'email', 'phone', 'adresse', 'status', 'validate', 'type', 'image', 'password');
         $data['id'] = null;
 
+        //dd($data);
+        //dd($data);
+
         try {
             $client = $this->clientRepository->save($data);
             $action = 'Inscription de ' .ucfirst($client->name).' '.ucfirst($client->lastname);
@@ -160,8 +163,13 @@ class clientController extends Controller
      * @param Client $client
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function validation(Client $client){
-        $client->update(['validate' => !$client->validate]);
+    public function validation(Request $request, Client $client){
+        $status = in_array($request->status, ['1', '2']) ? $request->status : 0;
+        if ($status === 0) {
+            alert('danger', 'Une erreur s\'est produite, rééssayez svp.');
+            return back();
+        }
+        $client->update(['validate' => $request->status]);
         $action = 'Modification du statut du client ' . $client->name.' '. $client->lastname;
         $this->activityService->createActivity($this->module, $action);
         alert('success', 'Client validé avec succès');

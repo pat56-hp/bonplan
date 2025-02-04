@@ -251,7 +251,7 @@
 
         $('.photo_profile').uploader({
             ajaxConfig: {
-                url: "{{ route('imageUserStorage') }}",
+                url: "{{ route('imageStorage') }}",
                 method: "post",
                 paramsBuilder: function (uploaderFile) {
                     let form = new FormData();

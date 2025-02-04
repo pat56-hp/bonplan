@@ -14,7 +14,7 @@ Route::get('/edit/{etablissement}', [EtablissementController::class, 'edit'])->n
 Route::post('/update/{id}', [EtablissementController::class, 'update'])->name('etablissements.update');
 Route::get('/delete/{etablissement}', [EtablissementController::class, 'destroy'])->name('etablissements.delete');
 Route::get('/state/{etablissement}', [EtablissementController::class, 'editStatus'])->name('etablissements.status');
-Route::get('/validate/{etablissement}', [EtablissementController::class, 'validation'])->name('etablissements.validation');
+Route::get('/validate/{etablissement}/{status}', [EtablissementController::class, 'validation'])->name('etablissements.validation');
 
 Route::prefix('categories')->group(function (){
     Route::get('/', [CategorieController::class, 'index'])->name('etablissements.categorie.index');
